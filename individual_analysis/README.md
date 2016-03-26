@@ -46,7 +46,23 @@ into it. This is _especially_ true if there are substantial differences in the
 program as well as the genome, and _doubly especially_ true if there are
 substantial differences in the _simplifed program_ (if we get that far).
 
-## Ways to make children
+## Genomes, programs, and error vectors
+
+For the rest to make sense it's useful to quickly go over the key pieces of the system:
+
+* Genomes: Linear sequences of genes
+* Programs: Generated from the genomes (which is a little complicated)
+* Error vectors: The integer errors for this program's output for each of the 200 test cases
+
+The genomes are linear sequences of genes, where each gene is
+essentially a pair containing an instruction and what's called a _close count_. The
+close count is a little complicated, but there are certain instructions (things like _if_ and _while_ statements) that come with "built-in" open parens that start blocks (like the body of an _if_). The close count in a gene specifies how many close parentheses will follow the instruction in the gene, up to the number of open parens at that point in the program. So if there are 4 open parentheses and the close count is 2, then 2 close parentheses would be inserted after that instruction. If 4 were open and the close count was 9, then the 4 open parentheses would be closed and the "extra" 5 would be ignored.
+
+Programs are essentially Clojure-esque programs, but with really odd instructions that were designed for the purposes of evolution rather than human understandability. I'm not going to go over all those instructions here, but we might go through a program or two together.
+
+Each program is tested by being run on 200 different test cases, generating 200 integer errors. The test problem being used for this run requires that the evolved program both print something and return an integer value. This means that we have two different kinds of test cases, 100 to check the accuracy of the printing part and 100 to check the accuracy of the integer return values. These are interleaved, so items 0 and 1 of the error vector are the error on the printing for the first test case and (respectively) the error on the return value. The `error_vector_diff_file.txt`s are the errors in their "regular" interleaved order, where the `error_vector_even_odd_file.txt`s are rearranged so that all the printing errors come together first, followed then by the return errors. We're particularly interested in changes where error going down, and _especially_ particularly interested in cases where the error goes from non-zero to zero.
+
+### Ways to make children
 
 There were four ways that a child can be made in the system that generated this
 data:
@@ -68,13 +84,22 @@ it might change totally. We'll have to see.
 
 ### `uniform-close-mutation`
 
-Here _only_ the number part of a gene will change on a small number of genes.
+Here _only_ the close count part of a gene will change on a small number of genes.
 This will often lead to no change in the program, and no change in the errors.
 There may be cases, though, where this causes blocks in the program to grow or
 shrink (essentially by moving where closing parentheses are), which could change
 the error vector quite significantly.
 
-## `Diff` tools
+### `alternation`
+
+This is essentially the crossover operator in this system. The child is constructed by
+assembling alternating chunks from the two parents. This should be pretty apparent when diffing the genomes – you should see the alternating sections pretty clearly there. The exception is that when the two parents are very similar (or identical), then the result of alternation may look kind of mutation-y. There may be a few small deletions, where one or two genes are removed, or places where a few genes are duplicated (so, for example, AB gets turned into ABAB). The programs _may_ show alternating program sections, but it may not; it'll depend a lot on the how that genome translates to a program. The error vectors may be (nearly) the same (especially if there's very little change to the genome), but they could be wildly different.
+
+### `alternation-uniform-mutation`
+
+The same as the previous operation, but it's followed by a `uniform-mutation` step.
+
+## `Diff`ing and `Diff` tools
 
 There are lots of tools out there to compute `diff`s between files, often used
 to see what's changed in code when doing things like merges. I think that
@@ -88,10 +113,19 @@ of the `diff` tool.** This will allow you to see differences between the
 parent and both parents all at the same time, and makes things like crossover
 much easier to analyze.
 
-## `Diff`ing genomes
+### `Diff`ing genomes
 
 Using whatever `diff` tool we agree to use, `diff` the file
 `genome_diff_file.txt` that is in the child's directory and in the one or two
-parent directories. The genomes are sequences of genes, where each gene is
-essentially a pair containing an instruction and what's called a "close count"
-(you don't really care).
+parent directories. Then document the differences you see. That might be small changes like mutations of single genes, or big chunks coming from different parent genes. Make sure to turn the line numbers on so you can be specific in your reports.
+
+### `Diff`ing programs
+
+`Diff`ing the `program_diff_file.txt`s may be harder to figure out. There might be "obvious" changes like a mutation of a single instruction or swaps of chunks of programs. It may be more complicated, though, because of weird things like the way the close parentheses work. Again, make sure you have line numbers on and document what comes from which parent.
+
+### `Diff`ing error vectors
+
+My guess is that `diff`ing the `error_vector_even_odd_file.txt` files will be more informative than `error_vector_diff_file.txt`, but I don't really know that until we dig around. You don't need to document every little change in error values (they're often going to be pretty random), but it would nice to see when errors go from non-zero to zero (or the reverse), and especially imporant to know when there are blocks of error values that change to zero.
+
+## An example
+
