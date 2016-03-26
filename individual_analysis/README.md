@@ -127,5 +127,22 @@ parent directories. Then document the differences you see. That might be small c
 
 My guess is that `diff`ing the `error_vector_even_odd_file.txt` files will be more informative than `error_vector_diff_file.txt`, but I don't really know that until we dig around. You don't need to document every little change in error values (they're often going to be pretty random), but it would nice to see when errors go from non-zero to zero (or the reverse), and especially imporant to know when there are blocks of error values that change to zero.
 
-## An example
+## An example: Individual 10:473
+
+This individual was constructed via alternation with mutation, but only has one parent 
+in the graph (9:109).
+
+### Diffing the genomes
+
+This suggests that we did want to include the other parent, as lines 1-43 all seemed to come from that parent. All the rest came from 9:109, though, with lines 44-136 all coming exactly from lines 57-149 of 9:109. There were no mutations in that large block, which was potentially interesting.
+
+### Diffing the programs
+
+The first 20 "lines" of the program also came from the parent not included in the filtered graph, further suggesting that we do need to include that parent. 
+
+Lines 21-41 are mostly copied exactly from lines 27-51 of 9:109, with two exceptions. Lines 32 and 37 of 9:109 seem to have been deleted, possibly through alternation shifts, or due to differences between the two parents.
+
+### Diffing the error vectors
+
+The error vectors are different in almost every location. Many of the even numbered cases got slightly worse (e.g., cases 0, 2, and 4 went from 0 to 1). Odd cases 1-27 and 51-63 stayed the same, but those were the only coherent block that didn't change.
 
