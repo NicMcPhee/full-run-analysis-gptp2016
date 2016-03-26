@@ -1,0 +1,15 @@
+Looking at individual 2_983 which was created through alternation with uniform-mutation: Mitchell Finzel
+
+Genome:
+* From line 34 in 2_983/ 17 in 1_783 there is no change
+* The beginning of each program is different and because of the creation through alternation it appears that the beginning of 2_983's genome was provided by a filtered out parent.
+
+Program:
+* There are only program differences in the first 10 lines with 2_983 gaining a few instructions that must have come from the filtered out parent.
+
+Error-Vector:
+* There are a lot of differences in test case results
+
+Error-Vector Odd-Even:
+* Looking at this file there are all of the differences in results between 2_983 and 1_783 are inn the even test cases. While there are a few even test cases that stayed the same the vast majority were different. This implies that the program changes provided by the missing parent change the printing behavior of this individual.
+* There is only one different odd test case being test case 1

@@ -1,0 +1,17 @@
+Individual 4_256 a result of Uniform-Mutation of 3_122: Mitchell Finzel
+
+Genome:
+* There were three point mutations in the genome
+  -- boolean_yank -> 0 to char_isletter -> 0
+  -- integer_fromchar -> 0 to string_replacechar -> 0
+  -- boolean_not -> 0 to string_setchar -> 0
+
+Program:
+* On lines 26 43 and 51 the above commands were swappesd in.
+
+Error-Vector:
+* Many test case differences
+
+Error-Vector Even-Odd
+* All of the different test cases were odd (return cases)
+* There are many test cases that improved and many that performed worse.

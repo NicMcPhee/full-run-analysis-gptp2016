@@ -1,0 +1,18 @@
+Individual 7_338 was created through the uniform-close-mutation of 6_612:Mitchell Finzel
+
+Genome:
+* 5 close mutations
+  -- integer_fromchar -> 1 to integer_fromchar -> 0 (line 39)
+  -- string_yank -> 0 to string_yank -> 1 (line 118)
+  -- exec_do*count -> 1 to exec_do*count 0 (line 121)
+  -- integer_mod -> 1 to integer_mod -> 0 (line 124)
+  -- boolean_yank -> 0 to boolean_yank -> 1 (line 149)
+
+Program:
+* There are the additional close parens in lines 41-43 and 46-47
+
+Error-Vector:
+* Many test case differences starting from line 2 all the way through
+
+Error-Vector Even-Odd:
+* All of the differences in test cases were to odd test cases and there was a mix of increases and decreases in score.

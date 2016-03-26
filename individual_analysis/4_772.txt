@@ -1,0 +1,14 @@
+Individual 4_772 was created through uniform-close-mutation: Mitchell Finzel
+
+Genome:
+* There are 6 point mutations in the genome and given that this is uniform-close mutation the change in these cases were either a 0 to a 1 or a 1 to a 0
+
+Program:
+* There are changes intermixed throughout the program that show as was expected the addition or subtraction of a close paren
+
+Error-Vector:
+* There are 9 test cases with different results
+
+Error-Vector Even-Odd:
+* All of the changed test cases were odd which means this individuals return functionality changed.
+* All of the test cases that changed changed by a value of 1, some improved some were worse

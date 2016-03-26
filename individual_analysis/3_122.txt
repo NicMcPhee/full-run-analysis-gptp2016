@@ -1,0 +1,19 @@
+Looking at individual 3_122 who was created by alternation with uniform-mutation of a double selection of individual 2_983: Mitchell Finzel
+
+Genome:
+* The genome appears to have 3 single line mutations though this behavior is caused by the double selection of 2_983 as a parent. (Perhaps mutations)
+  -- stringcontainschar -> 1 to exec_while -> 1 (line 46)
+  -- integer_shove -> 1 to char_empty -> 1 (line 60)
+  -- string_emptystring -> 0 to string_yank -> 0 (line 130)
+* The other difference is a five line deletion (lines 140 through 144 of 2_983)
+
+Program:
+* There are 2 single line changes and 2 three line changes.
+* There are both removed lines and added lines in this individual
+
+Error-Vector:
+* There are differences across many of the test cases with signs of a pattern related to even-odd; more below.
+
+Error-Vector Even-Odd:
+* As suspected the test cases that differ were all even test cases. This is much like what was seen in the parent 2_983's differences with its parent and given the double selection of 2_983 to create 3_122 it appears that it has further changed in its printing cases.
+* To my naked eye it appears that many of the test cases improved by a score of 1 resulting in the first 0 score print cases (2_983 had no perfect test print tests)

@@ -1,0 +1,16 @@
+Individual 5_485 a result of alternation with uniform-mutation with 4_772 as a parent: Mitchell Finzel
+
+Genome:
+* There were two changes in genome
+  -- exec_when -> 0 to integer_max -> 0 (line 64)
+  -- exec_shove -> 0 to boolean_eq -> 0 (line 97)
+
+Program:
+* Lines 22-24, 27, 29 and 35 showed differences some attributable to the genome changes.
+* In those lines there are a few omitted lines but on further inspection the ommitted lines appear to be caused by lines that combined from 4_772. i.e line 30 and 31 from the parent were combined as line 29 followed by a blank line in 5_485 with boolean_eq being swapped in for exec_shove.
+
+Error-Vector:
+* There appears to be a lot of test case differences
+
+Error-Vectpr Even-Odd:
+* There appears to be some corruption here but in the regular error-vector file it is evident that the test cases that changed were all odd test cases and as far as my eye can tell they all improved.

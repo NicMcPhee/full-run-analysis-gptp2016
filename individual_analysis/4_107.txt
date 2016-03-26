@@ -1,0 +1,11 @@
+Individual 4_107 the result of alternation with a parent being 3_122 (The other is filtered out): Mitchell Finzel
+
+Genome:
+* There are major changes changes from line 129 on in 4_107 to me this suggests that there was a large amount of genome taken from the parent that was filtered out
+
+Program:
+* There is a chunk of difference in the program starting on line 43 ending on line 47
+* In this block there are four lines of program rather than the 10 in parent 3_122. This shows that not only did the program change in the first 4 lines of the block but given the error-vector data implies that the omitted lines may have been extraneous and did not affect the outcomes.
+
+Error_Vector:
+* These changes in program only caused a change of a drop in 1 on test case 1. There were no other test cases affected.

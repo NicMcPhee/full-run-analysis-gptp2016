@@ -1,0 +1,13 @@
+Individual 1_783 is the product of alternation with uniform mutation involving 0_126 and a filtered out parent: Mitchell Finzel
+
+Genome:
+* From line 1 to 58 there is almost nothing that hasn't changed (changes and deletions and additions) which suggests a lot of alternation with a lot of genome probably coming from the filtered out parent
+
+Program:
+* As expected from the genome there is a lot of difference between 1_783 and 0_126 with most of the program from lines 1 to 19 being drastically different.
+* There is also an added code chunk at lines 29-33
+
+Error Vectors:
+* Out of the 200 test cases only 12 of them had no change while the rest all showed either increases or decreases in test scores.
+
+A lot of this individuals genome must have come from the filtered out parent and it seems unlikely that this individual found anything incredibly useful given the results.

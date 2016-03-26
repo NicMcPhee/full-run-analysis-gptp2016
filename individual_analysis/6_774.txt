@@ -1,0 +1,16 @@
+Individual 6_774 created by 5_429 through unifrom mutation: Mitchell Finzel
+
+Genome:
+* A single point mutation
+  -- string_fromchar -> 0 to string_replacefirst -> 0 (line 145)
+
+Program:
+* Single line change with the replacement above (line 47)
+
+Error-Vector:
+* Starting at test case 63 there are differences in test cases
+
+Error Vector Even-Odd:
+* They are all odd test cases with a mix of increases and decreases in score
+
+Overall very boring individual with a genetic difference of 1
