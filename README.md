@@ -1,5 +1,4 @@
-# full-run-analysis-gptp2016
-Analysis of full filtered ancestry tree for a short successful PushGP run
+# Analysis of full filtered ancestry tree for a short successful PushGP run
 
 My plan for this is to demonstrate the use of graph DBs to at least document (if not "fully" understand) 
 all the key events in a short successful run on replace space with newline.
