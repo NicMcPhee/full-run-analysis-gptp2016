@@ -2,264 +2,188 @@
 %
 %%%%%%%%%%%%%%%% Springer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title*{Chapter Title}
+\title*{A (nearly) full analysis of a GP run}
 % Use \titlerunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
-\author{Name of First Author and Name of Second Author}
+\author{Nicholas Freitag McPhee, Maggie M. Casale, Thomas Helmuth and Lee Spector}
 % Use \authorrunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
-\institute{Name of First Author \at Name, Address of Institute
-\and Name of Second Author \at Name, Address of Institute}
+\institute{Nicholas Freitag McPhee and Maggie M. Casale \at University of Minnesota, Morris; Morris, MN USA
+\and Thomas Helmuth \at Washington and Lee University, Lexington, VA USA
+\and Lee Spector \at Hampshire College, Amerherst, MA USA}
 
 \maketitle
 
-\abstract{Each chapter should be preceded by an abstract (10--15 lines long) that summarizes the content. The abstract will appear \textit{online} at \url{www.SpringerLink.com} and be available with unrestricted access. This allows unregistered users to read the abstract as a teaser for the complete chapter. As a general rule the abstracts will not appear in the printed version of your book unless it is the style of your particular book or that of the series to which your book belongs.}
+\abstract{We analyze the key events in a GP run!}
 
 \begin{keywords}
-keywords to your chapter, these words should also be indexed
+	genetic programming, PushGP, ancestry graph, lineage, inheritance
 \end{keywords}
-\index{keywords to your chapter}
-\index{these words should also be indexed}
+\index{genetic programming}
+\index{PushGP}
+\index{ancestry graph}
+\index{lineage}
+\index{inheritance}
 \\
-\section{Section Heading}
-\label{sec:1}
-% Always give a unique label
-% and use \ref{<label>} for cross-references
-% and \cite{<label>} for bibliographic references
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations. And please note that the first line of
-text that follows a heading is not indented, whereas the first lines of
-all subsequent paragraphs are.
+\section{Introduction}
+\label{sec:introduction}
 
-\section{Section Heading}
-\label{sec:2}
-% Always give a unique label
-% and use \ref{<label>} for cross-references
-% and \cite{<label>} for bibliographic references
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations.
+Motivate the work!
 
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
+\section{Plush genomes and PushGP operators}
+\label{sec:background}
 
-Use the standard \verb|equation| environment to typeset your equations, e.g.
-%
-\begin{equation}
-a \times b = c\;,
-\end{equation}
-%
-however, for multiline equations we recommend to use the \verb|eqnarray| environment.
-\begin{eqnarray}
-a \times b = c \nonumber\\
-\vec{a} \cdot \vec{b}=\vec{c}
-\label{eq:01}
-\end{eqnarray}
+\todo{I'm hoping we can crib most of this section from previous works, e.g.,
+	Tom's dissertation, the Plush GPTP paper, and other papers.}
 
-\subsection{Subsection Heading}
-\label{subsec:2}
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references\index{cross-references} and citations\index{citations}
-as has already been described in Sect.~\ref{sec:2}.
+We'll need to (quickly) outline the key elements of the Plush genome, including
+the \texttt{:instruction}, \texttt{:close}, and \texttt{:silent} components.
 
-\begin{quotation}
-Please do not use quotation marks when quoting texts! Simply use the \verb|quotation| environment -- it will automatically render Springer's preferred layout.
-\end{quotation}
+We'll also need to describe the genetic operators used in PushGP/Clojush.
 
+And replace-space-with-newline.
 
-\subsubsection{Subsubsection Heading}
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations as has already been described in
-Sect.~\ref{subsec:2}, see also Fig.~\ref{fig:1}\footnote{Footnotes are easily added with this simple command.}
+%Use the standard \verb|equation| environment to typeset your equations, e.g.
+%%
+%\begin{equation}
+%a \times b = c\;,
+%\end{equation}
+%%
+%however, for multiline equations we recommend to use the \verb|eqnarray| environment.
+%\begin{eqnarray}
+%a \times b = c \nonumber\\
+%\vec{a} \cdot \vec{b}=\vec{c}
+%\label{eq:01}
+%\end{eqnarray}
 
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
+\section{Analysis of a run}
 
-% For figures use
-%
-\begin{figure}[b] %[b] sets the image at the bottom of the page; t = top, b = bottom, h = here%
-\sidecaption
-% Use the relevant command for your figure-insertion program
-% to insert the figure file.
-% For example, with the graphicx style use
-\includegraphics[scale=.65]{figure}
-%
-% If no graphics program available, insert a blank space i.e. use
-%\picplace{5cm}{2cm} % Give the correct figure height and width in cm
-%
-\caption{If the width of the figure is less than 7.8 cm use the \texttt{sidecapion} command to flush the caption on the left side of the page. If the figure is positioned at the top of the page, align the sidecaption with the top of the figure -- to achieve this you simply need to use the optional argument \texttt{[t]} with the \texttt{sidecaption} command}
-\label{fig:1}       % Give a unique label
+\begin{figure}[tb!p] %[b] sets the image at the bottom of the page; t = top, b = bottom, h = here%
+	% \sidecaption
+	% Use the relevant command for your figure-insertion program
+	% to insert the figure file.
+	% For example, with the graphicx style use
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{../figures/run0_filtered_BandW}
+	\end{center}
+	\caption{The labelled run.}
+	\label{fig:run0Labelled}       % Give a unique label
 \end{figure}
 
-
-\paragraph{Paragraph Heading} %
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations as has already been described in
-Sect.~\ref{sec:2}.
-
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
-
-For typesetting numbered lists we recommend to use the \verb|enumerate| environment -- it will automatically render Springer's preferred layout.
-
-\begin{enumerate}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
-\begin{enumerate}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
-\end{enumerate}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
-\end{enumerate}
-
-
-\subparagraph{Subparagraph Heading} In order to avoid simply listing headings of different levels we recommend to let every heading be followed by at least a short passage of text. Use the \LaTeX\ automatism for all your cross-references and citations as has already been described in Sect.~\ref{sec:2}, see also Fig.~\ref{fig:2}.
-
-For unnumbered list we recommend to use the \verb|itemize| environment -- it will automatically render Springer's preferred layout.
-
 \begin{itemize}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development, cf. Table~\ref{tab:1}.}
-\begin{itemize}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
-\end{itemize}
-\item{Livelihood and survival mobility are oftentimes coutcomes of uneven socioeconomic development.}
+	\item Describe the basics of the run (length, etc.).
+	\item Include at least Figure~\ref{fig:run0Labelled}, but we'll need to
+	replace the orange edges with something black and white friendly. 
+	Maybe also include 
+	black and white versions of one or both of Figures~\ref{fig:run0full} or 
+	(less likely?)~\ref{fig:run0filtered}.
+	\item Talk a little about one of the final solutions (probably 20:484 or 20:548 since they differ by just one from their parent.), including the simplified solution and how/why it works.
 \end{itemize}
 
-\begin{figure}[t] %[t] sets the image at the top of the page; t = top, b = bottom, h = here%
-\sidecaption[t]
-% Use the relevant command for your figure-insertion program
-% to insert the figure file.
-% For example, with the option graphics use
-\includegraphics[scale=.65]{figure}
-%
-% If no graphics program available, insert a blank space i.e. use
-%\picplace{5cm}{2cm} % Give the correct figure height and width in cm
-%
-%\caption{Please write your figure caption here}
-\caption{If the width of the figure is less than 7.8 cm use the \texttt{sidecapion} command to flush the caption on the left side of the page. If the figure is positioned at the top of the page, align the sidecaption with the top of the figure -- to achieve this you simply need to use the optional argument \texttt{[t]} with the \texttt{sidecaption} command}
-\label{fig:2}       % Give a unique label
+Then work backwards from the winner back through to the start of the run. 
+
+A few places where we might need to bring in an individual that's 
+missing from Figure~\ref{fig:run0Labelled}:
+\begin{itemize}
+	\item 19:554's other parent
+	\item 17:189's other parent
+	\item 12:698 and 10:473's other parents.
+	\item Maybe 9:89 and 8:538's other parents. Depends somewhat on how much
+	they're contributing to the final individual, and whether those 
+	contributions are coming from the few changes that come from their other
+	parent.
+	\item Maybe 6:612, 5:429, and 4:107's other parents. (Same issues as above.)
+	\item Maybe 2:983 and 1:783's other parents. If we're running long, though, 
+	we could effectively start the process at 2:983 since most everything is
+	pretty clean from there down.
+\end{itemize}
+
+%\caption{If the width of the figure is less than 7.8 cm use the 
+%	\texttt{sidecaption} command to flush the caption on the left side of the 
+%	page. If the figure is positioned at the top of the page, align the 
+%	sidecaption with the top of the figure -- to achieve this you simply need 
+%	to use the optional argument \texttt{[t]} with the \texttt{sidecaption} 
+%	command}
+
+\begin{figure}[tb!p] %[b] sets the image at the bottom of the page; t = top, b = bottom, h = here%
+	% \sidecaption
+	% Use the relevant command for your figure-insertion program
+	% to insert the figure file.
+	% For example, with the graphicx style use
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{../figures/run0_RBM_color_full_30000}
+	\end{center}
+	\caption{The full ancestry graph.}
+	\label{fig:run0full}       % Give a unique label
 \end{figure}
+
+\begin{figure}[tb!p] %[b] sets the image at the bottom of the page; t = top, b = bottom, h = here%
+	% \sidecaption
+	% Use the relevant command for your figure-insertion program
+	% to insert the figure file.
+	% For example, with the graphicx style use
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{../figures/run0_RBM_color_filtered_30000}
+	\end{center}
+	%
+	% If no graphics program available, insert a blank space i.e. use
+	%\picplace{5cm}{2cm} % Give the correct figure height and width in cm
+	%
+	\caption{The filtered ancestry graph.}
+	\label{fig:run0filtered}       % Give a unique label
+\end{figure}
+
+\section{Discussion}
+\label{sec:discussion}
+
+Wrap up with some kind of ``big picture'' that does things like catalogs the
+\emph{kinds} of operations, their frequency, etc.
+
+
+% \paragraph{Paragraph Heading} %
+
+
+
+% \subparagraph{Subparagraph Heading} In order to avoid simply listing headings of different levels we recommend to let every heading be followed by at least a short passage of text. Use the \LaTeX\ automatism for all your cross-references and citations as has already been described in Sect.~\ref{sec:2}, see also Fig.~\ref{fig:2}.
 
 % Use the \index{} command to code your index words
 % Make sure to inlcude the indexed word inside and outside of the brackets if you want the text to show up in your paragraph:
 % e.g. This book is about \index{genetic programming}genetic programming. 
 % If the text is not entered outside the brackets it will appear as: This book is about .
-%
-% For tables use
-%
-\begin{table}
-\caption{Please write your table caption here}
-\label{tab:1}       % Give a unique label
-%
-% Follow this input for your own table layout
-%
-\begin{tabular}{p{2cm}p{2.4cm}p{2cm}p{4.9cm}}
-\hline\noalign{\smallskip}
-Classes & Subclass & Length & Action Mechanism  \\
-\noalign{\smallskip}\svhline\noalign{\smallskip}
-Translation & mRNA$^a$  & 22 (19--25) & Translation repression, mRNA cleavage\\
-Translation & mRNA cleavage & 21 & mRNA cleavage\\
-Translation & mRNA  & 21--22 & mRNA cleavage\\
-Translation & mRNA  & 24--26 & Histone and DNA Modification\\
-\noalign{\smallskip}\hline\noalign{\smallskip}
-\end{tabular}
-$^a$ Table foot note (with superscript)
-\end{table}
-%
-\section{Section Heading}
-\label{sec:3}
-% Always give a unique label
-% and use \ref{<label>} for cross-references
-% and \cite{<label>} for bibliographic references
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations as has already been described in
-Sect.~\ref{sec:2}.
 
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
+%%
+%% For tables use
+%%
+%\begin{table}
+%\caption{Please write your table caption here}
+%\label{tab:1}       % Give a unique label
+%%
+%% Follow this input for your own table layout
+%%
+%\begin{tabular}{p{2cm}p{2.4cm}p{2cm}p{4.9cm}}
+%\hline\noalign{\smallskip}
+%Classes & Subclass & Length & Action Mechanism  \\
+%\noalign{\smallskip}\svhline\noalign{\smallskip}
+%Translation & mRNA$^a$  & 22 (19--25) & Translation repression, mRNA cleavage\\
+%Translation & mRNA cleavage & 21 & mRNA cleavage\\
+%Translation & mRNA  & 21--22 & mRNA cleavage\\
+%Translation & mRNA  & 24--26 & Histone and DNA Modification\\
+%\noalign{\smallskip}\hline\noalign{\smallskip}
+%\end{tabular}
+%$^a$ Table foot note (with superscript)
+%\end{table}
 
-If you want to list definitions or the like we recommend to use the Springer-enhanced \verb|description| environment -- it will automatically render Springer's preferred layout.
+\section{Conclusions}
+\label{sec:conclusions}
 
-\begin{description}[Type 1]
-\item[Type 1]{That addresses central themes pertainng to migration, health, and disease. In Sect.~\ref{sec:1}, Wilson discusses the role of human migration in infectious disease distributions and patterns.}
-\item[Type 2]{That addresses central themes pertainng to migration, health, and disease. In Sect.~\ref{subsec:2}, Wilson discusses the role of human migration in infectious disease distributions and patterns.}
-\end{description}
+We did it! Yay! Oh, and it was useful and matters in some way.
 
-\subsection{Subsection Heading} %
-In order to avoid simply listing headings of different levels we recommend to let every heading be followed by at least a short passage of text. Use the \LaTeX\ automatism for all your cross-references and citations citations as has already been described in Sect.~\ref{sec:2}.
-
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
-
-\begin{svgraybox}
-If you want to emphasize complete paragraphs of texts we recommend to use the newly defined Springer class option \verb|graybox| and the newly defined environment \verb|svgraybox|. This will produce a 15 percent screened box 'behind' your text.
-
-If you want to emphasize complete paragraphs of texts we recommend to use the newly defined Springer class option and environment \verb|svgraybox|. This will produce a 15 percent screened box 'behind' your text.
-\end{svgraybox}
-
-
-\subsubsection{Subsubsection Heading}
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations as has already been described in
-Sect.~\ref{sec:2}.
-
-Please note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
-
-\begin{theorem}
-Theorem text goes here.
-\end{theorem}
-%
-% or
-%
-\begin{definition}
-Definition text goes here.
-\end{definition}
-
-\begin{proof}
-%\smartqed
-Proof text goes here.
-\qed
-\end{proof}
-
-\paragraph{Paragraph Heading} %
-Instead of simply listing headings of different levels we recommend to
-let every heading be followed by at least a short passage of text.
-Further on please use the \LaTeX\ automatism for all your
-cross-references and citations as has already been described in
-Sect.~\ref{sec:2}.
-
-Note that the first line of text that follows a heading is not indented, whereas the first lines of all subsequent paragraphs are.
-%
-% For built-in environments use
-%
-\begin{theorem}
-Theorem text goes here.
-\end{theorem}
-%
-\begin{definition}
-Definition text goes here.
-\end{definition}
-%
-\begin{proof}
-\smartqed
-Proof text goes here.
-\qed
-\end{proof}
-%
 \begin{acknowledgement}
-If you want to include acknowledgments of assistance and the like at the end of an individual chapter please use the \verb|acknowledgement| environment -- it will automatically render Springer's preferred layout.
+	Mitchell Finzel, Emma Sax, Laverne Schrock, and Leonid Scott helped 
+	with the initial computation and analyses of the differences between the 
+	parents and children discussed here. William Tozier provided a host of 
+	ideas and feedback all through the process.
 \end{acknowledgement}
-%
-\paragraph{Referencing}
-This is how to reference. \cite{Kadie}
 
 \bibliographystyle{spbasic}
 \bibliography{gp-bibliography,chapter}
