@@ -43,6 +43,8 @@ We'll also need to describe the genetic operators used in PushGP/Clojush.
 
 And replace-space-with-newline.
 
+And simplification.
+
 %Use the standard \verb|equation| environment to typeset your equations, e.g.
 %%
 %\begin{equation}
@@ -80,7 +82,32 @@ And replace-space-with-newline.
 	\item Talk a little about one of the final solutions (probably 20:484 or 20:548 since they differ by just one from their parent.), including the simplified solution and how/why it works.
 \end{itemize}
 
-Then work backwards from the winner back through to the start of the run. 
+Then work backwards from the winner back through to the start of the run.
+
+\subsection{The (successful) end}
+
+This is the simplified version of individual 20:484; it should probably be put in a figure:
+\begin{verbatim}
+(\space
+ \newline
+ in1
+ string_replacechar
+ print_string
+ in1
+ \space
+ string_removechar
+ string_length)
+\end{verbatim}
+
+This is actually a pretty ``human'' program, and is similar to how a person
+might implement replace-space-with-newline using Push. The first five lines
+(maybe put these together on a line?) replace all the spaces with newlines
+(using the \texttt{string\_replacechar} instruction) and prints the result,
+thereby solving half the problem. The next four lines remove all the spaces from
+a fresh copy of the input string, compute the lenth and leave that on the
+\texttt{:integer} stack as the ``returned'' result.
+
+\subsection{How did we get there?}
 
 A few places where we might need to bring in an individual that's 
 missing from Figure~\ref{fig:run0Labelled}:
