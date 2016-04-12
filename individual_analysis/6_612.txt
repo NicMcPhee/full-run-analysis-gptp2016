@@ -1,0 +1,27 @@
+Individual 6_612 a product of alternation with uniform mutation from 5_485 and a filtered out parent: Mitchell Finzel
+
+Genome:
+* There are 12 lines in the genome that changed and one 12 line section (lines 89 through 100 of 5_485) that were deleted.
+* Some point mutations and uniform-close-mutations and probably alternation with the filtered out parent causing a large deletion.
+  -- char_allfromstring -> 0 to exec_if -> 1 (line 12)
+  -- exec_noop -> 0 to string_occurrencesofchar -> 0 (line 13)
+  -- string_rest -> 0 to string_rot -> 0 (line 14)
+  -- print_boolean -> 1 to print_boolean -> 2 (line 16)
+  -- string_last -> 1 to string_last -> 0 (line 18)
+  -- boolean_invert_first_then_and -> 1 to boolean_invert_first_then_and -> 0 (line 21)
+  -- print_string -> 1 to print_string -> 0 (line 32)
+  -- string_indexofchar -> 0 to char_frominteger -> 0 (line 44)
+  -- integer_max -> 0 to exec_when -> 0 (line 64)
+  -- integer_inc -> 1 to integer_inc -> 0 (line 79)
+  -- inl -> 0 to inl -> 1 (line 80)
+  -- string_frominteger -> 0 to exec_yankdup -> 0 (line 108)
+
+Program:
+* There are some pretty big and dense program changes here that im not going to try to type up.
+
+Error-Vector:
+* Starting at test case 73 there are many differences
+
+Error-Vector Even-Odd:
+* Only Odd test cases were different with a mix of increases and decreases in scores.
+

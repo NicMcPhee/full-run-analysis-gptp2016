@@ -1,0 +1,19 @@
+Individual 5_429 a product of alternation with uniform-mutation from 4_256 and a filtered out parent: Mitchell Finzel
+
+Genome:
+* There are 9 lines that have been changed and 8 lines that were deleted.
+* There was one large block from lines 34 to 39 that appeaqr to be alternation from the filtered out parent.
+* A few of the changes seem to be from point mutation.
+  -- string_yank -> 0 to string_rot -> 0 (line 7)
+  -- integer_eq -> 0 to string_stackdepth -> 0 (line 8)
+  -- exec_noop -> 0 to string_replacefirst -> 0 (line 13)
+  -- exec_empty -> 0 to inl -> 0 (line 105)
+
+Program:
+* Changes in 4 lines where the genome swaps were performed.
+
+Error-Vector:
+* Many test results differences
+
+Error-Vector Even-Odd:
+* All affected cases were odd with many increasing in score and many decreqsing in score.

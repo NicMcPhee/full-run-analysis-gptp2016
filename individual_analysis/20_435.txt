@@ -1,0 +1,12 @@
+Individual that succeeded and was created with a single mutation in uniform-mutation from 19_554: Mitchell Finzel
+
+Genome:
+* string_butlast -> 0 to string_shove -> 0 (line 14)
+
+Program:
+* Line 7 had the single change above
+
+Error-Vector:
+* The odd test cases 3 7 and 9 were all made perfect scores by a decrease of 1
+
+Achieved a win with a different single point mutation than 20_548

@@ -1,0 +1,12 @@
+Individual 20_548 one of the winners created from 19_554 through uniform-mutation: Mitchell Finzel
+
+Genome:
+* tagged_349 -> 0 to string_empty -> 0 (line 101)
+
+Program:
+* Changed the operation above on line 32
+
+Error Vector:
+* Decreased test cases 3 7 and 9 by 1 thereby solving the problem
+
+This was a different sinlge mutation that achieved the same result as Individual 20_435
