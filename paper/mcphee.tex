@@ -37,7 +37,8 @@ Motivate the work!
 	Tom's dissertation, the Plush GPTP paper, and other papers.}
 
 We'll need to (quickly) outline the key elements of the Plush genome, including
-the \texttt{:instruction}, \texttt{:close}, and \texttt{:silent} components.
+the \texttt{:instruction} and \texttt{:close} components. (This run didn't use the
+\texttt{:silent} component, so we can ignore that.)
 
 We'll also need to describe the genetic operators used in PushGP/Clojush.
 
@@ -86,26 +87,36 @@ Then work backwards from the winner back through to the start of the run.
 
 \subsection{The (successful) end}
 
-This is the simplified version of individual 20:484; it should probably be put in a figure:
-\begin{verbatim}
-(\space
- \newline
- in1
- string_replacechar
- print_string
- in1
- \space
- string_removechar
- string_length)
-\end{verbatim}
-
-This is actually a pretty ``human'' program, and is similar to how a person
-might implement replace-space-with-newline using Push. The first five lines
-(maybe put these together on a line?) replace all the spaces with newlines
-(using the \texttt{string\_replacechar} instruction) and prints the result,
-thereby solving half the problem. The next four lines remove all the spaces from
-a fresh copy of the input string, compute the lenth and leave that on the
+Figure~\ref{prog:simplified20:484} 
+\todo{Should the code be in a figure, or just in-lined here in the text? I \emph{think} the figure
+	will be closer to the text when more of Section 2 is written. -- NFM}
+is the simplified version the successful program from 
+individual 20:484. Individual 20:484's genome contains 194 genes, and the unsimplified 
+program also contains 194 instructions and passes both
+the training and testing cases. The simplified program in 
+Figure~\ref{prog:simplified20:484} contains only 9 instructions and
+also passes all the tests. 
+The simplified program is actually a pretty ``human'' program, and is structured similar to 
+how a person might implement replace-space-with-newline using Push. The first five 
+instructions (together on the first line) replace all the spaces in the input string 
+with newlines (using the \texttt{string\_replacechar} instruction) and print the 
+resulting string, thereby solving half the problem. 
+The next four instructions (on the second line) remove all the spaces from
+a fresh copy of the input string, compute the length and leave that on the
 \texttt{:integer} stack as the ``returned'' result.
+
+\begin{figure}[h]
+\begin{verbatim}
+(\space \newline in1 string_replacechar print_string
+ in1 \space string_removechar string_length)
+\end{verbatim}
+\caption{The simplified version of the successful program from individual 20:484. The
+	five instructions on the first line replace all the spaces in the input string with newlines
+	and print the result, solving half the problem. The next four instructions (on the second
+	line) remove all the spaces from the input string and computing it's length, providing
+	the desired ``returned'' result.}
+\label{prog:simplified20:484}
+\end{figure}
 
 \subsection{How did we get there?}
 
