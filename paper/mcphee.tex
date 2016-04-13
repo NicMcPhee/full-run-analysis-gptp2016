@@ -181,37 +181,40 @@ missing from Figure~\ref{fig:run0Labelled}:
 	a line of its own?}
 
 \begin{table}
-\begin{tabular}{cc|cc|cc}
-1 & \texttt{(\textbackslash space)} & 1 & \texttt{(\textbackslash space} & 1 & \texttt{in1} \\ 
-2 & \texttt{(\textbackslash newline)} & 2 & \texttt{(\textbackslash newline)} & 2 &  \\ 
-3 &  & 3 & \texttt{exec\_dup} & 3 &  \\ 
-4 & \texttt{in1} & 4 & \texttt{in1} & 4 &  \\ 
-5 & \texttt{string\_replacechar} & 5 & \texttt{string\_replacechar} & 5 &  \\ 
-6 & \texttt{print\_string} & 6 & \texttt{print\_string} & 6 & \texttt{print\_string} \\ 
-7 & \texttt{boolean\_stackdepth} & 7 & \texttt{exec\_dup} & 7 & \texttt{exec\_dup} \\ 
-8 & \texttt{print\_newline} & 8 & \texttt{strin\_eq} & 8 & \texttt{exec\_s} \\ 
-9 &  & 9 &  & 9 & \texttt{exec\_dup} \\ 
-10 &  & 10 &  & 10 & \texttt{exec\_rot} \\ 
-11 &  & 11 &  & 11 & \texttt{string\_exec string\_fromboolean} \\ 
-12 &  & 12 &  & 12 & \texttt{char\_eq} \\ 
-13 &  & 13 &  & 13 & \texttt{string\_emptystring boolean\_stackdepth in1 integer\_gt} \\ 
-14 &  & 14 &  & 14 & \texttt{string\_emptystring} \\ 
-15 &  & 15 & \texttt{(\textbackslash space)} & 15 & \texttt{(\textbackslash space)} \\ 
-16 &  & 16 & \texttt{string\_dup} & 16 & \texttt{string\_dup} \\ 
-17 &  & 17 & \texttt{string\_removechar} & 17 & \texttt{string\_removechar} \\ 
-18 &  & 18 & \texttt{string\_rot} & 18 & \texttt{boolean\_pop} \\ 
-19 &   &   &   &   & \texttt{in1} \\ 
-20 &   &   &   &   & \texttt{string\_butlast} \\ 
-21 &   &   &   &   & \texttt{string\_last} \\ 
-22 &   &   &   &   & \texttt{string\_parse\_to\_chars} \\
-23 &   &   &   &   & \texttt{exec\_when} \\ 
-24 &   &   &   &   & \texttt{string\_dup} \\
-25 &   &   &   &   & \texttt{string\_removechar} \\
-26 &   &   & \texttt{string\_last} &   & \texttt{string\_last} \\
-27 &   &   & \texttt{string\_parse\_to\_chars} &   & \texttt{string\_parse\_to\_chars} \\
-28 &   &   & \texttt{string\_rot} &   & \texttt{string\_rot} \\
-29 &   &   & \texttt{in1} &   & \texttt{in1} \\
-30 &   &   & \texttt{string\_stackdepth} &   & \texttt{string\_stackdepth} \\
+\begin{tabular}{l|rl|l}
+	\textbf{14:704} & & \textbf{15:801} & \textbf{14:213} \\
+	\hline
+& 1 & & \texttt{in1} \\ 
+\texttt{(\textbackslash space} & 2 & \texttt{(\textbackslash space} & \\ 
+\texttt{ \textbackslash newline} & 3 & \texttt{ \textbackslash newline} &  \\ 
+& 4 & \texttt{ exec\_dup} &  \\ 
+\texttt{in1} & 4 & \texttt{in1} &  \\ 
+\texttt{string\_replacechar} & 5 & \texttt{string\_replacechar} &  \\ 
+\texttt{print\_string} & 6 & \texttt{print\_string} & \texttt{print\_string} \\ 
+\texttt{boolean\_stackdepth} & 7 & \texttt{exec\_dup} & \texttt{exec\_dup} \\ 
+\texttt{print\_newline} & 8 & \texttt{string\_eq} & \texttt{exec\_s} \\ 
+& 9 &  & \texttt{exec\_dup} \\ 
+& 10 &  & \texttt{exec\_rot} \\ 
+& 11 &  & \texttt{string\_exec string\_fromboolean} \\ 
+& 12 &  & \texttt{char\_eq} \\ 
+& 13 & & \texttt{string\_emptystring boolean\_stackdepth in1 integer\_gt} \\ 
+& 14 &  & \texttt{string\_emptystring} \\ 
+& 15 & \texttt{\textbackslash space} & \texttt{\textbackslash space} \\ 
+& 16 & \texttt{string\_dup} & \texttt{string\_dup} \\ 
+& 17 & \texttt{string\_removechar} & \texttt{string\_removechar} \\ 
+& 18 & \texttt{string\_rot} & \texttt{boolean\_pop} \\ 
+& 19 &   & \texttt{in1} \\ 
+& 20 &   & \texttt{string\_butlast} \\ 
+& 21 &   & \texttt{string\_last} \\ 
+& 22 &   & \texttt{string\_parse\_to\_chars} \\
+& 23 &   & \texttt{exec\_when} \\ 
+& 24 &   & \texttt{string\_dup} \\
+& 25 &   & \texttt{string\_removechar} \\
+& 26 & \texttt{string\_last} & \texttt{string\_last} \\
+& 27 & \texttt{string\_parse\_to\_chars} & \texttt{string\_parse\_to\_chars} \\
+& 28 & \texttt{string\_rot} & \texttt{string\_rot} \\
+& 29 & \texttt{in1} & \texttt{in1} \\
+& 30 & \texttt{string\_stackdepth)} & \texttt{string\_stackdepth)} \\
 \end{tabular}
 \end{table}
 
