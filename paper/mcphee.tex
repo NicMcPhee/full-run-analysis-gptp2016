@@ -171,12 +171,29 @@ missing from Figure~\ref{fig:run0Labelled}:
 	\label{fig:run0filtered}       % Give a unique label
 \end{figure}
 
-\subsection{15:801: An important crossover}
+\subsection{Creating 15:801: An important crossover}
 \label{sec:15:801}
 
+\todo{I was using the ``simplifed'' (misspelled) version of 14:704 and 15:801,
+	and simplified3 of 14:213. The end of the programs are awkward, though,
+	and I'm not sure how we want to handle that. I'm also not sure about
+	how I handled line 4 -- maybe the instruction from 14:213 wants to be
+	a line of its own?}
+
 \begin{table}
-\begin{tabular}{cc|cc|cc}
-0 & \texttt{(\textbackslash space} & 0 & \texttt{(\textbackslash space} & 0 & \texttt{(tag\_exec\_471} \\ 
+	\begin{center}
+\begin{tabular}{llll}
+\textbf{14:704} & & \textbf{15:801} & \textbf{14:213} \\
+\hline
+& & & \texttt{(tag\_exec\_471} \\ 
+& & & \texttt{ integer\_fromboolean} \\ 
+\texttt{(\textbackslash space} & \; 0 & \texttt{(\textbackslash space} & \\ 
+\texttt{ \textbackslash newline} & \; 1 & \texttt{ \textbackslash newline} & \\
+& \; 2 & \texttt{ exec\_dup} & \\
+\texttt{ in1} & \; 3 & \texttt{ in1} & \texttt{ in1} \\
+\texttt{ string\_replacechar} & \; 4 & \texttt{ string\_replacechar} & \emph{\texttt{ string\_stackdepth}} \\
+\texttt{ print\_string} & \; 5 & \texttt{ print\_string} & \texttt{ print\_string} \\
+& \; 6 & \texttt{ exec\_dup} & \texttt{ exec\_dup} \\
 %1 & • & • & • & • & • \\ 
 %2 & • & • & • & • & • \\ 
 %3 & • & • & • & • & • \\ 
@@ -200,6 +217,7 @@ missing from Figure~\ref{fig:run0Labelled}:
 %• & • & • & • & • & • \\ 
 %• & • & • & • & • & • \\ 
 \end{tabular}
+\end{center}
 \end{table}
 
 \section{Discussion}
