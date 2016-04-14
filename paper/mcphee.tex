@@ -58,9 +58,6 @@ We also use a \textit{uniform mutation} operator that traverses a parent, replac
 
 
 
-(Put the following in the description of RSWN):
-After executing a program, Push takes function return values from the top of the relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output. Push also has the ability to print literals to standard output.
-
 
 
 \subsection{THIS COPIED FROM TOM'S THESIS}
@@ -104,6 +101,10 @@ And simplification.
 %\end{eqnarray}
 
 \section{Analysis of a run}
+
+
+Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
+
 
 \begin{itemize}
 	\item Describe the basics of the run (length, etc.).
