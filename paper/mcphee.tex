@@ -34,33 +34,36 @@ Motivate the work!
 \section{Plush genomes and PushGP operators}
 \label{sec:background}
 
-\todo{I'm hoping we can crib most of this section from previous works, e.g.,
-	Tom's dissertation, the Plush GPTP paper, and other papers.}
+The run presented here uses the PushGP genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use multiple typed stacks to store and manipulate data. Instructions take their arguments from stacks of the appropriate types and they leave their results the appropriate stacks. Push provides support for iteration, recursion, conditional execution, and automatically-defined subroutines through runtime code manipulation, making it a Turing-complete language \citep{1068292}. PushGP implementations have been written in Clojure, C++, Java, JavaScript, Python, and others. Many of these are available from the Push project page.\footnote{\url{http://pushlanguage.org/}} The run presented here was conducted using the Clojure implementation of PushGP\footnote{Clojush: \url{https://github.com/lspector/Clojush}}.
 
-We'll need to (quickly) outline the key elements of the Plush genome, including
-the \texttt{:instruction} and \texttt{:close} components. (This run didn't use the
-\texttt{:silent} component, so we can ignore that.)
+Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block acts as a single unit when code manipulating instructions act on them. For example, the \texttt{exec\_if} instruction deletes the second code block on the \texttt{exec} stack if the top item on the \texttt{boolean} stack is true, and deletes the first code block on the \texttt{exec} stack if it is false.
 
-We'll also need to describe the genetic operators used in PushGP/Clojush.
+Unlike previous versions of PushGP, Clojush has recently changed to not evolve Push programs directly, but instead uses a new linear genome representation \citep{Helmuth:2016:GPTP}. Each \textit{Plush genome}\footnote{\textbf{L}inear \textbf{Push}} consists of a linear sequence of instructions (including literals), and is translated into a Push program prior to execution. Each instruction may have one or more epistatic markers attached that modify how the genome is translated into a Push program.
+%For example, the \textit{silent} marker is a boolean that tells whether a particular instruction will appear in the translated program. 
 
-And replace-space-with-newline.
+Most relevant to this study is the \textit{close} epistatic marker, which affects the hierarchical composition of programs. Since many Push instructions do not take arguments, as in code blocks, from the \textit{exec} stack, it makes sense to limit the appearance of code blocks to follow only instructions that make use of them. Each instruction that takes one or more argument from the \textit{exec} stack automatically opens one or more code blocks. Then, the integer close marker attached to each instruction tells how many opened code blocks to close after the instruction. During translation from Plush genome to Push program, an open parenthesis is placed after each instruction that requires a code block, and a matching closing parenthesis is placed after a later instruction with a non-zero close marker. These code blocks can create hierarchically nested Push programs, allowing, for example, structures such as nested looping and subroutines containing conditional code.
 
-And simplification.
+The use of linear genomes allows PushGP to use simple uniform genetic operators. The operators used in this study are inspired by the operator ULTRA. ULTRA, designed for use on Push programs, requires programs to be translated into a linear form and back \citep{Spector:2013:GPTP}, potentially requiring repair of the program. Our main crossover operator, \textit{alternation}, traverses two parents in parallel while copying instructions from one parent or the other to the child.
+%While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some amount based on a random sample from a normal distribution with mean 0 and standard deviation set by the \textit{alignment deviation} parameter.
+We also use a \textit{uniform mutation} operator that traverses a parent, replacing each instruction with some small probability. Similarly, a \textit{uniform close mutation} operator can change the close epistatic marker attached to an instruction by incrementing or decrementing it. Finally, we often apply an alternation operator followed by a uniform mutation of the result, inspired by the ULTRA operator \citep{Spector:2013:GPTP}.
 
-%Use the standard \verb|equation| environment to typeset your equations, e.g.
-%%
-%\begin{equation}
-%a \times b = c\;,
-%\end{equation}
-%%
-%however, for multiline equations we recommend to use the \verb|eqnarray| environment.
-%\begin{eqnarray}
-%a \times b = c \nonumber\\
-%\vec{a}   \vec{b}=\vec{c}
-%\label{eq:01}
-%\end{eqnarray}
+Push implements a method of automatic simplification, which takes a program and converts it into a smaller, semantically equivalent program. This process uses hill-climbing to remove instructions and code blocks from the program, checking at each step that the resulting program produces the same error vector as the original program \citep{Spector:2014:GECCOcomp}.
+
+
+%\subsection{THIS COPIED FROM TOM'S THESIS}
+
+%% I (Tom) left the following in the tex in case we need more info later; most of it isn't represented above. If we use it, it shouldn't be copied directly as to not plagiarize Tom's thesis.
+
+% Push dedicates a separate stack for each data type. Instructions take their arguments from stacks of the appropriate types and they leave their results on stacks of the appropriate types. This allows instructions and literals to be freely intermixed regardless of type while still ensuring execution safety. The convention in Push regarding instructions that are executed in contexts that provide insufficient arguments on the relevant stacks is that these instructions act as ``no-ops''; that is, they do nothing.
+
+%Push traditionally takes results from the top items on stacks after executing a program. For example, a program that returns an integer will take the top value on the integer stack as its output. This convention means that some evolved programs might not return a value of the correct type, if the relevant stack is empty following execution; in this scenario, we penalize the program for failing to return a result. Push also has the ability to print literals to standard output; in our implementation this simply concatenates printed material to a string of whatever has been printed so far, but this could easily be changed to print to standard output.
+
 
 \section{Analysis of a run}
+
+
+Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
+
 
 \begin{itemize}
 	\item Describe the basics of the run (length, etc.).
@@ -353,4 +356,4 @@ We did it! Yay! Oh, and it was useful and matters in some way.
 \end{acknowledgement}
 
 \bibliographystyle{spbasic}
-\bibliography{gp-bibliography,chapter}
+\bibliography{gp-bibliography,mcphee}

@@ -1,10 +1,260 @@
-% Works not in the gp-bibliography.bib file.
 
-%An article from a magazine or a journal%
-%required fields: author, title, journal, year%
-@article{Kadie,
-    author    = "Kadie Sanford",
-    title     = "Rick's Secrets",
-    journal   = "Journal 1",
-    year      = "2013"
+@Article{spector:2002:GPEM,
+	author =       "Lee Spector and Alan Robinson",
+	title =        "Genetic Programming and Autoconstructive Evolution
+	with the Push Programming Language",
+	journal =      "Genetic Programming and Evolvable Machines",
+	year =         "2002",
+	volume =       "3",
+	number =       "1",
+	pages =        "7--40",
+	month =        mar,
+	keywords =     "genetic algorithms, genetic programming, artificial
+	life, modularity, programming languages,
+	self-adaptation",
+	ISSN =         "1389-2576",
+	URL =          "http://hampshire.edu/lspector/pubs/push-gpem-final.pdf",
+	doi =          "doi:10.1023/A:1014538503543",
+	abstract =     "Push is a programming language designed for the
+	expression of evolving programs within an evolutionary
+	computation system. This article describes Push and
+	illustrates some of the opportunities that it presents
+	for evolutionary computation. Two evolutionary
+	computation systems, PushGP and Pushpop, are described
+	in detail. PushGP is a genetic programming system that
+	evolves Push programs to solve computational problems.
+	Pushpop, an ?autoconstructive evolution? system, also
+	evolves Push programs but does so while simultaneously
+	evolving its own evolutionary mechanisms.",
+	notes =        "Article ID: 395988",
+}
+
+@InProceedings{1068292,
+	author =       "Lee Spector and Jon Klein and Maarten Keijzer",
+	title =        "The {Push3} execution stack and the evolution of
+	control",
+	booktitle =    "{GECCO 2005}: Proceedings of the 2005 conference on
+	Genetic and evolutionary computation",
+	year =         "2005",
+	ISBN =         "1-59593-010-8",
+	pages =        "1689--1696",
+	address =      "Washington DC, USA",
+	URL =          "http://www.cs.bham.ac.uk/~wbl/biblio/gecco2005/docs/p1689.pdf",
+	doi =          "doi:10.1145/1068009.1068292",
+	publisher =    "ACM Press",
+	publisher_address = "New York, NY, 10286-1405, USA",
+	organisation = "ACM SIGEVO (formerly ISGEC)",
+	keywords =     "genetic algorithms, genetic programming, combinators,
+	experimentation, exponentiation, factorial, Fibonacci
+	sequence, iteration, languages, parity, push,
+	recursion, reversing a list, sorting, stack-based
+	genetic programming",
+	abstract =     "One of Push's attractive features in this context is
+	its transparent support for the expression and
+	evolution of modular architectures and complex control
+	structures, achieved through explicit code
+	self-manipulation. The latest version of Push, Push3,
+	enhances this feature by permitting explicit
+	manipulation of an execution stack that contains the
+	expressions that are queued for execution in the
+	interpreter. presents a series of examples in which
+	Push3 was used with a simple genetic programming system
+	(PushGP) to evolve programs with non-trivial control
+	structures.",
+	notes =        "GECCO-2005 A joint meeting of the fourteenth
+	international conference on genetic algorithms
+	(ICGA-2005) and the tenth annual genetic programming
+	conference (GP-2005).
+	
+	ACM Order Number 910052
+	
+	Cited by \cite{eurogp06:AgapitosLucas}
+	
+	EXEC stack. Combinators. Reentrant p1691 'the
+	re-entrant interpreter allows for the controlled
+	execution of a particular number of instructions per
+	time-step.' Reversing a list. Factorial. Fibonacci.
+	Parity. Powers of two, integer exponentiation
+	Expt(2,n). Sorting a list.",
+}
+
+@incollection{Helmuth:2016:GPTP,
+	author = {Thomas Helmuth and Lee Spector and Nicholas Freitag McPhee and Saul Shanabrook},
+	title = {Plush: Linear Genomes for PushGP},
+	booktitle = {Genetic Programming Theory and Practice XIV},
+	date = {2016},
+	year = {2016},
+	NOeditor = {?},
+	series = {Genetic and Evolutionary Computation},
+	publisher = {Springer},
+	pubstate = {In press}
+}
+
+@InCollection{Spector:2013:GPTP,
+	author =	"Lee Spector and Thomas Helmuth",
+	title =	"Uniform Linear Transformation with Repair and
+	Alternation in Genetic Programming",
+	booktitle =	"Genetic Programming Theory and Practice XI",
+	year = 	"2013",
+	series =	"Genetic and Evolutionary Computation",
+	NOeditor =	"Rick Riolo and Jason H. Moore and Mark Kotanchek",
+	publisher =	"Springer",
+	chapter =	"8",
+	pages =	"137--153",
+	address =	"Ann Arbor, USA",
+	month =	"9-11 " # may,
+	keywords =	"genetic algorithms, genetic programming, Uniform
+	mutation, Uniform crossover, ULTRA, Push, PushGP, Drug
+	bioavailability problem, Pagie-1 problem, Factorial
+	regression, Boolean multiplexer problem",
+	isbn13 =	"978-1-4939-0374-0",
+	doi =  	"doi:10.1007/978-1-4939-0375-7\_8",
+	abstract =	"Several genetic programming researchers have argued
+	for the utility of genetic operators that act
+	uniformly. By act uniformly we mean two specific
+	things: that the probability of an inherited program
+	component being modified during inheritance is
+	independent of the size and shape of the parent
+	programs beyond the component in question; and that
+	pairs of parents are combined in ways that allow
+	arbitrary combinations of components from each parent
+	to appear in the child. Uniform operators described in
+	previous work have had limited utility, however,
+	because of a mismatch between the relevant notions of
+	uniformity and the hierarchical structure and variable
+	sizes of many genetic programming representations. In
+	this chapter we describe a new genetic operator, ULTRA,
+	which incorporates aspects of both mutation and
+	crossover and acts approximately uniformly across
+	programs of variable sizes and structures. ULTRA treats
+	hierarchical programs as linear sequences and includes
+	a repair step to ensure that syntax constraints are
+	satisfied after variation. We show that on the drug
+	bioavailability and Pagie-1 benchmark problems ULTRA
+	produces significant improvements both in
+	problem-solving power and in program size relative to
+	standard operators. Experiments with factorial
+	regression and with the Boolean 6-multiplexer problem
+	demonstrate that ULTRA can manipulate programs that
+	make use of hierarchical structure, but also that it is
+	not always beneficial. The demonstrations evolve
+	programs in the Push programming language, which makes
+	repair particularly simple, but versions of the
+	technique should be applicable in other genetic
+	programming systems as well.",
+	notes =	"http://cscs.umich.edu/gptp-workshops/ Part of
+	\cite{Riolo:2013:GPTP} published after the workshop in
+	2013",
+	doi-url =	"http://dx.doi.org/10.1007/978-1-4939-0375-7\_8",
+}
+
+@InProceedings{Helmuth:2015:GECCO,
+  author =	"Thomas Helmuth and Lee Spector",
+  title =	"General Program Synthesis Benchmark Suite",
+  booktitle =	"GECCO '15: Proceedings of the 2015 on Genetic and
+		 Evolutionary Computation Conference",
+  year = 	"2015",
+  NOeditor =	"Sara Silva and Anna I Esparcia-Alcazar and Manuel
+		 Lopez-Ibanez and Sanaz Mostaghim and Jon Timmis and
+		 Christine Zarges and Luis Correia and Terence Soule and
+		 Mario Giacobini and Ryan Urbanowicz and Youhei Akimoto
+		 and Tobias Glasmachers and Francisco {Fernandez de
+		 Vega} and Amy Hoover and Pedro Larranaga and Marta Soto
+		 and Carlos Cotta and Francisco B. Pereira and Julia
+		 Handl and Jan Koutnik and Antonio Gaspar-Cunha and
+		 Heike Trautmann and Jean-Baptiste Mouret and Sebastian
+		 Risi and Ernesto Costa and Oliver Schuetze and
+		 Krzysztof Krawiec and Alberto Moraglio and Julian F.
+		 Miller and Pawel Widera and Stefano Cagnoni and JJ
+		 Merelo and Emma Hart and Leonardo Trujillo and Marouane
+		 Kessentini and Gabriela Ochoa and Francisco Chicano and
+		 Carola Doerr",
+  isbn13 =	"978-1-4503-3472-3",
+  pages =	"1039--1046",
+  keywords =	"genetic algorithms, genetic programming",
+  month =	"11-15 " # jul,
+  organisation = "SIGEVO",
+  address =	"Madrid, Spain",
+  URL =  	"http://doi.acm.org/10.1145/2739480.2754769",
+  doi =  	"doi:10.1145/2739480.2754769",
+  publisher =	"ACM",
+  publisher_address = "New York, NY, USA",
+  abstract =	"Recent interest in the development and use of
+		 non-trivial benchmark problems for genetic programming
+		 research has highlighted the scarcity of general
+		 program synthesis (also called traditional programming)
+		 benchmark problems. We present a suite of 29 general
+		 program synthesis benchmark problems systematically
+		 selected from sources of introductory computer science
+		 programming problems. This suite is suitable for
+		 experiments with any program synthesis system driven by
+		 input/output examples. We present results from
+		 illustrative experiments using our reference
+		 implementation of the problems in the PushGP genetic
+		 programming system. The results show that the problems
+		 in the suite vary in difficulty and can be useful for
+		 assessing the capabilities of a program synthesis
+		 system.",
+  notes =	"Also known as \cite{2754769} GECCO-2015 A joint
+		 meeting of the twenty fourth international conference
+		 on genetic algorithms (ICGA-2015) and the twentith
+		 annual genetic programming conference (GP-2015)",
+  doi-url =	"http://dx.doi.org/10.1145/2739480.2754769",
+}
+
+@InProceedings{Spector:2014:GECCOcomp,
+  author =	"Lee Spector and Thomas Helmuth",
+  title =	"Effective simplification of evolved {Push} programs
+		 using a simple, stochastic hill-climber",
+  booktitle =	"GECCO Companion '14",
+  year = 	"2014",
+  NOeditor =	"Christian Igel and Dirk V. Arnold and Christian Gagne
+		 and Elena Popovici and Anne Auger and Jaume Bacardit
+		 and Dimo Brockhoff and Stefano Cagnoni and Kalyanmoy
+		 Deb and Benjamin Doerr and James Foster and Tobias
+		 Glasmachers and Emma Hart and Malcolm I. Heywood and
+		 Hitoshi Iba and Christian Jacob and Thomas Jansen and
+		 Yaochu Jin and Marouane Kessentini and Joshua D.
+		 Knowles and William B. Langdon and Pedro Larranaga and
+		 Sean Luke and Gabriel Luque and John A. W. McCall and
+		 Marco A. {Montes de Oca} and Alison Motsinger-Reif and
+		 Yew Soon Ong and Michael Palmer and Konstantinos E.
+		 Parsopoulos and Guenther Raidl and Sebastian Risi and
+		 Guenther Ruhe and Tom Schaul and Thomas Schmickl and
+		 Bernhard Sendhoff and Kenneth O. Stanley and Thomas
+		 Stuetzle and Dirk Thierens and Julian Togelius and
+		 Carsten Witt and Christine Zarges",
+  isbn13 =	"978-1-4503-2881-4",
+  keywords =	"genetic algorithms, genetic programming: Poster",
+  pages =	"147--148",
+  month =	"12-16 " # jul,
+  organisation = "SIGEVO",
+  address =	"Vancouver, BC, Canada",
+  URL =  	"http://doi.acm.org/10.1145/2598394.2598414",
+  doi =  	"doi:10.1145/2598394.2598414",
+  publisher =	"ACM",
+  publisher_address = "New York, NY, USA",
+  abstract =	"Genetic programming systems often produce programs
+		 that include unnecessary code. This is undesirable for
+		 several reasons, including the burdens that
+		 overly-large programs put on end-users for program
+		 interpretation and maintenance. The problem is
+		 exacerbated by recently developed techniques, such as
+		 genetic programming with geometric semantic crossover,
+		 that tend to produce enormous programs. Methods for
+		 automatically simplifying evolved programs are
+		 therefore of interest, but automatic simplification is
+		 non-trivial in the context of traditional program
+		 representations with unconstrained function sets. Here
+		 we show how evolved programs expressed in the
+		 stack-based Push programming language can be
+		 automatically and reliably simplified using a simple,
+		 stochastic hill-climber. We demonstrate and
+		 quantitatively characterise this simplification process
+		 on programs evolved to solve four non-trivial genetic
+		 programming problems with qualitatively different
+		 function sets.",
+  notes =	"Also known as \cite{2598414} Distributed at
+		 GECCO-2014.",
+  doi-url =	"http://dx.doi.org/10.1145/2598394.2598414",
 }
