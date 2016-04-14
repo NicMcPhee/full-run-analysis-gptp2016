@@ -229,6 +229,9 @@ a fresh copy of the input string, compute the length and leave that on the
 
 \subsection{How did we get there?}
 
+\todo{I'm starting to wonder if doing it ``backwards'' is actually such
+	a good idea -- it sort of turns the story on its head and may make it
+	harder to follow? -- NFM}
 A few places where we might need to bring in an individual that's 
 missing from Figure~\ref{fig:run0Labelled}:
 \begin{itemize}
@@ -256,7 +259,8 @@ missing from Figure~\ref{fig:run0Labelled}:
 
 Individual 19:554 was the result of 
 recombination between 18:937 and an individual that was filtered from the
-graph. The DL-distance between 18:937 and 19:554 is 55, however,
+graph (18:641, see Figure~\ref{fig:run0Labelled}). 
+The DL-distance between 18:937 and 19:554 is 55, however,
 suggesting that the filtered parent may have contributed some substantial
 genetic material to 19:554. Looking at the genomes, it turns out that 
 roughly 30 of the last 40 genes in 19:554's genome (which had 194 genes) 
@@ -264,10 +268,41 @@ indeed came from the parent that is filtered out of this graph. Those genome
 changes lead to small, but potentially important, behavioral changes. 
 The error values only 
 changed on 7 of the 200 test cases; in five of these cases the error improved
-from 1 to 0 (i.e., correct on that test case), where it two it went the other way
-changing from 0 to 1. Given that 19:554 had 12  children that completely
+from 1 to 0 (i.e., correct on that test case), where two went the other way
+changing from 0 to 1. Given that 19:554 had 12 children that completely
 solved the problem, though, it seems likely that these new genes were useful
-in moving toward a solution.
+in moving toward a solution. As can be seen in Figure~\ref{fig:run0Labelled},
+however, there was a path from 18:937 to a successful individual (20:940)
+that doesn't involve any other individuals from generation 18.
+
+\subparagraph{From 15:801 to 18:937: Deleting a few genes, duplicating a few others}
+
+Individual 18:937 was the result of a self-cross between 17:189 and itself,
+with no mutation applied to the child after alternation was performed. The
+change in the genome was that two instructions were removed, 
+\texttt{exec\_yank} followed by \texttt{string\_rot}, with the same pair of
+instructions being removed from the program as well. This leads to changes
+in 5 of the ``return'' test cases, each of which improves the error 
+from 2 to 1.
+
+Individual 17:189 was the result of a recombination event between 16:106
+and an individual that was filtered out. The DL-distance between 17:189
+and 16:106 was 21, which suggests that the filtered out individual might
+be contributing some substantial genes. In fact, however, 17:189 is an
+exact copy of 16:106 with the deletion of 10 genes and one mutation. This
+had a much broader impact on the error vectors, changing dozens on error
+values on the ``return'' test cases. The error on five test cases got worse,
+going from 1 to 2, while all the rest improved, going from some single
+digit error to 0. After this change 17:189 was nearly perfect, with no errors
+on the ``printing'' test cases, and only five remaining non-zero errors on
+the ``return'' test cases, all of which are off by 2.
+
+Individual 16:106 was the result of an alternation between 15:801 and itself,
+followed by uniform mutation. The alternation duplicated a sequence of 7 genes,
+and the subsequent mutation step replaced the instructions in two other 
+genes with new instructions. These changes alter the errors on all but 6 of
+the 100 ``return'' test cases, with the changes being quite erratic, improving
+on many but getting worse on many others.
 
 \subparagraph{Creating 15:801: An important crossover}
 \label{sec:15:801}
