@@ -46,21 +46,10 @@ The use of linear genomes allows PushGP to use simple uniform genetic operators.
 %While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some amount based on a random sample from a normal distribution with mean 0 and standard deviation set by the \textit{alignment deviation} parameter.
 We also use a \textit{uniform mutation} operator that traverses a parent, replacing each instruction with some small probability. Similarly, a \textit{uniform close mutation} operator can change the close epistatic marker attached to an instruction by incrementing or decrementing it. Finally, we often apply an alternation operator followed by a uniform mutation of the result, inspired by the ULTRA operator \citep{Spector:2013:GPTP}.
 
+Push implements a method of automatic simplification, which takes a program and converts it into a smaller, semantically equivalent program. This process uses hill-climbing to remove instructions and code blocks from the program, checking at each step that the resulting program produces the same error vector as the original program \citep{Spector:2014:GECCOcomp}.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{THIS COPIED FROM TOM'S THESIS}
+%\subsection{THIS COPIED FROM TOM'S THESIS}
 
 %% I (Tom) left the following in the tex in case we need more info later; most of it isn't represented above. If we use it, it shouldn't be copied directly as to not plagiarize Tom's thesis.
 
@@ -68,37 +57,6 @@ We also use a \textit{uniform mutation} operator that traverses a parent, replac
 
 %Push traditionally takes results from the top items on stacks after executing a program. For example, a program that returns an integer will take the top value on the integer stack as its output. This convention means that some evolved programs might not return a value of the correct type, if the relevant stack is empty following execution; in this scenario, we penalize the program for failing to return a result. Push also has the ability to print literals to standard output; in our implementation this simply concatenates printed material to a string of whatever has been printed so far, but this could easily be changed to print to standard output.
 
-
-
-
-
-
-
-\todo{I'm hoping we can crib most of this section from previous works, e.g.,
-	Tom's dissertation, the Plush GPTP paper, and other papers.}
-
-We'll need to (quickly) outline the key elements of the Plush genome, including
-the \texttt{:instruction} and \texttt{:close} components. (This run didn't use the
-\texttt{:silent} component, so we can ignore that.)
-
-We'll also need to describe the genetic operators used in PushGP/Clojush.
-
-And replace-space-with-newline.
-
-And simplification.
-
-%Use the standard \verb|equation| environment to typeset your equations, e.g.
-%%
-%\begin{equation}
-%a \times b = c\;,
-%\end{equation}
-%%
-%however, for multiline equations we recommend to use the \verb|eqnarray| environment.
-%\begin{eqnarray}
-%a \times b = c \nonumber\\
-%\vec{a}   \vec{b}=\vec{c}
-%\label{eq:01}
-%\end{eqnarray}
 
 \section{Analysis of a run}
 
