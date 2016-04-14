@@ -265,28 +265,43 @@ changes lead to small, but potentially important, behavioral changes.
 The error values only 
 changed on 7 of the 200 test cases; in five of these cases the error improved
 from 1 to 0 (i.e., correct on that test case), where it two it went the other way
-changing from 0 to 1. Given that 19:554 had 12 children that completely
+changing from 0 to 1. Given that 19:554 had 12  children that completely
 solved the problem, though, it seems likely that these new genes were useful
 in moving toward a solution.
 
 \subparagraph{Creating 15:801: An important crossover}
 \label{sec:15:801}
+Individual 15:801 was created through the recombination of 14:704 and 14:213
+along with uniform mutation. As can be seen in table 1, 15:801 inherited 
+lines 1-2 and 4-5 from 14:704. Likewise it inherited lines 7, 11, 19-21 and 31-35
+from 14:213. It is possible that line 6, \texttt{print\_string}, was inherited from either
+parent given its presence in all three individuals. The \texttt{string\_rot} command on line
+22 could either be from a uniform mutation or may be missing in 14:213's program due to the
+simplification.
 
-\todo{Mitchell (or Nic) will add text to this so we don't just have the big table.}
+Looking further into the genomes of these three individuals it begins to become apparent that
+15:801 received a large swathe of the genetic material at its start from 14:704 with the latter
+half being comprised almost solely of 14:213's genome. Going even deeper through the error vectors,
+it can be seen that the transition between 14:704 and 15:801 was a transition of all 1s on the even
+test cases to all perfect scores of 0. Given that the even cases are all printing tests table1 shows
+that the loss of the extra \texttt{print\_newline} in the recombination from 14:704 allowed these
+tests to succeed. Meanwhile the genome additions from 14:213 helped improve the odd test cases even
+though 15:801 did not perform as well as 14:213 on these cases.
+
 
 \begin{table}
 \begin{tabular}{l|rl|l}
 	\textbf{14:704} & & \textbf{15:801} & \textbf{14:213} \\
 	\hline
-& 1 & & \texttt{(in1} \\ 
-\texttt{(\textbackslash space} & 2 & \texttt{(\textbackslash space} & \\ 
-\texttt{ \textbackslash newline} & 3 & \texttt{ \textbackslash newline} &  \\ 
-& 4 & \texttt{ exec\_dup} &  \\ 
+& 0 & & \texttt{(in1} \\ 
+\texttt{(\textbackslash space} & 1 & \texttt{(\textbackslash space} & \\ 
+\texttt{ \textbackslash newline} & 2 & \texttt{ \textbackslash newline} &  \\ 
+& 3 & \texttt{ exec\_dup} &  \\ 
 \texttt{ in1} & 4 & \texttt{ in1} &  \\ 
 \texttt{ string\_replacechar} & 5 & \texttt{ string\_replacechar} &  \\ 
 \texttt{ print\_string} & 6 & \texttt{ print\_string} & \texttt{ print\_string} \\ 
-\texttt{ boolean\_stackdepth} & 7 & \texttt{ exec\_dup} & \texttt{ exec\_dup} \\ 
-\texttt{ print\_newline)} & 8 &  & \texttt{ exec\_s} \\ 
+& 7 & \texttt{ exec\_dup} & \texttt{ exec\_dup} \\ 
+& 8 &  & \texttt{ exec\_s} \\ 
 & 9 &  & \texttt{ (exec\_dup} \\ 
 & 10 &  & \texttt{ \ (exec\_rot} \\ 
 & 11 & \texttt{ (string\_eq} & \texttt{ \ \ (string\_eq} \\
@@ -299,20 +314,23 @@ in moving toward a solution.
 & 18 &  & \texttt{ \ \ string\_emptystring} \\ 
 & 19 & \texttt{ \ \textbackslash space} & \texttt{ \ \ \textbackslash space} \\ 
 & 20 & \texttt{ \ string\_dup} & \texttt{ \ \ string\_dup} \\ 
-& 21 & \texttt{ \ string\_removechar} & \texttt{ \ \ string\_removechar} \\ 
-& 22 & \texttt{ \ string\_rot} & \texttt{ \ \ boolean\_pop} \\ 
-& 23 &   & \texttt{ \ \ in1} \\ 
-& 24 &   & \texttt{ \ \ string\_butlast} \\ 
-& 25 &   & \texttt{ \ \ string\_last} \\ 
-& 26 &   & \texttt{ \ \ string\_parse\_to\_chars} \\
-& 27 &   & \texttt{ \ \ exec\_when} \\ 
-& 28 &   & \texttt{ \ \ string\_dup} \\
-& 29 &   & \texttt{ \ \ string\_removechar} \\
-& 30 & \texttt{ \ string\_last} & \texttt{ \ \ string\_last} \\
-& 31 & \texttt{ \ string\_parse\_to\_chars} & \texttt{ \ \ string\_parse\_to\_chars} \\
-& 32 & \texttt{ \ string\_rot)} & \texttt{ \ \ string\_rot)} \\
-& 33 & \texttt{ in1} & \texttt{ \ in1)} \\
-& 34 & \texttt{ string\_stackdepth)} & \texttt{ string\_stackdepth)} \\
+& 21 & \texttt{ \ string\_removechar} & \texttt{ \ \ string\_removechar} \\
+& 22 & \texttt{ \ string\_rot} & \\
+& 23 & & \texttt{ \ \ boolean\_pop} \\ 
+& 24 &   & \texttt{ \ \ in1} \\ 
+& 25 &   & \texttt{ \ \ string\_butlast} \\ 
+& 26 &   & \texttt{ \ \ string\_last} \\ 
+& 27 &   & \texttt{ \ \ string\_parse\_to\_chars} \\
+& 28 &   & \texttt{ \ \ exec\_when} \\ 
+& 29 &   & \texttt{ \ \ string\_dup} \\
+& 30 &   & \texttt{ \ \ string\_removechar} \\
+& 31 & \texttt{ \ string\_last} & \texttt{ \ \ string\_last} \\
+& 32 & \texttt{ \ string\_parse\_to\_chars} & \texttt{ \ \ string\_parse\_to\_chars} \\
+& 33 & \texttt{ \ string\_rot)} & \texttt{ \ \ string\_rot)} \\
+& 34 & \texttt{ in1} & \texttt{ \ in1)} \\
+& 35 & \texttt{ string\_stackdepth)} & \texttt{ string\_stackdepth)} \\
+\texttt{ boolean\_stackdepth} & 36 & & \\
+\texttt{ print\_newline)} & 37 & & \\
 \end{tabular}
 \caption{The details of the recombination event (alternation followed by
 	uniform mutation) that created individual
