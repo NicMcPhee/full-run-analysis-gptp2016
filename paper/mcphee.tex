@@ -33,6 +33,46 @@ Motivate the work!
 \section{Plush genomes and PushGP operators}
 \label{sec:background}
 
+The run presented here uses the PushGP genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use multiple typed stacks to store and manipulate data. Instructions take their arguments from stacks of the appropriate types and they leave their results the appropriate stacks. Push provides support for iteration, recursion, conditional execution, and automatically-defined subroutines through runtime code manipulation, making it a Turing-complete language \citep{1068292}. PushGP implementations have been written in Clojure, C++, Java, JavaScript, Python, and others. Many of these are available from the Push project page.\footnote{\url{http://pushlanguage.org/}} The run presented here was conducted using the Clojure implementation of PushGP\footnote{Clojush: \url{https://github.com/lspector/Clojush}}.
+
+Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block acts as a single unit when code manipulating instructions act on them. For example, the \texttt{exec\_if} instruction deletes the second code block on the \texttt{exec} stack if the top item on the \texttt{boolean} stack is true, and deletes the first code block on the \texttt{exec} stack if it is false.
+
+Unlike previous versions of PushGP, Clojush has recently changed to not evolve Push programs directly, but instead uses a new linear genome representation. Each \textit{Plush genome}\footnote{\textbf{L}inear \textbf{Push}} consists of a linear sequence of instructions (including literals), and is translated into a Push program prior to execution. Each instruction may have one or more epistatic markers attached that modify how the genome is translated into a Push program.
+%For example, the \textit{silent} marker is a boolean that tells whether a particular instruction will appear in the translated program. 
+
+
+
+
+
+
+
+
+
+(Put the following in the description of RSWN):
+After executing a program, Push takes function return values from the top of the relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output. Push also has the ability to print literals to standard output.
+
+
+
+\subsection{THIS COPIED FROM TOM'S THESIS}
+
+%% I (Tom) left the following in the tex in case we need more info later; most of it isn't represented above. If we use it, it shouldn't be copied directly as to not plagiarize Tom's thesis.
+
+% Push dedicates a separate stack for each data type. Instructions take their arguments from stacks of the appropriate types and they leave their results on stacks of the appropriate types. This allows instructions and literals to be freely intermixed regardless of type while still ensuring execution safety. The convention in Push regarding instructions that are executed in contexts that provide insufficient arguments on the relevant stacks is that these instructions act as ``no-ops''; that is, they do nothing.
+
+%Push traditionally takes results from the top items on stacks after executing a program. For example, a program that returns an integer will take the top value on the integer stack as its output. This convention means that some evolved programs might not return a value of the correct type, if the relevant stack is empty following execution; in this scenario, we penalize the program for failing to return a result. Push also has the ability to print literals to standard output; in our implementation this simply concatenates printed material to a string of whatever has been printed so far, but this could easily be changed to print to standard output.
+
+
+In a change from previous versions of PushGP, the most recent version of Clojush does not evolve Push programs directly, but instead uses a separate linear genome representation that we translate into Push programs prior to execution. The new \textit{Plush}\footnote{\textbf{L}inear \textbf{Push}} \textit{genomes} are linear sequences of instructions that may have one or more epigenetic markers attached to each instruction. The epigenetic markers affect the translation of the Plush genomes into Push programs. For example, the \textit{silent} marker is a boolean that tells whether a particular instruction will appear in the translated program. 
+
+When evolving Push programs directly, we often found that parenthesis-delimited code blocks would rarely evolve in conjunction with instructions that made use of them. One of the motivations for moving to linear Plush genomes was that we could require that Push instructions that make use of code blocks be followed by them. With this change, every instruction that takes one or more argument from the \textit{exec} stack implicitly opens one or more code blocks. Additionally, each instruction has a \textit{close} epigenetic marker that tells the number of code blocks to end after that instruction. Thus, during translation from Plush genome to Push program, an open parenthesis is placed after each instruction that requires a code block, and a matching closing parenthesis is placed after a later instruction with a non-zero close marker. Note that these code blocks can create hierarchically nested Push programs. For example, if a new code block B is opened after the start of code block A, the next close marker will close block B, not block A. If not enough close markers occur by the end of a program to match all opened code blocks, all opened blocks are simply closed.
+
+Another advantage of moving to linear Plush genomes instead of traditional tree genomes or hierarchical Push programs is that it enables simple use of uniform genetic operators. The uniform genetic operators implemented in Clojush are inspired by the operator ULTRA, which was designed for Push programs, requiring them to be translated into a linear form and back \citep{Spector:2013:GPTP}. The main crossover operator, \textit{alternation}, traverses two parents in parallel while copying instructions from one parent or the other to the child. While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some amount based on a random sample from a normal distribution with mean 0 and standard deviation set by the \textit{alignment deviation} parameter. We also use a \textit{uniform mutation} operator that traverses a parent and with some probability replaces each instruction with a random one. In order to manipulate the locations of closing parentheses, we include a \textit{uniform close mutation} operator that may increment or decrement the close epigenetic marker of any given instruction. Finally, we allow genetic operator pipelines that combine multiple operators; for example, we often use alternation followed by uniform mutation, which closely resembles ULTRA \citep{Spector:2013:GPTP}.
+
+
+
+
+
+
 \todo{I'm hoping we can crib most of this section from previous works, e.g.,
 	Tom's dissertation, the Plush GPTP paper, and other papers.}
 
@@ -334,4 +374,4 @@ We did it! Yay! Oh, and it was useful and matters in some way.
 \end{acknowledgement}
 
 \bibliographystyle{spbasic}
-\bibliography{gp-bibliography,chapter}
+\bibliography{gp-bibliography,mcphee}
