@@ -194,6 +194,12 @@ number of instructions to the offspring, so one would need to be careful in not
 making overly broad assumptions based on an individual not being in the filtered
 version of a graph.
 
+A notable consequence of this filtering is that many of the larger DL distances in
+the filtered graph are the product of there being a child with both parents present.
+For instance when 13:575 and 13:136 converge into 14:213 they have DL distances of
+58 and 87 respectively. While an alternation with uniform mutation and one parent present
+such as 8:163 into 9:109 only has a DL distance of 1.
+
 \subsection{The (successful) end}
 
 Figure~\ref{prog:simplified20:484} 
@@ -431,6 +437,17 @@ While none of the ``return'' errors, the ``printing'' errors all became 1 in
 ``printing'' cases \emph{except} that it had an extraneous 
 \texttt{print\_newline} near the end that meant that it's printed answers
 always had one extra newline at the end, leading to an error of 1.
+
+\subparagraph{From 3:122 to 14:213}
+Looking at this branch of the ancestry graph in figure 2 there is one main identifier
+throughout the lineage, a concentration on the odd test cases. From 3:122 into 4:256 and 4:107
+onward the individuals in this branch only change in relation to the odd test cases and never
+the even cases. These changes vary between incremental improvements, changes that have positive
+and negative effect and no difference in test scores. Interestingly, along this lineage there are
+two sub splits, one from 3:122 into 4:256 and 4:107 converging back into 7:291 and the other from
+10:41 into 11:603 and 11:494 converging back to form 14:213. In total this branch has 18 
+individuals comprised of 5 uniform mutation events with 1 being uniform closed mutation and 
+13 alternation events, 9 of which also had uniform mutation.
 
 \section{Discussion}
 \label{sec:discussion}
