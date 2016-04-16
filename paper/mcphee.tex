@@ -238,17 +238,23 @@ such as 8:163 into 9:109 only has a DL distance of 1.
 
 \subsection{The (successful) end}
 
-Figure~\ref{prog:simplified20:484} 
-\todo{Should the code be in a figure, or just in-lined here in the text? I \emph{think} the figure
-	will be closer to the text when more of Section 2 is written. -- NFM}
-shows the simplified version the successful program from 
-individual 20:484. Individual 20:484's genome contains 194 genes, and the unsimplified 
-program also contains 194 instructions and passes both
-the training and testing cases. The simplified program in 
-Figure~\ref{prog:simplified20:484} contains only 9 instructions and
-also passes all the tests. 
-The simplified program is actually a pretty ``human'' program, and is structured similar to 
-how a person might implement replace-space-with-newline using Push. The first five 
+There are 13 successful individuals
+in this run, most of which have identical simplified
+programs. In the interest of space we're going to focus on one of those, 
+individual 20:484, which was constructed via three instruction mutations
+from individual 19:554.
+Individual 20:484's genome contains 194 genes, and the unsimplified 
+program also contains 194 instructions and has zero error on both
+the training and testing cases.
+The simplified program for 20:484 (which also passes all the tests)
+contains only 9 instructions:
+\begin{verbatim}
+(\space \newline in1 string_replacechar print_string
+ in1 \space string_removechar string_length)
+\end{verbatim}
+This simplified program is actually quite readable, and has a similar
+structure to what me might expect from a human solution.
+The first five 
 instructions (together on the first line) replace all the spaces in the input string 
 with newlines (using the \texttt{string\_replacechar} instruction) and print the 
 resulting string, thereby solving half the problem. 
@@ -256,24 +262,42 @@ The next four instructions (on the second line) remove all the spaces from
 a fresh copy of the input string, compute the length and leave that on the
 \texttt{:integer} stack as the ``returned'' result.
 
-\begin{figure}[tb]
-\begin{verbatim}
-(\space \newline in1 string_replacechar print_string
- in1 \space string_removechar string_length)
-\end{verbatim}
-\caption{The simplified version of the successful program from individual 20:484. The
-	five instructions on the first line replace all the spaces in the input string with newlines
-	and print the result, solving half the problem. The next four instructions (on the second
-	line) remove all the spaces from the input string and computing it's length, providing
-	the desired ``returned'' result.}
-\label{prog:simplified20:484}
-\end{figure}
-
 \subsection{How did we get there?}
+
+In this section we will trace the origin of each of the nine instructions
+in the simplified program for individual 20:484,
+going back to their introduction either via a mutation or as an element 
+of one of the initial, random programs in the initial generation. It's clear
+that each of these was ``necessary'' for the construction of this particular
+solution, so knowing where they all came from and how they came together
+should give us a valuable sense of the dynamics of this run. 
+
+It's important to realize, however, that this will
+never be the whole story. Push instructions and values can play an 
+important role in subtle ways, e.g., as spacers on stacks that when
+``counting'' is implemented with a stack depth command. Removal of
+instructions can also be important. One key step in this run, for example, 
+is the removal of an extraneous \texttt{print\_newline}; the presence of this
+instruction caused the printed output to always have an error of one because
+of that \texttt{print\_newline}, and its removal led to 100 errors changing
+from 1 to 0. All that said, however, we need some way to limit the number
+of individuals and events to analyze, so here will focus on the how those
+nine instructions trace through the ancestry. 
+
+It turns
+out that the evolution of the first five instructions, that handle the
+printing part of Replace Space With Newline, is largely independent of
+the evolution of the last four instructions, that handle the return part
+of the problem. The first five instructions, for example, all appear early 
+in the genome for 20:484, from gene 9 to gene 24, while the last four 
+all appear much later in the genome, from gene 107 to gene 175. As consequence
+we'll trace these two groups one at a time.
 
 \subparagraph{Printing: The first five instructions}
 
 \subparagraph{Returning: The last four instructions}
+
+
 
 \subparagraph{Other stuff to figure out}
 
