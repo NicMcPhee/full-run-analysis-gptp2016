@@ -38,16 +38,52 @@ The run presented here uses the PushGP genetic programming system, which evolves
 
 Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block acts as a single unit when code manipulating instructions act on them. For example, the \texttt{exec\_if} instruction deletes the second code block on the \texttt{exec} stack if the top item on the \texttt{boolean} stack is true, and deletes the first code block on the \texttt{exec} stack if it is false.
 
-Unlike previous versions of PushGP, Clojush has recently changed to not evolve Push programs directly, but instead uses a new linear genome representation \citep{Helmuth:2016:GPTP}. Each \textit{Plush genome}\footnote{\textbf{L}inear \textbf{Push}} consists of a linear sequence of instructions (including literals), and is translated into a Push program prior to execution. Each instruction may have one or more epistatic markers attached that modify how the genome is translated into a Push program.
-%For example, the \textit{silent} marker is a boolean that tells whether a particular instruction will appear in the translated program. 
+Unlike previous versions of PushGP, Clojush has recently changed to not evolve 
+Push programs directly, but instead uses a new linear genome representation 
+\citep{Helmuth:2016:GPTP}. Each \textit{Plush genome}\footnote{\textbf{L}inear 
+	\textbf{Push}} consists of a linear sequence of instructions (including 
+literals), and is translated into a Push program prior to execution. Each 
+instruction may have one or more epigenetic markers attached that modify how 
+the genome is translated into a Push program.
+%For example, the \textit{silent} marker is a boolean that tells whether a 
+%particular instruction will appear in the translated program. 
 
-Most relevant to this study is the \textit{close} epistatic marker, which affects the hierarchical composition of programs. Since many Push instructions do not take arguments, as in code blocks, from the \textit{exec} stack, it makes sense to limit the appearance of code blocks to follow only instructions that make use of them. Each instruction that takes one or more argument from the \textit{exec} stack automatically opens one or more code blocks. Then, the integer close marker attached to each instruction tells how many opened code blocks to close after the instruction. During translation from Plush genome to Push program, an open parenthesis is placed after each instruction that requires a code block, and a matching closing parenthesis is placed after a later instruction with a non-zero close marker. These code blocks can create hierarchically nested Push programs, allowing, for example, structures such as nested looping and subroutines containing conditional code.
+Most relevant to this study is the \textit{close} epigenetic marker, which 
+affects the hierarchical composition of programs. Since many Push instructions 
+do not take arguments, as in code blocks, from the \textit{exec} stack, it 
+makes sense to limit the appearance of code blocks to follow only instructions 
+that make use of them. Each instruction that takes one or more argument from 
+the \textit{exec} stack automatically opens one or more code blocks. Then, the 
+integer close marker attached to each instruction tells how many opened code 
+blocks to close after the instruction. During translation from Plush genome to 
+Push program, an open parenthesis is placed after each instruction that 
+requires a code block, and a matching closing parenthesis is placed after a 
+later instruction with a non-zero close marker. These code blocks can create 
+hierarchically nested Push programs, allowing, for example, structures such as 
+nested looping and subroutines containing conditional code.
 
-The use of linear genomes allows PushGP to use simple uniform genetic operators. The operators used in this study are inspired by the operator ULTRA. ULTRA, designed for use on Push programs, requires programs to be translated into a linear form and back \citep{Spector:2013:GPTP}, potentially requiring repair of the program. Our main crossover operator, \textit{alternation}, traverses two parents in parallel while copying instructions from one parent or the other to the child.
+The use of linear genomes allows PushGP to use simple uniform genetic 
+operators. The operators used in this study are inspired by the operator ULTRA. 
+ULTRA, designed for use on Push programs, requires programs to be translated 
+into a linear form and back \citep{Spector:2013:GPTP}, potentially requiring 
+repair of the program. Our main crossover operator, \textit{alternation}, 
+traverses two parents in parallel while copying instructions from one parent or 
+the other to the child.
+
 %While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some amount based on a random sample from a normal distribution with mean 0 and standard deviation set by the \textit{alignment deviation} parameter.
-We also use a \textit{uniform mutation} operator that traverses a parent, replacing each instruction with some small probability. Similarly, a \textit{uniform close mutation} operator can change the close epistatic marker attached to an instruction by incrementing or decrementing it. Finally, we often apply an alternation operator followed by a uniform mutation of the result, inspired by the ULTRA operator \citep{Spector:2013:GPTP}.
 
-Push implements a method of automatic simplification, which takes a program and converts it into a smaller, semantically equivalent program. This process uses hill-climbing to remove instructions and code blocks from the program, checking at each step that the resulting program produces the same error vector as the original program \citep{Spector:2014:GECCOcomp}.
+We also use a \textit{uniform mutation} operator that traverses a parent, 
+replacing each instruction with some small probability. Similarly, a 
+\textit{uniform close mutation} operator can change the close epigenetic marker 
+attached to an instruction by incrementing or decrementing it. Finally, we 
+often apply an alternation operator followed by a uniform mutation of the 
+result, inspired by the ULTRA operator \citep{Spector:2013:GPTP}.
+
+Push implements a method of automatic simplification, which takes a program and 
+converts it into a smaller, semantically equivalent program. This process uses 
+hill-climbing to remove instructions and code blocks from the program, checking 
+at each step that the resulting program produces the same error vector as the 
+original program \citep{Spector:2014:GECCOcomp}.
 
 
 %\subsection{THIS COPIED FROM TOM'S THESIS}
