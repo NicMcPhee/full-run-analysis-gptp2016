@@ -236,6 +236,26 @@ a fresh copy of the input string, compute the length and leave that on the
 \subsection{How did we get there?}
 
 \subparagraph{Printing: The first five instructions}
+What is witnessed in the ancestry of the 5 instructions key to solving the printing test
+cases is fairly interesting and straight forward. Starting at the top with individual 0:288 only
+one of the key instructions, \texttt{in1}, is present. The rest of the 5 are introduced over time purely
+through mutation. The next of the key instructions to appear is introduced in individual 1:590 via a point
+mutation converting a piece pf 0:288's genome into a \texttt{print\_string} instruction. These two
+instructions are passed along this tree until they are joined by the next important instruction,
+\texttt{\textbackslash newline}. This instruction is introduced in 7:788 via a uniform mutation
+of 6:881.
+
+After descending another 2 generations these three instructions are joined by \texttt{string\_replacechar}
+in 9:896 via yet another uniform mutation. At this point it's interesting to note that these instructions are
+all introduced fairly evenly over the course of these generations. Even as the run gets closer to the generation
+20 winners these individuals are obtaining key instructions through random uniform mutations. Which leads to
+the final of these key instructions being introduced, \texttt{\textbackslash space}. This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
+instructions that are passed down through 15:801 and maintained all of the way down to the winners.
+
+This marks another interesting point about these instructions. Unlike in the return case instructions there is a 
+very clear and straight path of lineage for these instructions. As they are introduced over time they 
+never split apart into subtrees to be recombined later. Rather they are added via mutation and 
+then passed down together consistently from 0:288 down to the winners. 
 
 \subparagraph{Returning: The last four instructions}
 
