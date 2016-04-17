@@ -309,7 +309,9 @@ in the genome for 20:484, from gene 9 to gene 24, while the last four
 all appear much later in the genome, from gene 107 to gene 175. As consequence
 we'll trace these two groups one at a time.
 
-\subparagraph{Printing: The first five instructions}
+\subsubsection{Printing: The first five instructions}
+\label{sec:Printing}
+
 What is witnessed in the ancestry of the 5 instructions key to solving the printing test
 cases is fairly interesting and straight forward. Starting at the top with individual 0:288 only
 one of the key instructions, \texttt{in1}, is present. The rest of the 5 are introduced over time purely
@@ -331,9 +333,116 @@ very clear and straight path of lineage for these instructions. As they are intr
 never split apart into subtrees to be recombined later. Rather they are added via mutation and 
 then passed down together consistently from 0:288 down to the winners. 
 
-\subparagraph{Returning: The last four instructions}
+\subsubsection{Returning: The last four instructions}
+\label{sec:Returning}
 
+These last four instructions were present in the right order and in at least
+rough proximity in the very first generation, in individual 0:126. The first of these instructions (\texttt{in1}) was on gene 75 of the genome, the next two
+(\texttt{\textbackslash space} and \texttt{string\_removechar}) were on 
+genes 89 and 94, and then the final instruction (\texttt{string\_length}) 
+was on line 141 (out of a total of 161 genes in the genome).
 
+Despite the fact that this individual had ``all the right stuff'', it's error
+vector had very few zeros, i.e., it was rarely exactly correct, highlighting
+the fact that the presence or absence of other instructions can profoundly
+impact a program's behavior. 0:126 was, however, quite good for a randomly
+generated program, with all it's errors being under 20, and most being in
+the single digits. It was selected 45 times to be a parent, making it the
+seventh most selected parent in the initial generation, and one of only 48
+individuals in the initial generation that received any selections. 
+(The most selected
+parent in that generation, 0:272, was selected 762 times, but ultimately
+contributed no genes to the winning individual.)
+
+Those four instructions were passed on as a group, with nearly the same 
+relative positions in the genomes, from 0:126 through 1:783 and 2:983 
+to 3:122 (see Figure~\ref{fig:run0Filtered}). 
+3:122 was the third most selected individual in its generation
+and had 100 children, several of which went on to carry one or more of
+these four instructions forward to individual 19:554 when they were finally
+reunited in the positions that would ultimately led to success. In particular
+there were three distinct branches coming from 3:122, each of which will
+be discussed below.\marginpar{I find that ``each of which will be discussed
+	below'' language really awkward, but couldn't think of something
+	better. -- NFM}
+
+\paragraph{4:772 and the carriers of \texttt{in1}}
+\label{sec:4:772}
+
+Individual 4:772 inherited the the copy of the first instruction,
+\texttt{in1}, that would ultimately form part of the solution. This was
+transmitted down to 9:109 without any further interactions with any of
+the 9 ``final'' instructions. Individual 9:109, however, recombined with 
+9:896 which, as mentioned above in Section~\ref{sec:Printing}, carried
+all but one of the first five ``printing'' instructions. 
+
+This recombination
+led to individual 10:473, which then had 4 of the 5 ``printing'' instructions,
+as well as the \texttt{in1} that would be the first of the 4 ``returning''
+instructions. These five instructions were then passed down to 14:704, 
+along with the 
+\texttt{\textbackslash space} introduced by mutation in 14:704. 14:704 was
+one of the parents of 15:801, a recombination which will be described in the
+discussion of the next branch.
+
+\paragraph{4:425, 4:107, and multiple blocks}
+\label{sec:4:425}
+
+3:122 contains a block of 25 genes % genes 77 to 101
+containing the two middle instructions in the ``returning''
+code, \texttt{\textbackslash space} and \texttt{string\_removechar}.
+This block is replicated in both 4:425 and 4:107, and then passed,
+respectively, to 5:303 and 5:910. 5:303 and 5:910 then recombine
+to create 6:293, which ends up having two complete copies of this
+block of genes. % genes 67 to 91 and 100 to 124.
+
+These two blocks are then replicated from 7:291 down through 10:41,
+to both 13:136 and 13:575. When these recombine to form 14:213
+we end up with \emph{three} near copies of the block. These blocks
+are no longer identical due to small changes caused by the
+genetic operators, but each block still contains over 20 genes,
+including the two key instructions,
+\texttt{\textbackslash space} and \texttt{string\_removechar},
+four instructions apart.
+
+All three of these blocks (and their three copies of these two ``final''
+instructions) are passed on to 15:801 in the recombination of 14:213 and
+14:704. 14:704 also bequeaths to 15:801 all of its six ``final'' 
+instructions, meaning that 15:801 has all but the last of the 9 ``final''
+instructions (\texttt{string\_length}).
+
+\paragraph{4:897 and the carriers of \texttt{string\_length}}
+\label{sec:4:897}
+
+4:897 and its descendants carried the copy of the last instruction, 
+\texttt{string\_length}, that would ultimately form part of the solution. 
+This was transmitted all the way down to
+18:641 without any significant interactions with other ``final instructions'',
+as is reflected in the almost entirely linear ancestry from 4:897 to 18:641 
+in Figure~\ref{fig:run0Filtered}.
+
+There is one potentially interesting interaction with the other branches, 
+when 15:543 combined with 15:801 to create 16:964. It turns out, however,
+that of all the genes in 16:694, only the copy of the \texttt{string\_length} 
+gene went on to be included in the final set of 9 instructions in individual 
+20:484.
+
+\paragraph{19:554 and the final adjustments}
+
+19:554 was the result of a recombination of 18:641 and 18:937, which finally
+brought together all nine of the ``final'' instructions. 18:937 contributed
+the first 8 instructions, and 18:641 contributed the final 
+\texttt{string\_length}. Individual 19:554 didn't \emph{quite} solve the
+problem, however, having three ``return'' test cases with error 1, which turned
+out to be the only three test cases with a single character input.
+
+These errors were fairly easy to rectify, however, as evidenced by the 
+fact that 12 of 19:554's 747 offspring (or 1.6\%) were indeed successful.
+Two of these successful children (20:435 and 20:548) were the result of 
+mutating a \emph{single} instruction. One (the mutation that led to 20:435) 
+converted a \texttt{string\_butlast} into what was effectively a no-op; that
+\texttt{string\_butlast} was incorrectly removing the one and only character
+from the input string, and replacing it with a no-op led to a perfect solution.
 
 \subparagraph{Other stuff to figure out}
 
