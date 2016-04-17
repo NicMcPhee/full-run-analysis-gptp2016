@@ -5,11 +5,11 @@
 \title*{A detailed analysis of a GP run}
 % Use \titlerunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
-\author{Nicholas Freitag McPhee, Maggie M. Casale, Mitchell Finzel, Thomas Helmuth and Lee Spector}
+\author{Nicholas Freitag McPhee, Maggie M. Casale, Mitchell D. Finzel, Thomas Helmuth and Lee Spector}
 \authorrunning{McPhee, Casale, Finzel, Helmuth, and Spector}
 % Use \authorrunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
-\institute{Nicholas Freitag McPhee, Maggie M. Casale and Mitchell Finzel \at University of Minnesota, Morris; Morris, MN USA
+\institute{Nicholas Freitag McPhee, Maggie M. Casale and Mitchell D. Finzel \at University of Minnesota, Morris; Morris, MN USA
 \and Thomas Helmuth \at Washington and Lee University, Lexington, VA USA
 \and Lee Spector \at Hampshire College, Amerherst, MA USA}
 
@@ -34,11 +34,11 @@ Motivate the work!
 \section{Plush genomes and PushGP operators}
 \label{sec:background}
 
-The run presented here uses the PushGP genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use multiple typed stacks to store and manipulate data. Instructions take their arguments from stacks of the appropriate types and they leave their results the appropriate stacks. Push provides support for iteration, recursion, conditional execution, and automatically-defined subroutines through runtime code manipulation, making it a Turing-complete language \citep{1068292}. PushGP implementations have been written in Clojure, C++, Java, JavaScript, Python, and others. Many of these are available from the Push project page.\footnote{\url{http://pushlanguage.org/}} The run presented here was conducted using the Clojure implementation of PushGP\footnote{Clojush: \url{https://github.com/lspector/Clojush}}.
+The run presented here uses the PushGP genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use multiple typed stacks to store and manipulate data. Instructions take their arguments from stacks of the appropriate types and leave their results on the appropriate stacks. Push provides support for iteration, recursion, conditional execution, and automatically-defined subroutines through runtime code manipulation, making it a Turing-complete language \citep{1068292}. PushGP implementations have been written in Clojure, C++, Java, JavaScript, Python, and others. Many of these are available from the Push project page.\footnote{\url{http://pushlanguage.org/}} The run presented here was conducted using the Clojure implementation of PushGP\footnote{Clojush: \url{https://github.com/lspector/Clojush}}.
 
 Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block acts as a single unit when code manipulating instructions act on them. For example, the \texttt{exec\_if} instruction deletes the second code block on the \texttt{exec} stack if the top item on the \texttt{boolean} stack is true, and deletes the first code block on the \texttt{exec} stack if it is false.
 
-Unlike previous versions of PushGP, Clojush has recently changed to not evolve 
+Unlike previous versions of PushGP, Clojush has recently been changed to not evolve 
 Push programs directly, but instead uses a new linear genome representation 
 \citep{Helmuth:2016:GPTP}. Each \textit{Plush genome}\footnote{\textbf{L}inear 
 	\textbf{Push}} consists of a linear sequence of instructions (including 
@@ -79,7 +79,7 @@ attached to an instruction by incrementing or decrementing it. Finally, we
 often apply an alternation operator followed by a uniform mutation of the 
 result, inspired by the ULTRA operator \citep{Spector:2013:GPTP}.
 
-Push implements a method of automatic simplification, which takes a program and 
+Push also implements a method of automatic simplification, which takes a program and 
 converts it into a smaller, semantically equivalent program. This process uses 
 hill-climbing to remove instructions and code blocks from the program, checking 
 at each step that the resulting program produces the same error vector as the 
@@ -160,7 +160,7 @@ Despite the short length of this run, and the restriction to just displaying
 ancestors of successful individuals, Figure~\ref{fig:run0Labelled} still
 contains 394 nodes and 629 edges, making it difficult to analyze in full.
 Figure~\ref{fig:run0Filtered} is a version of the same graph that further
-filters the ancestry tree, attempting the highlight the individuals that
+filters the ancestry tree, attempting to highlight the individuals that
 are most likely to have contributed a significant amount of genetic material
 to the solutions.
 
@@ -233,8 +233,8 @@ version of a graph.
 A notable consequence of this filtering is that many of the larger DL distances in
 the filtered graph are the product of there being a child with both parents present.
 For instance when 13:575 and 13:136 converge into 14:213 they have DL distances of
-58 and 87 respectively. While an alternation with uniform mutation and one parent present
-such as 8:163 into 9:109 only has a DL distance of 1.
+58 and 87 respectively. While an alternation with uniform mutation and one parent present,
+such as 8:163 into 9:109,  only has a DL distance of 1.
 
 \subsection{The (successful) end}
 
@@ -278,10 +278,10 @@ important role in subtle ways, e.g., as spacers on stacks that when
 ``counting'' is implemented with a stack depth command. Removal of
 instructions can also be important. One key step in this run, for example, 
 is the removal of an extraneous \texttt{print\_newline}; the presence of this
-instruction caused the printed output to always have an error of one because
-of that \texttt{print\_newline}, and its removal led to 100 errors changing
+instruction caused the printed output to always have an error of one,
+and its removal led to 100 errors changing
 from 1 to 0. All that said, however, we need some way to limit the number
-of individuals and events to analyze, so here will focus on the how those
+of individuals and events to analyze, so here we will focus on the how those
 nine instructions trace through the ancestry. 
 
 It turns
@@ -290,12 +290,12 @@ printing part of Replace Space With Newline, is largely independent of
 the evolution of the last four instructions, that handle the return part
 of the problem. The first five instructions, for example, all appear early 
 in the genome for 20:484, from gene 9 to gene 24, while the last four 
-all appear much later in the genome, from gene 107 to gene 175. As consequence
+all appear much later in the genome, from gene 107 to gene 175. As a consequence
 we'll trace these two groups one at a time.
 
 \subparagraph{Printing: The first five instructions}
-What is witnessed in the ancestry of the 5 instructions key to solving the printing test
-cases is fairly interesting and straight forward. Starting at the top with individual 0:288 only
+What's witnessed in the ancestry of the 5 instructions key to solving the printing test
+cases is fairly interesting and straightforward. Starting at the top with individual 0:288 only
 one of the key instructions, \texttt{in1}, is present. The rest of the 5 are introduced over time purely
 through mutation. The next of the key instructions to appear is introduced in individual 1:590 via a point
 mutation converting a piece pf 0:288's genome into a \texttt{print\_string} instruction. These two
@@ -307,12 +307,13 @@ After descending another 2 generations these three instructions are joined by \t
 in 9:896 via yet another uniform mutation. At this point it's interesting to note that these instructions are
 all introduced fairly evenly over the course of these generations. Even as the run gets closer to the generation
 20 winners these individuals are obtaining key instructions through random uniform mutations. Which leads to
-the final of these key instructions being introduced, \texttt{\textbackslash space}. This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
+the final of these key instructions being introduced, \texttt{\textbackslash space}.
+This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
 instructions that are passed down through 15:801 and maintained all of the way down to the winners.
 
 This marks another interesting point about these instructions. Unlike in the return case instructions there is a 
 very clear and straight path of lineage for these instructions. As they are introduced over time they 
-never split apart into subtrees to be recombined later. Rather they are added via mutation and 
+are never split apart into subtrees to be recombined later. Rather they are added via mutation and 
 then passed down together consistently from 0:288 down to the winners. 
 
 \subparagraph{Returning: The last four instructions}
@@ -371,7 +372,7 @@ that doesn't involve any other individuals from generation 18.
 
 Individual 18:937 was the result of a self-cross between 17:189 and itself,
 with no mutation applied to the child after alternation was performed. The
-change in the genome was that two instructions were removed, 
+change in the genome was two instructions being removed, 
 \texttt{exec\_yank} followed by \texttt{string\_rot}, with the same pair of
 instructions being removed from the program as well. This leads to changes
 in 5 of the ``return'' test cases, each of which improves the error 
@@ -507,7 +508,7 @@ better and some being for the worse.
 
 The five mutations that created 11:272 from 10:473, however, led to substantial
 improvements on the ``printing'' test cases. 21 of the 100 ``printing'' 
-test cases had their changed from 1 to 0, meaning that 11:272 was able to
+test cases had their score changed from 1 to 0, meaning that 11:272 was able to
 correctly solve over a fifth of the ``printing'' test cases that 10:473 was not
 able to solve.
 
@@ -518,7 +519,7 @@ ultimately contribute to the genetics of the solutions. From 12:698 to 14:704
 involved only four changes, a recombination event that only changed one
 instruction, and a mutation that changed three instructions. From 11:272 to 13:580 only one error value changed, improving from 2 to 0, but the mutation
 that led from 13:580 to 14:704 brought about a major change in the behavior.
-While none of the ``return'' errors, the ``printing'' errors all became 1 in
+While none of the ``return'' errors changed, the ``printing'' errors all became 1 in
 14:704. It turns out that it's program was completely correct for the
 ``printing'' cases \emph{except} that it had an extraneous 
 \texttt{print\_newline} near the end that meant that it's printed answers
