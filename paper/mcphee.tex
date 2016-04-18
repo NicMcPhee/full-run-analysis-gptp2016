@@ -95,7 +95,7 @@ original program \citep{Spector:2014:GECCOcomp}.
 %Push traditionally takes results from the top items on stacks after executing a program. For example, a program that returns an integer will take the top value on the integer stack as its output. This convention means that some evolved programs might not return a value of the correct type, if the relevant stack is empty following execution; in this scenario, we penalize the program for failing to return a result. Push also has the ability to print literals to standard output; in our implementation this simply concatenates printed material to a string of whatever has been printed so far, but this could easily be changed to print to standard output.
 
 
-\section{Analysis of a run}
+\section{This needs a title}
 
 
 Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
@@ -203,6 +203,8 @@ making the associated genome vector
 	   exec_swap 0 integer_empty 0 ...
 \end{verbatim}
 
+\todo{Replace the filtering stuff with a description of how Figure~\ref{fig:run0Filtered} was generated.}
+
 Once we had these distances computed, we used it to identify parents in
 recombinations that made minimal contributions to the resulting child, so
 we could avoid tracing back through those edges, potentially removing not
@@ -263,7 +265,7 @@ The next four instructions (on the second line) remove all the spaces from
 a fresh copy of the input string, compute the length and leave that on the
 \texttt{:integer} stack as the ``returned'' result.
 
-\subsection{How did we get there?}
+\section{How did we get there?}
 \label{sec:howDidWeGetThere}
 
 In this section we will trace the origin of each of the nine instructions
@@ -309,7 +311,7 @@ in the genome for 20:484, from gene 9 to gene 24, while the last four
 all appear much later in the genome, from gene 107 to gene 175. As a consequence
 we'll trace these two groups one at a time.
 
-\subsubsection{Printing: The first five instructions}
+\subsection{Printing: The first five instructions}
 \label{sec:Printing}
 
 What is witnessed in the ancestry of the 5 instructions key to solving the printing test
@@ -334,7 +336,7 @@ very clear and straight path of lineage for these instructions. As they are intr
 are never split apart into subtrees to be recombined later. Rather they are added via mutation and 
 then passed down together consistently from 0:288 down to the winners. 
 
-\subsubsection{Returning: The last four instructions}
+\subsection{Returning: The last four instructions}
 \label{sec:Returning}
 
 These last four instructions were present in the right order and in at least
@@ -367,8 +369,10 @@ be discussed below.\marginpar{I find that ``each of which will be discussed
 	below'' language really awkward, but couldn't think of something
 	better. -- NFM}
 
-\paragraph{4:772 and the carriers of \texttt{in1}}
+\subsubsection{4:772 and the carriers of \texttt{in1}}
 \label{sec:4:772}
+
+\todo{The subsubsections look awkwark because they start with a number, which interacts badly with the sub-sub-section numbers.}
 
 Individual 4:772 inherited the the copy of the first instruction,
 \texttt{in1}, that would ultimately form part of the solution. This was
@@ -386,7 +390,7 @@ along with the
 one of the parents of 15:801, a recombination which will be described in the
 discussion of the next branch.
 
-\paragraph{4:425, 4:107, and multiple blocks}
+\subsubsection{4:425, 4:107, and multiple blocks}
 \label{sec:4:425}
 
 3:122 contains a block of 25 genes % genes 77 to 101
@@ -412,7 +416,7 @@ instructions) are passed on to 15:801 in the recombination of 14:213 and
 instructions, meaning that 15:801 has all but the last of the 9 ``final''
 instructions (\texttt{string\_length}).
 
-\paragraph{4:897 and the carriers of \texttt{string\_length}}
+\subsubsection{4:897 and the carriers of \texttt{string\_length}}
 \label{sec:4:897}
 
 4:897 and its descendants carried the copy of the last instruction, 
@@ -428,7 +432,9 @@ that of all the genes in 16:694, only the copy of the \texttt{string\_length}
 gene went on to be included in the final set of 9 instructions in individual 
 20:484.
 
-\paragraph{19:554 and the final adjustments}
+\subsubsection{19:554 and the final adjustments}
+
+\todo{This sub-sub-section doesn't really work with the use of sub-sub-sections to talk about the three lineages earlier.}
 
 19:554 was the result of a recombination of 18:641 and 18:937, which finally
 brought together all nine of the ``final'' instructions. 18:937 contributed
@@ -445,157 +451,9 @@ converted a \texttt{string\_butlast} into what was effectively a no-op; that
 \texttt{string\_butlast} was incorrectly removing the one and only character
 from the input string, and replacing it with a no-op led to a perfect solution.
 
-\subparagraph{Other stuff to figure out}
-
-\todo{I'm starting to wonder if doing it ``backwards'' is actually such
-	a good idea -- it sort of turns the story on its head and may make it
-	harder to follow? -- NFM}
-A few places where we might need to bring in an individual that's 
-missing from Figure~\ref{fig:run0Labelled}:
-\begin{itemize}
-	\item 19:554's other parent
-	\item 17:189's other parent
-	\item 12:698 and 10:473's other parents.
-	\item Maybe 9:89 and 8:538's other parents. Depends somewhat on how much
-	they're contributing to the final individual, and whether those 
-	contributions are coming from the few changes that come from their other
-	parent.
-	\item Maybe 6:612, 5:429, and 4:107's other parents. (Same issues as above.)
-	\item Maybe 2:983 and 1:783's other parents. If we're running long, though, 
-	we could effectively start the process at 2:983 since most everything is
-	pretty clean from there down.
-\end{itemize}
-
-%\caption{If the width of the figure is less than 7.8 cm use the 
-%	\texttt{sidecaption} command to flush the caption on the left side of the 
-%	page. If the figure is positioned at the top of the page, align the 
-%	sidecaption with the top of the figure -- to achieve this you simply need 
-%	to use the optional argument \texttt{[t]} with the \texttt{sidecaption} 
-%	command}
-
-\subparagraph{Creating 19:554: A little too much filtering?}
-
-Individual 19:554 was the result of 
-recombination between 18:937 and an individual that was filtered from the
-graph (18:641, see Figure~\ref{fig:run0Labelled}). 
-The DL-distance between 18:937 and 19:554 is 55, however,
-suggesting that the filtered parent may have contributed some substantial
-genetic material to 19:554. Looking at the genomes, it turns out that 
-roughly 30 of the last 40 genes in 19:554's genome (which had 194 genes) 
-indeed came from the parent that is filtered out of this graph. Those genome
-changes lead to small, but potentially important, behavioral changes. 
-The error values only 
-changed on 7 of the 200 test cases; in five of these cases the error improved
-from 1 to 0 (i.e., correct on that test case), where two went the other way
-changing from 0 to 1. Given that 19:554 had 12 children that completely
-solved the problem, though, it seems likely that these new genes were useful
-in moving toward a solution. As can be seen in Figure~\ref{fig:run0Labelled},
-however, there was a path from 18:937 to a successful individual (20:940)
-that doesn't involve any other individuals from generation 18.
-
-\subparagraph{From 15:801 to 18:937: Deleting a few genes, duplicating a few others}
-
-Individual 18:937 was the result of a self-cross between 17:189 and itself,
-with no mutation applied to the child after alternation was performed. The
-change in the genome was two instructions being removed, 
-\texttt{exec\_yank} followed by \texttt{string\_rot}, with the same pair of
-instructions being removed from the program as well. This leads to changes
-in 5 of the ``return'' test cases, each of which improves the error 
-from 2 to 1.
-
-Individual 17:189 was the result of a recombination event between 16:106
-and an individual that was filtered out. The DL-distance between 17:189
-and 16:106 was 21, which suggests that the filtered out individual might
-be contributing some substantial genes. In fact, however, 17:189 is an
-exact copy of 16:106 with the deletion of 10 genes and one mutation. This
-had a much broader impact on the error vectors, changing dozens on error
-values on the ``return'' test cases. The error on five test cases got worse,
-going from 1 to 2, while all the rest improved, going from some single
-digit error to 0. After this change 17:189 was nearly perfect, with no errors
-on the ``printing'' test cases, and only five remaining non-zero errors on
-the ``return'' test cases, all of which are off by 2.
-
-Individual 16:106 was the result of an alternation between 15:801 and itself,
-followed by uniform mutation. The alternation duplicated a sequence of 7 genes,
-and the subsequent mutation step replaced the instructions in two other 
-genes with new instructions. These changes alter the errors on all but 6 of
-the 100 ``return'' test cases, with the changes being quite erratic, improving
-on many but getting worse on many others.
-
-\subparagraph{Creating 15:801: An important crossover}
-\label{sec:15:801}
-Individual 15:801 was created through the recombination of 14:704 and 14:213
-along with uniform mutation. As can be seen in table 1, 15:801 inherited 
-lines 1-2 and 4-5 from 14:704. Likewise it inherited lines 7, 11, 19-21 and 31-35
-from 14:213. It is possible that line 6, \texttt{print\_string}, was inherited from either
-parent given its presence in all three individuals. The \texttt{string\_rot} command on line
-22 could either be from a uniform mutation or may be missing in 14:213's program due to the
-simplification.
-
-Looking further into the genomes of these three individuals it begins to become apparent that
-15:801 received a large swathe of the genetic material at its start from 14:704 with the latter
-half being comprised almost solely of 14:213's genome. Going even deeper through the error vectors,
-it can be seen that the transition between 14:704 and 15:801 was a transition of all 1s on the even
-test cases to all perfect scores of 0. Given that the even cases are all printing tests table1 shows
-that the loss of the extra \texttt{print\_newline} in the recombination from 14:704 allowed these
-tests to succeed. Meanwhile the genome additions from 14:213 helped improve the odd test cases even
-though 15:801 did not perform as well as 14:213 on these cases.
-
-
-\begin{table}
-\begin{tabular}{l|rl|l}
-	\textbf{14:704} & & \textbf{15:801} & \textbf{14:213} \\
-	\hline
-& 0 & & \texttt{(in1} \\ 
-\texttt{(\textbackslash space} & 1 & \texttt{(\textbackslash space} & \\ 
-\texttt{ \textbackslash newline} & 2 & \texttt{ \textbackslash newline} &  \\ 
-& 3 & \texttt{ exec\_dup} &  \\ 
-\texttt{ in1} & 4 & \texttt{ in1} &  \\ 
-\texttt{ string\_replacechar} & 5 & \texttt{ string\_replacechar} &  \\ 
-\texttt{ print\_string} & 6 & \texttt{ print\_string} & \texttt{ print\_string} \\ 
-& 7 & \texttt{ exec\_dup} & \texttt{ exec\_dup} \\ 
-& 8 &  & \texttt{ exec\_s} \\ 
-& 9 &  & \texttt{ (exec\_dup} \\ 
-& 10 &  & \texttt{ \ (exec\_rot} \\ 
-& 11 & \texttt{ (string\_eq} & \texttt{ \ \ (string\_eq} \\
-& 12 & &  \texttt{ \ \ \ string\_fromboolean)} \\ 
-& 13 &  & \texttt{ \ \ char\_eq} \\ 
-& 14 & & \texttt{ \ \ (string\_emptystring} \\
-& 15 & &  \texttt{ \ \ \ boolean\_stackdepth} \\
-& 16 & & \texttt{ \ \ \ in1} \\
-& 17 & & \texttt{ \ \ \ integer\_gt)} \\ 
-& 18 &  & \texttt{ \ \ string\_emptystring} \\ 
-& 19 & \texttt{ \ \textbackslash space} & \texttt{ \ \ \textbackslash space} \\ 
-& 20 & \texttt{ \ string\_dup} & \texttt{ \ \ string\_dup} \\ 
-& 21 & \texttt{ \ string\_removechar} & \texttt{ \ \ string\_removechar} \\
-& 22 & \texttt{ \ string\_rot} & \\
-& 23 & & \texttt{ \ \ boolean\_pop} \\ 
-& 24 &   & \texttt{ \ \ in1} \\ 
-& 25 &   & \texttt{ \ \ string\_butlast} \\ 
-& 26 &   & \texttt{ \ \ string\_last} \\ 
-& 27 &   & \texttt{ \ \ string\_parse\_to\_chars} \\
-& 28 &   & \texttt{ \ \ exec\_when} \\ 
-& 29 &   & \texttt{ \ \ string\_dup} \\
-& 30 &   & \texttt{ \ \ string\_removechar} \\
-& 31 & \texttt{ \ string\_last} & \texttt{ \ \ string\_last} \\
-& 32 & \texttt{ \ string\_parse\_to\_chars} & \texttt{ \ \ string\_parse\_to\_chars} \\
-& 33 & \texttt{ \ string\_rot)} & \texttt{ \ \ string\_rot)} \\
-& 34 & \texttt{ in1} & \texttt{ \ in1)} \\
-& 35 & \texttt{ string\_stackdepth)} & \texttt{ string\_stackdepth)} \\
-\texttt{ boolean\_stackdepth} & 36 & & \\
-\texttt{ print\_newline)} & 37 & & \\
-\end{tabular}
-\caption{The details of the recombination event (alternation followed by
-	uniform mutation) that created individual
-	15:801 (center) from parents 14:704 (left) and 14:213 (right) showing
-	the \emph{simplified} programs for those individuals (see
-	Section~\ref{sec:background}). This shows that individual 15:801 was
-	essentially constructed from a prefix of 14:704 and a suffix of 14:213.
-	See Section~\ref{sec:15:801} for additional details.}
-\label{tab:15:801}
-\end{table}
-
 \subsection{The long ``thready'' bit: 3:122 to 15:801}
+
+\todo{Move some of the error vector stuff from here up into the trace part of this section, and pitch most of the rest.}
 
 Between 3:122 and 15:801 there are two distinct lineages that are highly
 linear in the filtered graph. From 4:772 to 14:704 (on the left of
@@ -666,6 +524,110 @@ individuals comprised of 5 uniform mutation events with 1 being uniform closed m
 
 Wrap up with some kind of ``big picture'' that does things like catalogs the
 \emph{kinds} of operations, their frequency, etc.
+
+\subparagraph{From 15:801 to 18:937: Deleting a few genes, duplicating a few others}
+
+\todo{Strip this for parts. We want to say something in the catalogue of events that there are moments where we delete genes, and moments where we duplicate genes, and some of these could be examples of that, but we don't need nearly this much details.}
+
+Individual 18:937 was the result of a self-cross between 17:189 and itself,
+with no mutation applied to the child after alternation was performed. The
+change in the genome was two instructions being removed, 
+\texttt{exec\_yank} followed by \texttt{string\_rot}, with the same pair of
+instructions being removed from the program as well. This leads to changes
+in 5 of the ``return'' test cases, each of which improves the error 
+from 2 to 1.
+
+Individual 17:189 was the result of a recombination event between 16:106
+and an individual that was filtered out. The DL-distance between 17:189
+and 16:106 was 21, which suggests that the filtered out individual might
+be contributing some substantial genes. In fact, however, 17:189 is an
+exact copy of 16:106 with the deletion of 10 genes and one mutation. This
+had a much broader impact on the error vectors, changing dozens on error
+values on the ``return'' test cases. The error on five test cases got worse,
+going from 1 to 2, while all the rest improved, going from some single
+digit error to 0. After this change 17:189 was nearly perfect, with no errors
+on the ``printing'' test cases, and only five remaining non-zero errors on
+the ``return'' test cases, all of which are off by 2.
+
+Individual 16:106 was the result of an alternation between 15:801 and itself,
+followed by uniform mutation. The alternation duplicated a sequence of 7 genes,
+and the subsequent mutation step replaced the instructions in two other 
+genes with new instructions. These changes alter the errors on all but 6 of
+the 100 ``return'' test cases, with the changes being quite erratic, improving
+on many but getting worse on many others.
+
+\subparagraph{Creating 15:801: An important crossover}
+\label{sec:15:801}
+Individual 15:801 was created through the recombination of 14:704 and 14:213
+along with uniform mutation. As can be seen in table 1, 15:801 inherited 
+lines 1-2 and 4-5 from 14:704. Likewise it inherited lines 7, 11, 19-21 and 31-35
+from 14:213. It is possible that line 6, \texttt{print\_string}, was inherited from either
+parent given its presence in all three individuals. The \texttt{string\_rot} command on line
+22 could either be from a uniform mutation or may be missing in 14:213's program due to the
+simplification.
+
+Looking further into the genomes of these three individuals it begins to become apparent that
+15:801 received a large swathe of the genetic material at its start from 14:704 with the latter
+half being comprised almost solely of 14:213's genome. Going even deeper through the error vectors,
+it can be seen that the transition between 14:704 and 15:801 was a transition of all 1s on the even
+test cases to all perfect scores of 0. Given that the even cases are all printing tests table1 shows
+that the loss of the extra \texttt{print\_newline} in the recombination from 14:704 allowed these
+tests to succeed. Meanwhile the genome additions from 14:213 helped improve the odd test cases even
+though 15:801 did not perform as well as 14:213 on these cases.
+
+
+\begin{table}
+	\begin{tabular}{l|rl|l}
+		\textbf{14:704} & & \textbf{15:801} & \textbf{14:213} \\
+		\hline
+		& 0 & & \texttt{(in1} \\ 
+		\texttt{(\textbackslash space} & 1 & \texttt{(\textbackslash space} & \\ 
+		\texttt{ \textbackslash newline} & 2 & \texttt{ \textbackslash newline} &  \\ 
+		& 3 & \texttt{ exec\_dup} &  \\ 
+		\texttt{ in1} & 4 & \texttt{ in1} &  \\ 
+		\texttt{ string\_replacechar} & 5 & \texttt{ string\_replacechar} &  \\ 
+		\texttt{ print\_string} & 6 & \texttt{ print\_string} & \texttt{ print\_string} \\ 
+		& 7 & \texttt{ exec\_dup} & \texttt{ exec\_dup} \\ 
+		& 8 &  & \texttt{ exec\_s} \\ 
+		& 9 &  & \texttt{ (exec\_dup} \\ 
+		& 10 &  & \texttt{ \ (exec\_rot} \\ 
+		& 11 & \texttt{ (string\_eq} & \texttt{ \ \ (string\_eq} \\
+		& 12 & &  \texttt{ \ \ \ string\_fromboolean)} \\ 
+		& 13 &  & \texttt{ \ \ char\_eq} \\ 
+		& 14 & & \texttt{ \ \ (string\_emptystring} \\
+		& 15 & &  \texttt{ \ \ \ boolean\_stackdepth} \\
+		& 16 & & \texttt{ \ \ \ in1} \\
+		& 17 & & \texttt{ \ \ \ integer\_gt)} \\ 
+		& 18 &  & \texttt{ \ \ string\_emptystring} \\ 
+		& 19 & \texttt{ \ \textbackslash space} & \texttt{ \ \ \textbackslash space} \\ 
+		& 20 & \texttt{ \ string\_dup} & \texttt{ \ \ string\_dup} \\ 
+		& 21 & \texttt{ \ string\_removechar} & \texttt{ \ \ string\_removechar} \\
+		& 22 & \texttt{ \ string\_rot} & \\
+		& 23 & & \texttt{ \ \ boolean\_pop} \\ 
+		& 24 &   & \texttt{ \ \ in1} \\ 
+		& 25 &   & \texttt{ \ \ string\_butlast} \\ 
+		& 26 &   & \texttt{ \ \ string\_last} \\ 
+		& 27 &   & \texttt{ \ \ string\_parse\_to\_chars} \\
+		& 28 &   & \texttt{ \ \ exec\_when} \\ 
+		& 29 &   & \texttt{ \ \ string\_dup} \\
+		& 30 &   & \texttt{ \ \ string\_removechar} \\
+		& 31 & \texttt{ \ string\_last} & \texttt{ \ \ string\_last} \\
+		& 32 & \texttt{ \ string\_parse\_to\_chars} & \texttt{ \ \ string\_parse\_to\_chars} \\
+		& 33 & \texttt{ \ string\_rot)} & \texttt{ \ \ string\_rot)} \\
+		& 34 & \texttt{ in1} & \texttt{ \ in1)} \\
+		& 35 & \texttt{ string\_stackdepth)} & \texttt{ string\_stackdepth)} \\
+		\texttt{ boolean\_stackdepth} & 36 & & \\
+		\texttt{ print\_newline)} & 37 & & \\
+	\end{tabular}
+	\caption{The details of the recombination event (alternation followed by
+		uniform mutation) that created individual
+		15:801 (center) from parents 14:704 (left) and 14:213 (right) showing
+		the \emph{simplified} programs for those individuals (see
+		Section~\ref{sec:background}). This shows that individual 15:801 was
+		essentially constructed from a prefix of 14:704 and a suffix of 14:213.
+		See Section~\ref{sec:15:801} for additional details.}
+	\label{tab:15:801}
+\end{table}
 
 
 % \paragraph{Paragraph Heading} %
