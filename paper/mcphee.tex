@@ -29,7 +29,34 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Motivate the work!
+Previous work~\citep{McPhee:2015:GPTP, donatuccianalysis, Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015, kuber2014ancestral} has
+illustrated the value of ancestry graphs as a means of analyzing the dynamics
+of evolutionary computation runs. In~\cite{McPhee:2015:GPTP}, for example, we
+demonstrated the use of graph databases as a tool for collecting and analyzing
+ancestries in genetic programming runs, identifying several key moments and
+general patterns in runs using both lexicase and tournament selection.
+
+In this paper we extend that work to provide a more detailed analysis of a
+single, complete run. We identify \emph{every} ancestor of the evolved 
+solutions, and
+then reduce that graph (which has 394 individuals) to a graph containing only 
+the individuals that in fact contributed one of the key instructions to 
+the final solutions (73 individuals). We then trace each of these key solution
+instructions back through the entire lineage, identifying where they were first
+introduced, and how they were transmitted through the genetic history. This
+reveals a number of interesting properties of this particular run including,
+for example, the fact that 4 of the 9 key instructions were introduced via 
+mutation.
+
+In Section~\ref{sec:background} we review the key components of the system
+used to generate the run explored here (PushGP, Plush genomes, and the Replace Space With Newline test problem). We then describe and present both the full
+and filtered ancestry graphs in Section~\ref{sec:ancestryGraphs}, before
+tracing the evolutionary history of all the key instructions in 
+Section~\ref{sec:howDidWeGetThere}. Our discussion in 
+Section~\ref{sec:discussion} builds on the details of these traces and
+catalogues the kinds of events we see in this run, describing a few in greater
+detail. We then wrap up with some conclusions and ideas for future work in
+Section~\ref{sec:conclusions}.
 
 \section{Plush genomes and PushGP operators}
 \label{sec:background}
@@ -85,6 +112,8 @@ hill-climbing to remove instructions and code blocks from the program, checking
 at each step that the resulting program produces the same error vector as the 
 original program \citep{Spector:2014:GECCOcomp}.
 
+\todo{Describe replace-space-with-newline}
+
 
 %\subsection{THIS COPIED FROM TOM'S THESIS}
 
@@ -95,7 +124,8 @@ original program \citep{Spector:2014:GECCOcomp}.
 %Push traditionally takes results from the top items on stacks after executing a program. For example, a program that returns an integer will take the top value on the integer stack as its output. This convention means that some evolved programs might not return a value of the correct type, if the relevant stack is empty following execution; in this scenario, we penalize the program for failing to return a result. Push also has the ability to print literals to standard output; in our implementation this simply concatenates printed material to a string of whatever has been printed so far, but this could easily be changed to print to standard output.
 
 
-\section{This needs a title}
+\section{Ancestry graphs}
+\label{sec:ancestryGraphs}
 
 
 Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
@@ -240,6 +270,8 @@ such as 8:163 into 9:109,  only has a DL distance of 1.
 
 \subsection{The (successful) end}
 \label{sec:successfulEnd}
+
+\todo{I think this should probably move down to the next section? -- NFM}
 
 There are 13 successful individuals
 in this run, most of which have identical simplified
@@ -641,10 +673,12 @@ though 15:801 did not perform as well as 14:213 on these cases.
 % e.g. This book is about \index{genetic programming}genetic programming. 
 % If the text is not entered outside the brackets it will appear as: This book is about .
 
-\section{Conclusions}
+\section{Conclusions and future work}
 \label{sec:conclusions}
 
 We did it! Yay! Oh, and it was useful and matters in some way.
+
+Too much of this was done by hand, and we really need to automate more of it.
 
 \begin{acknowledgement}
 	Emma Sax, Laverne Schrock, and Leonid Scott helped 
