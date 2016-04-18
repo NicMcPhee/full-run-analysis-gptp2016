@@ -358,17 +358,17 @@ instructions are passed along this tree until they are joined by the next import
 \texttt{\textbackslash newline}. This instruction is introduced in 7:788 via a uniform mutation
 of 6:881.
 
-After descending another 2 generations these three instructions are joined by \texttt{string\_replacechar}
+After descending another 2 generations these three instructions were joined by \texttt{string\_replacechar}
 in 9:896 via yet another uniform mutation. At this point it's interesting to note that these instructions are
 all introduced fairly evenly over the course of these generations. Even as the run gets closer to the generation
-20 winners these individuals are obtaining key instructions through random uniform mutations. Which leads to
+20 winners these individuals obtained key instructions through random uniform mutations. Which lead to
 the final of these key instructions being introduced, \texttt{\textbackslash space}.
 This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
 instructions that are passed down through 15:801 and maintained all of the way down to the winners.
 
 This marks another interesting point about these instructions. Unlike in the return case instructions there is a 
 very clear and straight path of lineage for these instructions. As they are introduced over time they 
-are never split apart into subtrees to be recombined later. Rather they are added via mutation and 
+are never split apart into subtrees to be recombined later. Rather they were added via mutation and 
 then passed down together consistently from 0:288 down to the winners.
 
 These instruction additions can also be seen affecting the error vectors in their individuals. Each instruction is addition
@@ -409,7 +409,7 @@ to 3:122 (see Figure~\ref{fig:run0Filtered}).
 3:122 was the third most selected individual in its generation
 and had 100 children, several of which went on to carry one or more of
 these four instructions forward to individual 19:554 when they were finally
-reunited in the positions that would ultimately led to success. In particular
+reunited in the positions that would ultimately lead to success. In particular
 there were three distinct branches coming from 3:122, each of which will
 be discussed below.\marginpar{I find that ``each of which will be discussed
 	below'' language really awkward, but couldn't think of something
@@ -420,7 +420,7 @@ be discussed below.\marginpar{I find that ``each of which will be discussed
 
 \todo{The subsubsections look awkwark because they start with a number, which interacts badly with the sub-sub-section numbers.}
 
-Individual 4:772 inherited the the copy of the first instruction,
+Individual 4:772 inherited the copy of the first instruction,
 \texttt{in1}, that would ultimately form part of the solution. This was
 transmitted down to 9:109 without any further interactions with any of
 the 9 ``final'' instructions. Individual 9:109, however, recombined with 
@@ -439,8 +439,8 @@ discussion of the next branch.
 \subsubsection{4:425, 4:107, and multiple blocks}
 \label{sec:4:425}
 
-3:122 contains a block of 25 genes % genes 77 to 101
-containing the two middle instructions in the ``returning''
+3:122 contained a block of 25 genes % genes 77 to 101
+that contain the two middle instructions in the ``returning''
 code, \texttt{\textbackslash space} and \texttt{string\_removechar}.
 This block is replicated in both 4:425 and 4:107, and then passed,
 respectively, to 5:303 and 5:910. 5:303 and 5:910 then recombine
@@ -448,17 +448,17 @@ to create 6:293, which ends up having two complete copies of this
 block of genes. % genes 67 to 91 and 100 to 124.
 
 These two blocks are then replicated from 7:291 down through 10:41,
-to both 13:136 and 13:575. When these recombine to form 14:213
-we end up with \emph{three} near copies of the block. These blocks
+to both 13:136 and 13:575. When these recombined to form 14:213
+we ended up with \emph{three} near copies of the block. These blocks
 are no longer identical due to small changes caused by the
-genetic operators, but each block still contains over 20 genes,
+genetic operators, but each block still contained over 20 genes,
 including the two key instructions,
 \texttt{\textbackslash space} and \texttt{string\_removechar},
 four instructions apart.
 
 All three of these blocks (and their three copies of these two ``final''
 instructions) are passed on to 15:801 in the recombination of 14:213 and
-14:704. 14:704 also bequeaths to 15:801 all of its six ``final'' 
+14:704. 14:704 also bequeathed to 15:801 all of its six ``final'' 
 instructions, meaning that 15:801 has all but the last of the 9 ``final''
 instructions (\texttt{string\_length}).
 
@@ -473,7 +473,7 @@ as is reflected in the almost entirely linear ancestry from 4:897 to 18:641
 in Figure~\ref{fig:run0Filtered}.
 
 There is one potentially interesting interaction with the other branches, 
-when 15:543 combined with 15:801 to create 16:964. It turns out, however,
+when 15:543 combined with 15:801 to create 16:964. It turned out, however,
 that of all the genes in 16:694, only the copy of the \texttt{string\_length} 
 gene went on to be included in the final set of 9 instructions in individual 
 20:484.
@@ -581,7 +581,7 @@ graph in Figure~\ref{fig:run0Filtered} (62 total nodes, 60 constructed after
 the initial generation). The entire run numbers match the proportions
 in the run configuration. The other two columns have similar percentages,
 suggesting that there wasn't a large skew away from those parameter values,
-i.e., the none of the operators appear to be particularly important or
+i.e., that none of the operators appear to be particularly important or
 valuable in constructing a solution, at least in this run.
 
 \begin{table}[t]
