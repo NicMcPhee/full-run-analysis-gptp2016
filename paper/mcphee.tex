@@ -29,6 +29,8 @@
 \section{Introduction}
 \label{sec:introduction}
 
+\todo{Scrape some citations from the VizGEC 2016 paper.}
+
 Previous work~\citep{McPhee:2015:GPTP, donatuccianalysis, Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015, kuber2014ancestral} has
 illustrated the value of ancestry graphs as a means of analyzing the dynamics
 of evolutionary computation runs. In~\cite{McPhee:2015:GPTP}, for example, we
@@ -58,7 +60,7 @@ catalogues the kinds of events we see in this run, describing a few in greater
 detail. We then wrap up with some conclusions and ideas for future work in
 Section~\ref{sec:conclusions}.
 
-\section{Plush genomes and PushGP operators}
+\section{Tools and setup}
 \label{sec:background}
 
 The run presented here uses the PushGP genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use multiple typed stacks to store and manipulate data. Instructions take their arguments from stacks of the appropriate types and leave their results on the appropriate stacks. Push provides support for iteration, recursion, conditional execution, and automatically-defined subroutines through runtime code manipulation, making it a Turing-complete language \citep{1068292}. PushGP implementations have been written in Clojure, C++, Java, JavaScript, Python, and others. Many of these are available from the Push project page.\footnote{\url{http://pushlanguage.org/}} The run presented here was conducted using the Clojure implementation of PushGP\footnote{Clojush: \url{https://github.com/lspector/Clojush}}.
@@ -112,8 +114,9 @@ hill-climbing to remove instructions and code blocks from the program, checking
 at each step that the resulting program produces the same error vector as the 
 original program \citep{Spector:2014:GECCOcomp}.
 
-\todo{Describe replace-space-with-newline}
+Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
 
+\todo{Say that we're using Titan and Graphviz for all this.}
 
 %\subsection{THIS COPIED FROM TOM'S THESIS}
 
@@ -128,7 +131,7 @@ original program \citep{Spector:2014:GECCOcomp}.
 \label{sec:ancestryGraphs}
 
 
-Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
+
 
 
 \begin{itemize}
@@ -565,8 +568,37 @@ individuals comprised of 5 uniform mutation events with 1 being uniform closed m
 \section{Discussion}
 \label{sec:discussion}
 
-Wrap up with some kind of ``big picture'' that does things like catalogs the
-\emph{kinds} of operations, their frequency, etc.
+\todo{Wrap up with some kind of ``big picture'' that does things like catalogs the
+\emph{kinds} of operations, their frequency, etc.}
+
+Table~\ref{tab:operatorCounts} enumerates the number and proportions 
+of individuals constructed via the four genetic operators, first across the
+entire run (so all of the 20,000 individuals generated after the initial
+random population), then for the ancestry graph in 
+Figure~\ref{fig:run0Labelled} (394 total nodes, 
+376 constructed after the initial generation), and finally for the filtered
+graph in Figure~\ref{fig:run0Filtered} (62 total nodes, 60 constructed after 
+the initial generation). The entire run numbers match the proportions
+in the run configuration. The other two columns have similar percentages,
+suggesting that there wasn't a large skew away from those parameter values,
+i.e., the none of the operators appear to be particularly important or
+valuable in constructing a solution, at least in this run.
+
+\begin{table}[t]
+	\begin{tabular}{lrrr}
+		\textbf{Genetic operator} & \textbf{Entire run} & \; \textbf{Full ancestry graph} & \; \textbf{Filtered ancestry graph} \\ 
+		\hline
+		Alternation + uniform mutation & 9,985 (50\%) & 186 (49\%) & 39 (54\%) \\ 
+		Alternation & 4,001 (20\%) & 67 (18\%) & 17 (24\%) \\ 
+		Uniform mutation & 4,026 (20\%) & 83 (22\%) & 11 (15\%) \\ 
+		Uniform close mutation & 1,988 (10\%) & 40 (11\%) & 5 (7\%)
+	\end{tabular} 
+	\caption{The numbers and proportions of individuals constructed using
+		the different genetic operators. Total percentages might not equal 100\% due to rounding.}
+	\label{tab:operatorCounts}
+\end{table}
+
+\todo{Say something about how it appears to be focusing on the returning early, possible because failing to return is so expensive.}
 
 \subparagraph{From 15:801 to 18:937: Deleting a few genes, duplicating a few others}
 
