@@ -315,9 +315,9 @@ we'll trace these two groups one at a time.
 \label{sec:Printing}
 
 What is witnessed in the ancestry of the 5 instructions key to solving the printing test
-cases is fairly interesting and straightforward. Starting at the top with individual 0:288 only
+cases (even cases) is fairly interesting and straightforward. Starting at the top with individual 0:288 only
 one of the key instructions, \texttt{in1}, is present. The rest of the 5 are introduced over time purely
-through mutation. The next of the key instructions to appear is introduced in individual 1:590 via a point
+through uniform mutations. The next of the key instructions to appear is introduced in individual 1:590 via a point
 mutation converting a piece pf 0:288's genome into a \texttt{print\_string} instruction. These two
 instructions are passed along this tree until they are joined by the next important instruction,
 \texttt{\textbackslash newline}. This instruction is introduced in 7:788 via a uniform mutation
@@ -334,7 +334,18 @@ instructions that are passed down through 15:801 and maintained all of the way d
 This marks another interesting point about these instructions. Unlike in the return case instructions there is a 
 very clear and straight path of lineage for these instructions. As they are introduced over time they 
 are never split apart into subtrees to be recombined later. Rather they are added via mutation and 
-then passed down together consistently from 0:288 down to the winners. 
+then passed down together consistently from 0:288 down to the winners.
+
+These instruction additions can also be seen affecting the error vectors in their individuals. Each instruction is addition
+is accompanied by a shift in the even test cases. Sometimes it is a small effect with both positive and negative change
+to the test cases, but others it is a more dramatic improvement. For instance an example of a small change is when
+\texttt{\printindex\_string} is mutated into 1:590. With this mutation we saw a change in 83 of the 100 even test cases
+with general improvements across the board accompanied by a few increases in test scores (performed worse). Meanwhile in
+the mutation of 13:580  in the creation of 14:704 we saw all of the even test scores become 1. This is in general a very
+big improvement, but worsened a few tests that had passed with no error in 13:580. These examples help to highlight
+and support the value of these instructions as each step we saw a change, mostly for the better. This however is not to
+say that steps where these instructions are not added don't haven't had changes in their error vectors, but shines light
+on how it is necessary to both find the right instructions as well as remove instructions that hinder the solution.
 
 \subsection{Returning: The last four instructions}
 \label{sec:Returning}
