@@ -16,12 +16,21 @@
 \maketitle
 
 \abstract{
-In genetic programming runs there is frequently a great deal of data to work with.
-This data is often put aside in favor of solely looking at the produced result.
-In this research, the goal was to examine a genetic programming run and trace 
+In evolutionary computation runs there is a great deal of data that could be
+saved and analyzed.
+This data is often put aside, however, in favor of focusing on the final
+outcomes, typically captured and presented in the form of summary statistics
+and performance plots.
+Here we examine a genetic programming run in detail and trace 
 back from the solution to determine how it was derived. 
-To visualize genetic programming runs in a more organized fashion, the ancestry tree is extracted from the 
-solution(s) up to their relatives in the initial random population. For an even closer look, the solution is analyzed for instructions and a genetic ancestry tree is made of those who have contributed genetic information (or instructions) to the solution. In this trace of genetic information we were able to identify trends at important moments and other interesting aspects.
+To visualize this genetic programming run, the ancestry graph is extracted, running from the 
+solution(s) in the final generation up to their ancestors in the initial random 
+population. The key instructions in the solution are also identified, and 
+a genetic ancestry graph is constructed, a subgraph of the ancestry graph
+containing only those individuals contributed genetic 
+information (or instructions) to the solution. This visualization and our
+ability to trace these key instructions throughout the run allowed us to identify general inheritance patterns and key evolutionary moments in this
+run.
 }
 
 \begin{keywords}
