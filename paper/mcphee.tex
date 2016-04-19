@@ -5,8 +5,8 @@
 \title*{A detailed analysis of a PushGP run}
 % Use \titlerunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
-\author{Nicholas Freitag McPhee, Maggie M. Casale, Mitchell D. Finzel, Thomas Helmuth and Lee Spector}
-\authorrunning{McPhee, Casale, Finzel, Helmuth, and Spector}
+\author{Nicholas Freitag McPhee, Mitchell D. Finzel, Maggie M. Casale, Thomas Helmuth and Lee Spector}
+\authorrunning{McPhee, Finzel, Casale, Helmuth, and Spector}
 % Use \authorrunning{Short Title} for an abbreviated version of
 % your contribution title if the original one is too long
 \institute{Nicholas Freitag McPhee, Maggie M. Casale and Mitchell D. Finzel \at University of Minnesota, Morris; Morris, MN USA
@@ -15,7 +15,14 @@
 
 \maketitle
 
-\abstract{We analyze the key events in a GP run!}
+\abstract{
+In genetic programming runs there is frequently a great deal of data to work with.
+This data is often put aside in favor of solely looking at the produced result.
+In this research, the goal was to examine a genetic programming run and trace 
+back from the solution to determine how it was derived. 
+To visualize genetic programming runs in a more organized fashion, the ancestry tree is extracted from the 
+solution(s) up to their relatives in the initial random population. For an even closer look, the solution is analyzed for instructions and a genetic ancestry tree is made of those who have contributed genetic information (or instructions) to the solution. In this trace of genetic information we were able to identify trends at important moments and other interesting aspects.
+}
 
 \begin{keywords}
 	genetic programming, PushGP, ancestry graph, lineage, inheritance
@@ -28,8 +35,6 @@
 \\
 \section{Introduction}
 \label{sec:introduction}
-
-\todo{Scrape some citations from the VizGEC 2016 paper.}
 
 Previous work~\citep{McPhee:2015:GPTP, donatuccianalysis, Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015, kuber2014ancestral} has
 illustrated the value of ancestry graphs as a means of analyzing the dynamics
@@ -52,7 +57,7 @@ mutation.
 
 In Section~\ref{sec:background} we review the key components of the system
 used to generate the run explored here (PushGP, Plush genomes, and the Replace Space With Newline test problem). We then describe and present both the full
-and filtered ancestry graphs in Section~\ref{sec:ancestryGraphs}, before
+and genetic ancestry graphs in Section~\ref{sec:ancestryGraphs}, before
 tracing the evolutionary history of all the key instructions in 
 Section~\ref{sec:howDidWeGetThere}. Our discussion in 
 Section~\ref{sec:discussion} builds on the details of these traces and
@@ -116,8 +121,19 @@ original program \citep{Spector:2014:GECCOcomp}.
 
 Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
 
-\todo{Say that we're using Titan and Graphviz for all this.}
+For organizing our data we used the Titan graph database\footnote{\url{http://thinkaurelius.github.io/titan/}}. To retrieve our data and perform queries we used the Gremlin shell along with Apache Tinkerpop\footnote{\url{https://tinkerpop.apache.org/}}. This allows for a large scaling system where
+we can store information about nodes (individuals) and edges (relations), such as parent child relationships. With access to all of the data in an organized fashion we can pull subgraphs or ancestry trees of individuals that found a solution from the
+database and create visualizations like the ones in this paper. For these visualizations we used the
+Graphviz \texttt{dot} graphing toolset.\footnote{\url{http://www.graphviz.org/}}
 
+%This is copied from VizGEC paper
+%We use the Titan graph database\footnote{\url{http://
+%thinkaurelius.github.io/titan/}} along with the Gremlin shell and the Tinkerpop query 
+%tools\footnote{\url{https://tinkerpop.apache.org/}} to store the parent-child 
+%relationships from genetic programming runs, and to extract the ancestry trees of 
+%specified individuals. We then visualize these subgraphs using the Graphviz \texttt{dot} 
+%graph layout tool.\footnote{\url{http://www.graphviz.org/}}
+%\footnote{\url{http://www.graphviz.org/}}
 %\subsection{THIS COPIED FROM TOM'S THESIS}
 
 %% I (Tom) left the following in the tex in case we need more info later; most of it isn't represented above. If we use it, it shouldn't be copied directly as to not plagiarize Tom's thesis.
@@ -132,13 +148,8 @@ Our goal here is to give a deep analysis of a single run of PushGP, exploring an
 
 
 
-
-
-\begin{itemize}
-	\item Describe the basics of the run (length, etc.).
-\end{itemize}
-
-Then work backwards from the winner back through to the start of the run.
+The foundation of the run we analyzed has 1,000 individuals per a generation. This particular run
+ended after only 20 generations.
 
 \subsection{Full ancestry graph}
 
@@ -187,15 +198,15 @@ run's overall dynamics. The presence of those individuals and their
 error vectors could certainly affect lexicase selection's choice of parents,
 for example, which could substantially impact the dynamics.
 
-\subsection{Filtered ancestry graph}
+\subsection{Genetic ancestry graph}
 
 Despite the short length of this run, and the restriction to just displaying
 ancestors of successful individuals, Figure~\ref{fig:run0Labelled} still
 contains 394 nodes and 629 edges, making it difficult to analyze in full.
 Figure~\ref{fig:run0Filtered} is a version of the same graph that further
-filters the ancestry tree, attempting to highlight the individuals that
-are most likely to have contributed a significant amount of genetic material
-to the solutions.
+cuts down on the full ancestry tree by including only individuals who were
+involved with the lineage of the key instructions in the simplified programs of the
+winners.
 
 \begin{figure}[tb!p] %[b] sets the image at the bottom of the page; t = top, b = bottom, h = here%
 	% \sidecaption
@@ -205,12 +216,29 @@ to the solutions.
 	\begin{center}
 		\includegraphics[height=\textheight]{../figures/filtered_fill}
 	\end{center}
-	\caption{The filtered version of the run's ancestry graph.}
+	\caption{The genetic ancestry version of the run's full ancestry graph.}
 	\label{fig:run0Filtered}       % Give a unique label
 \end{figure}
 
-We implemented this filtering by first computing the Damerau-Levenshtein 
-distance (DL-distance)
+To create the genetic ancestry graph we traced the lineage of the instructions in the winners
+simplified program. Starting from the winner we traced backwards through it's ancestors tracking where
+the instructions came from (further explored in section 4). In doing so we found all of the members
+in the full ancestry graph that contributed these important instructions and then created this genetic
+ancestry graph containing only these individuals. By cutting down on the number of individuals displayed
+we have a much more readable and focused visualization of some important data.
+
+Looking at Figure~\ref{fig:run0Filtered}, it uses the same basic structure of node and edge information
+as the full ancestry graph.
+However there are a few key additions in how we wanted to display the additional information involving
+the instructions. First off we labeled the nodes with which instructions are present, unlabeled nodes
+have the same instructions as the nearest labeled ancestor. Next we added a dark border to 
+nodes, to further indicate the addition of a key instruction via either mutation or crossover. Lastly
+we used a grayscale color gradient to help track the instructions. An example of this coloration can be seen
+in 3:122 and its children. 3:122 has a gradient of three shades of gray that represent its three instructions.
+Its children are given a shade of gray based on which of those instructions they received. As the grays
+are added into individuals with more and more instructions the grays are blended.
+
+For the edges we added the Damerau-Levenshtein distance (DL-distance)
 between genome vectors for each parent-child pair; these distances
 are indicated as edge labels in Figure~\ref{fig:run0Filtered}. The genome
 vectors were generated by extracting the \texttt{:instruction} and 
@@ -218,71 +246,36 @@ vectors were generated by extracting the \texttt{:instruction} and
 single sequence. So, for example, the genome of successful individual
 20:435 starts
 
-\todo{Should this prefix of the genome be in a figure so it doesn't
-	get broken up by things like page breaks?}
+%\todo{Should this prefix of the genome be in a figure so it doesn't get broken up by things like page breaks?}
 \begin{verbatim}
-	{:instruction boolean_and, :close 0} 
-	{:instruction boolean_shove, :close 0} 
-	{:instruction exec_do*count, :close 0} 
-	{:instruction exec_swap, :close 0} 
-	{:instruction integer_empty, :close 0}
-	...
+{:instruction boolean_and, :close 0} 
+{:instruction boolean_shove, :close 0} 
+{:instruction exec_do*count, :close 0} 
+{:instruction exec_swap, :close 0} 
+{:instruction integer_empty, :close 0}
+...
 \end{verbatim}
 
 making the associated genome vector
 
 \begin{verbatim}
-	boolean_and 0 boolean_shove 0 exec_do*count 0 
-	   exec_swap 0 integer_empty 0 ...
+boolean_and 0 boolean_shove 0 exec_do*count 0 
+exec_swap 0 integer_empty 0 ...
 \end{verbatim}
 
-\todo{Replace the filtering stuff with a description of how Figure~\ref{fig:run0Filtered} was generated.}
-
-Once we had these distances computed, we used it to identify parents in
-recombinations that made minimal contributions to the resulting child, so
-we could avoid tracing back through those edges, potentially removing not
-just that parent, but it's parents, grand-parents, etc. 
-
-The logic for this filtering was fairly straightforward, even simplistic.
-First assume we have two parents, $p$ and $q$, and a child $c$ such that:
-\begin{align*}
-	a & = \textrm{DL-distance}(p, c) \\
-	b & = \textrm{DL-distance}(q, c) \\
-	s & = \textrm{genome-length}(c)
-\end{align*}
-and assume without loss of generality that $a \leq b$ (i.e., $p$ is the
-closer parent). Then we filtered out parent $q$ if either:
-\[
-	(a < 0.2 \times s) \lor (b \geq 2 \times a).
-\]
-Thus parent $q$ will be filtered out if parent $p$ is particularly close to
-the child, or if parent $q$ is more than twice as far away from the child as
-parent $p$. The choices of the constants $0.2$ and $2$ are obviously somewhat
-arbitrary, but appeared to work reasonably well on a variety of datasets. 
-There are,
-however, examples where a filtered parent did in fact contribute a significant
-number of instructions to the offspring, so one would need to be careful in not
-making overly broad assumptions based on an individual not being in the filtered
-version of a graph.
-
-A notable consequence of this filtering is that many of the larger DL distances in
-the filtered graph are the product of there being a child with both parents present.
-For instance when 13:575 and 13:136 converge into 14:213 they have DL distances of
-58 and 87 respectively. While an alternation with uniform mutation and one parent present,
-such as 8:163 into 9:109,  only has a DL distance of 1.
-
-\subsection{The (successful) end}
+The Damerau-Levenshtein distance provides a succinct way to see when an individual has received a
+large amount of genetic material from its parents. It also allows us to easily identify alternation
+events that have mutation like behavior with small changes to genome.
+ 
+\section{The (successful) end and how we get there}
 \label{sec:successfulEnd}
-
-\todo{I think this should probably move down to the next section? -- NFM}
 
 There are 13 successful individuals
 in this run, most of which have identical simplified
 programs. In the interest of space we're going to focus on one of those, 
 individual 20:435, which was constructed via three instruction mutations
 from individual 19:554.
-Individual 20:435's genome contains 194 genes, and the unsimplified 
-program also contains 194 instructions and has zero error on both
+Individual 20:435's genome contains 194 genes and has zero error on both
 the training and testing cases.
 The simplified program for 20:435 (which also passes all the tests)
 contains only 9 instructions:
@@ -300,7 +293,7 @@ The next four instructions (on the second line) remove all the spaces from
 a fresh copy of the input string, compute the length and leave that on the
 \texttt{:integer} stack as the ``returned'' result.
 
-\section{How did we get there?}
+\subsection{How did we get there?}
 \label{sec:howDidWeGetThere}
 
 In this section we will trace the origin of each of the nine instructions
@@ -353,9 +346,9 @@ What is witnessed in the ancestry of the 5 instructions key to solving the print
 cases (even cases) is fairly interesting and straightforward. Starting at the top with individual 0:288 only
 one of the key instructions, \texttt{in1}, is present. The rest of the 5 are introduced over time purely
 through uniform mutations. The next of the key instructions to appear is introduced in individual 1:590 via a point
-mutation converting a piece pf 0:288's genome into a \texttt{print\_string} instruction. These two
-instructions are passed along this tree until they are joined by the next important instruction,
-\texttt{\textbackslash newline}. This instruction is introduced in 7:788 via a uniform mutation
+mutation converting a piece of 0:288's genome into a \texttt{print\_string} instruction. These two
+instructions are passed along this branch until they are joined by the next important instruction,
+\texttt{\textbackslash newline}. This instruction is introduced in 7:788 via uniform mutation
 of 6:881.
 
 After descending another 2 generations these three instructions were joined by \texttt{string\_replacechar}
@@ -366,20 +359,18 @@ the final of these key instructions being introduced, \texttt{\textbackslash spa
 This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
 instructions that are passed down through 15:801 and maintained all of the way down to the winners.
 
-This marks another interesting point about these instructions. Unlike in the return case instructions there is a 
-very clear and straight path of lineage for these instructions. As they are introduced over time they 
-are never split apart into subtrees to be recombined later. Rather they were added via mutation and 
+This marks another interesting point about these instructions. Unlike in the return case instructions there is a clear path of lineage for these instructions. As they are introduced over time they 
+are never split apart into branches to be recombined later. Rather they were added via mutation and 
 then passed down together consistently from 0:288 down to the winners.
 
-These instruction additions can also be seen affecting the error vectors in their individuals. Each instruction is addition
-is accompanied by a shift in the even test cases. Sometimes it is a small effect with both positive and negative change
-to the test cases, but others it is a more dramatic improvement. For instance an example of a small change is when
-\texttt{\printindex\_string} is mutated into 1:590. With this mutation we saw a change in 83 of the 100 even test cases
-with general improvements across the board accompanied by a few increases in test scores (performed worse). Meanwhile in
-the mutation of 13:580  in the creation of 14:704 we saw all of the even test scores become 1. This is in general a very
+These instruction additions can also be seen affecting the error vectors in their individuals. Each instruction that is addition
+is accompanied by a shift in the even test cases. Sometimes effect is minimal with both positive and negative changes
+in the test cases. Other times the change is larger and causes dramatic improvement. An example of a small change is when
+\texttt{print\_string} was mutated into 1:590. This mutation causes 83 of the 100 even test cases to generally improve except for a few individuals that worsen.
+Meanwhile in the mutation of 13:580  in the creation of 14:704 we saw all of the even test scores become 1. This is in general a very
 big improvement, but worsened a few tests that had passed with no error in 13:580. These examples help to highlight
-and support the value of these instructions as each step we saw a change, mostly for the better. This however is not to
-say that steps where these instructions are not added don't haven't had changes in their error vectors, but shines light
+and support the value of these instructions as each step we saw a change, often for the better. This is not to
+say that steps where these instructions are not added haven't had changes in their error vectors, but shines light
 on how it is necessary to both find the right instructions as well as remove instructions that hinder the solution.
 
 \subsection{Returning: The last four instructions}
@@ -392,7 +383,7 @@ genes 89 and 94, and then the final instruction (\texttt{string\_length})
 was on line 141 (out of a total of 161 genes in the genome).
 
 Despite the fact that this individual had ``all the right stuff'', it's error
-vector had very few zeros, i.e., it was rarely exactly correct, highlighting
+vector had very few zeros, i.e., it was rarely correct, highlighting
 the fact that the presence or absence of other instructions can profoundly
 impact a program's behavior. 0:126 was, however, quite good for a randomly
 generated program, with all it's errors being under 20, and most being in
@@ -401,7 +392,7 @@ seventh most selected parent in the initial generation, and one of only 48
 individuals in the initial generation that received any selections. 
 (The most selected
 parent in that generation, 0:272, was selected 762 times, but ultimately
-contributed no genes to the winning individual.)
+contributed no genes to the winning individual and therefore is not shown in the graph.)
 
 Those four instructions were passed on as a group, with nearly the same 
 relative positions in the genomes, from 0:126 through 1:783 and 2:983 
@@ -411,19 +402,14 @@ and had 100 children, several of which went on to carry one or more of
 these four instructions forward to individual 19:554 when they were finally
 reunited in the positions that would ultimately lead to success. In particular
 there were three distinct branches coming from 3:122, each of which will
-be discussed below.\marginpar{I find that ``each of which will be discussed
-	below'' language really awkward, but couldn't think of something
-	better. -- NFM}
+be discussed in this subsection.
 
-\subsubsection{4:772 and the carriers of \texttt{in1}}
+\subsubsection{Branch 4:772 and the carriers of \texttt{in1}}
 \label{sec:4:772}
-
-\todo{The subsubsections look awkwark because they start with a number, which interacts badly with the sub-sub-section numbers.}
 
 Individual 4:772 inherited the copy of the first instruction,
 \texttt{in1}, that would ultimately form part of the solution. This was
-transmitted down to 9:109 without any further interactions with any of
-the 9 ``final'' instructions. Individual 9:109, however, recombined with 
+transmitted down to 9:109 without the other 8 out of 9  ``final'' instructions. Individual 9:109, however, recombined with 
 9:896 which, as mentioned above in Section~\ref{sec:Printing}, carried
 all but one of the first five ``printing'' instructions. 
 
@@ -436,7 +422,7 @@ along with the
 one of the parents of 15:801, a recombination which will be described in the
 discussion of the next branch.
 
-\subsubsection{4:425, 4:107, and multiple blocks}
+\subsubsection{Branches 4:425, 4:107, and multiple blocks}
 \label{sec:4:425}
 
 3:122 contained a block of 25 genes % genes 77 to 101
@@ -462,7 +448,7 @@ instructions) are passed on to 15:801 in the recombination of 14:213 and
 instructions, meaning that 15:801 has all but the last of the 9 ``final''
 instructions (\texttt{string\_length}).
 
-\subsubsection{4:897 and the carriers of \texttt{string\_length}}
+\subsubsection{Branch 4:897 and the carriers of \texttt{string\_length}}
 \label{sec:4:897}
 
 4:897 and its descendants carried the copy of the last instruction, 
@@ -473,29 +459,23 @@ as is reflected in the almost entirely linear ancestry from 4:897 to 18:641
 in Figure~\ref{fig:run0Filtered}.
 
 There is one potentially interesting interaction with the other branches, 
-when 15:543 combined with 15:801 to create 16:964. It turned out, however,
-that of all the genes in 16:694, only the copy of the \texttt{string\_length} 
-gene went on to be included in the final set of 9 instructions in individual 
-20:435.
+when 15:543 combined with 15:801 to create 16:964. It turned out
+that 15:801 did not contribute genetic information that led to the solution found. 15:543 held the crucial missing \texttt{string\_length} gene that had been passed down since our starting random generation. Essentially, 16:964 was made through alternation and uniform mutation so 15:543 combined with 15:801. The only substantial gene that 16:964 contributed to the solution was \texttt{string\_length} from 15:543.
 
-\subsubsection{19:554 and the final adjustments}
-
-\todo{This sub-sub-section doesn't really work with the use of sub-sub-sections to talk about the three lineages earlier.}
+\subsection{From 19:554 to the end and the final adjustments}
 
 19:554 was the result of a recombination of 18:641 and 18:937, which finally
 brought together all nine of the ``final'' instructions. 18:937 contributed
 the first 8 instructions, and 18:641 contributed the final 
-\texttt{string\_length}. Individual 19:554 didn't \emph{quite} solve the
-problem, however, having three ``return'' test cases with error 1, which turned
-out to be the only three test cases with a single character input.
+\texttt{string\_length} instruction. Individual 19:554 didn't \emph{quite} solve the
+problem, it did have three ``return'' test cases with error 1. These three test cases turned out to be the only cases with an input of a single character.
 
 These errors were fairly easy to rectify, however, as evidenced by the 
 fact that 12 of 19:554's 747 offspring (or 1.6\%) were indeed successful.
 Two of these successful children (20:435 and 20:548) were the result of 
-mutating a \emph{single} instruction. One (the mutation that led to 20:435) 
-converted a \texttt{string\_butlast} into what was effectively a no-op; that
-\texttt{string\_butlast} was incorrectly removing the one and only character
-from the input string, and replacing it with a no-op led to a perfect solution.
+mutating a \emph{single} instruction. \todo{Nic is this what this should be saying? -MC} The mutation that led to 20:435 
+caused the instruction \texttt{string\_butlast} to not operate. \texttt{string\_butlast} was incorrectly removing the one and only character
+from the input string. So the mutation of the instruction led to a perfect solution.
 
 \section{Discussion}
 \label{sec:discussion}
@@ -673,9 +653,13 @@ a parent of just over half the population (501 individuals).
 \section{Conclusions and future work}
 \label{sec:conclusions}
 
-We did it! Yay! Oh, and it was useful and matters in some way.
+Here we have traced through the genetic ancestry of a short genetic programming run. We have created
+ancestry and genetic ancestry tree graphs which we used to visually analyze runs. The resulting graphs
+show the progression of a run and highlight important moments. These moments included individuals such as 3:122 and 15:801 who were interesting in how they altered the state of play. By tracing through the genetic ancestry tree we were able to learn more about how both alternation and mutation played a role in finding a solution.
 
-Too much of this was done by hand, and we really need to automate more of it.
+The next step in this research of tracing runs is automating the process of comparing individuals, especially their genomes. With a 20 generation run, there was a manageable amount of information to process by hand. However, with a run that may go for 100 generations or more, the comparisons would quickly get out of hand and become very time consuming. Another aspect we plan to modify is the tracking of instructions. As said previously, the instructions of the solution were traced by hand. If we were to assign IDs to instructions we would be able to trace their ancestry throughout the generations much more easily.
+% Not quite sure if want to say this since we've said the genetic ancestry tree was developed in this reseach.
+%Removal of crud in programs is also important and should be looked at more
 
 
 The prevalence of alternation events in the gene ancestry graph that were in 
