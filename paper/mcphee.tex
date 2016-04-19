@@ -503,18 +503,28 @@ from the input string, and replacing it with a no-op led to a perfect solution.
 \todo{Wrap up with some kind of ``big picture'' that does things like catalogs the
 \emph{kinds} of operations, their frequency, etc.}
 
+The trace in Section~\ref{sec:howDidWeGetThere} provides a sense of where all
+the key instructions came from, and indicates several of the key moments in the
+evolutionary process. In this section we'll provide some summary information
+as well as highlighting both some general patterns and a few important events.
+
 Table~\ref{tab:operatorCounts} enumerates the number and proportions 
 of individuals constructed via the four genetic operators, first across the
 entire run (so all of the 20,000 individuals generated after the initial
 random population), then for the ancestry graph in 
 Figure~\ref{fig:run0Labelled} (394 total nodes, 
-376 constructed after the initial generation), and finally for the filtered
+376 constructed after the initial generation), and finally for the genetic 
+ancestry
 graph in Figure~\ref{fig:run0Filtered} (62 total nodes, 60 constructed after 
-the initial generation). The entire run numbers match the proportions
-in the run configuration. The other two columns have similar percentages,
-suggesting that there wasn't a large skew away from those parameter values,
-i.e., that none of the operators appear to be particularly important or
-valuable in constructing a solution, at least in this run.
+the initial generation). The percentages in the ``Entire run'' column match
+the settings in the run configuration, which specified using alternation 
+followed by uniform mutation 50\% of the time, alternation alone 20\% of the 
+time, uniform mutation 20\% of the time, and uniform close mutation the 
+remaining 10\% of the time. 
+The other two columns have similar percentages,
+suggesting that there wasn't a large skew away from those parameter values
+and that none of the genetic operators was particularly over- or 
+under-represented in the ancestry graphs.,
 
 \begin{table}[t]
 	\begin{tabular}{lrrr}
@@ -530,58 +540,83 @@ valuable in constructing a solution, at least in this run.
 	\label{tab:operatorCounts}
 \end{table}
 
-\todo{Say something about how it appears to be focusing on the returning early, possible because failing to return is so expensive.}
+While there are numerous alternations in the genetic ancestry graph, it's worth
+noting that many of the DL-distances (the edge labels in 
+Figure~\ref{fig:run0Filtered}) are fairly small, even when alternation was
+involved, as can be seen in Figure~\ref{fig:alt:DLdist:distribution}. Of the
+53 alternations (ignoring those leading to a successful individual in 
+generation 20), 21 had DL-distances of 10 or less, 6 had DL-distances of just 1,
+and 5 had DL-distances of 0 (so the child was an exact copy of the parent).
+One might assume that this is partly due to the six 
+self-cross alternations, where the same individual served as both parents, 
+such as individual 16:106 having 15:801 as both of its parents.\footnote{Most of these self-crosses are likely a result of hyperselection events due to lexicase 
+selection~\citep{Helmuth:2016:GECCO}.} In fact, however, most of the 
+self-crosses in the genetic ancestry graph had higher than median DL-distances.
 
-\subparagraph{From 15:801 to 18:937: Deleting a few genes, duplicating a few others}
+\begin{figure}[t]
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{../figures/Alternation_dl_distance_distribution}
+	\end{center}
+	\vspace{-0.5 cm}
+	\caption{The distribution of DL-distances for all the alternation events, 
+		in the genetic ancestry graph (Figure~\ref{fig:run0Filtered}) whether 
+		or not they were followed by uniform mutation. This does not include
+		the alternations leading to successful individuals in the final \
+		generation since those were mostly self-crosses, which skew towards 
+		smaller DL-distances.}
+	\label{fig:alt:DLdist:distribution}
+\end{figure}
 
-\todo{Strip this for parts. We want to say something in the catalogue of events that there are moments where we delete genes, and moments where we duplicate genes, and some of these could be examples of that, but we don't need nearly this much details.}
+These very small DL-distances mean that many of the alternations were 
+effectively acting as mutation events, either through a small number of
+mutations following an alternation that didn't change the parent, or 
+through small deletions or replications of code. The steps from individual
+15:801 to 18:937, for example, are all alternations (possibly followed
+by mutations), but in fact almost every change in that sequence was due to
+gene deletions or duplications in those alternation events. There were 3
+mutated genes in that sequence of steps, along with 12 deleted genes and the
+duplication of a block of 7 genes.
 
-Individual 18:937 was the result of a self-cross between 17:189 and itself,
-with no mutation applied to the child after alternation was performed. The
-change in the genome was two instructions being removed, 
-\texttt{exec\_yank} followed by \texttt{string\_rot}, with the same pair of
-instructions being removed from the program as well. This leads to changes
-in 5 of the ``return'' test cases, each of which improves the error 
-from 2 to 1.
+Since the genetic ancestry graph (and thus the data in 
+Figure~\ref{fig:alt:DLdist:distribution}) only includes individuals that 
+actually
+contributed one of the nine key instructions, in many cases the second parent
+in alternation events isn't included; these DL-distances are in general
+higher than those listed. This isn't surprising, as a parent with a small
+DL-distance is very similar to the child, and thus likely to have contributed
+most of the important genetic material. There are, however, a few exceptions 
+to this pattern. Perhaps the most extreme is in the creation of individual
+3:273 via alternation between 2:659 and 2:779. Individual 2:659 is not included
+in the genetic ancestry graph in Figure~\ref{fig:run0Filtered} because it didn't
+contribute any of the nine key instructions to 3:273, where 2:779 contributed
+two such instructions. However the DL-distance between 3:273 and 2:779 was 457, 
+which was much greater than the distance to 2:659, which was only 50. So despite
+being much more similar to 2:659 and getting most of its genetic material from
+that parent, the material that ultimately contributed to the solution all came
+from the other parent (2:779).
 
-Individual 17:189 was the result of a recombination event between 16:106
-and an individual that was filtered out. The DL-distance between 17:189
-and 16:106 was 21, which suggests that the filtered out individual might
-be contributing some substantial genes. In fact, however, 17:189 is an
-exact copy of 16:106 with the deletion of 10 genes and one mutation. This
-had a much broader impact on the error vectors, changing dozens on error
-values on the ``return'' test cases. The error on five test cases got worse,
-going from 1 to 2, while all the rest improved, going from some single
-digit error to 0. After this change 17:189 was nearly perfect, with no errors
-on the ``printing'' test cases, and only five remaining non-zero errors on
-the ``return'' test cases, all of which are off by 2.
+Not all alternation events in Figure~\ref{fig:run0Filtered} could be seen as
+effectively mutation events, however. The construction of 15:801, for example,
+was in many ways what we imagine when we talk about
+crossover events, combining significant genetic material and significant functionality from two different parents. It was also a key point in the run,
+as 15:801 was the first individual to be correct on all of the ``printing''
+test cases, and it was also correct on 26 of the 100 ``returning'' test cases.
 
-Individual 16:106 was the result of an alternation between 15:801 and itself,
-followed by uniform mutation. The alternation duplicated a sequence of 7 genes,
-and the subsequent mutation step replaced the instructions in two other 
-genes with new instructions. These changes alter the errors on all but 6 of
-the 100 ``return'' test cases, with the changes being quite erratic, improving
-on many but getting worse on many others.
-
-\subparagraph{Creating 15:801: An important crossover}
-\label{sec:15:801}
-Individual 15:801 was created through the recombination of 14:704 and 14:213
-along with uniform mutation. As can be seen in table 1, 15:801 inherited 
-lines 1-2 and 4-5 from 14:704. Likewise it inherited lines 7, 11, 19-21 and 31-35
-from 14:213. It is possible that line 6, \texttt{print\_string}, was inherited from either
-parent given its presence in all three individuals. The \texttt{string\_rot} command on line
-22 could either be from a uniform mutation or may be missing in 14:213's program due to the
-simplification.
-
-Looking further into the genomes of these three individuals it begins to become apparent that
-15:801 received a large swathe of the genetic material at its start from 14:704 with the latter
-half being comprised almost solely of 14:213's genome. Going even deeper through the error vectors,
-it can be seen that the transition between 14:704 and 15:801 was a transition of all 1s on the even
-test cases to all perfect scores of 0. Given that the even cases are all printing tests table1 shows
-that the loss of the extra \texttt{print\_newline} in the recombination from 14:704 allowed these
-tests to succeed. Meanwhile the genome additions from 14:213 helped improve the odd test cases even
-though 15:801 did not perform as well as 14:213 on these cases.
-
+Individual 15:801 was created through the recombination of 14:704 and 14:213,
+via alternation followed by uniform mutation. 
+Table~\ref{tab:15:801} shows the simplified programs of 
+both parents and the child,
+aligned to indicate where the various instructions likely came from. The key
+observation is that 15:801 received most of its initial genetic material from 
+14:704 (most of genes 1-6), followed by a large section (genes 7-35) taken
+almost entirely from 14:213's genome. Interestingly, the transition between 14:704 and 15:801 involved a simple but crucial change that fixed all the
+printing cases. 14:704 had an error of exactly 1 on all the printing cases
+due to an extra \texttt{print\_newline} (line 37 in Table~\ref{tab:15:801}).
+In the recombination this gene wasn't passed on to 15:801, which led to an
+perfect score of 0 on all those test cases. The performance of 15:801 on
+the return test cases wasn't quite as strong as that of its other parent,
+14:213, but was generally better than 14:704's performance on those test cases. This led to 15:801 receiving a large number of selections (595) and being
+a parent of just over half the population (501 individuals).
 
 \begin{table}
 	\begin{tabular}{l|rl|l}
@@ -631,22 +666,9 @@ though 15:801 did not perform as well as 14:213 on these cases.
 		15:801 (center) from parents 14:704 (left) and 14:213 (right) showing
 		the \emph{simplified} programs for those individuals (see
 		Section~\ref{sec:background}). This shows that individual 15:801 was
-		essentially constructed from a prefix of 14:704 and a suffix of 14:213.
-		See Section~\ref{sec:15:801} for additional details.}
+		essentially constructed from a prefix of 14:704 and a suffix of 14:213.}
 	\label{tab:15:801}
 \end{table}
-
-
-% \paragraph{Paragraph Heading} %
-
-
-
-% \subparagraph{Subparagraph Heading} In order to avoid simply listing headings of different levels we recommend to let every heading be followed by at least a short passage of text. Use the \LaTeX\ automatism for all your cross-references and citations as has already been described in Sect.~\ref{sec:2}, see also Fig.~\ref{fig:2}.
-
-% Use the \index{} command to code your index words
-% Make sure to inlcude the indexed word inside and outside of the brackets if you want the text to show up in your paragraph:
-% e.g. This book is about \index{genetic programming}genetic programming. 
-% If the text is not entered outside the brackets it will appear as: This book is about .
 
 \section{Conclusions and future work}
 \label{sec:conclusions}
@@ -654,6 +676,12 @@ though 15:801 did not perform as well as 14:213 on these cases.
 We did it! Yay! Oh, and it was useful and matters in some way.
 
 Too much of this was done by hand, and we really need to automate more of it.
+
+
+The prevalence of alternation events in the gene ancestry graph that were in 
+fact just gene deletions or duplications suggests that it might
+be valuable to include deletion and replication mutations as stand-alone
+operators, instead of requiring that happen via lucky alternations.
 
 \begin{acknowledgement}
 	Emma Sax, Laverne Schrock, and Leonid Scott helped 
