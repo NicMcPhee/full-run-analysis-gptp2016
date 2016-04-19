@@ -502,8 +502,8 @@ time, uniform mutation 20\% of the time, and uniform close mutation the
 remaining 10\% of the time. 
 The other two columns have similar percentages,
 suggesting that there wasn't a large skew away from those parameter values
-and that none of the genetic operators was particularly over- or 
-under-represented in the ancestry graphs.,
+and that none of the genetic operators were particularly over- or 
+under-represented in the ancestry graphs.
 
 \begin{table}[t]
 	\begin{tabular}{lrrr}
@@ -525,7 +525,7 @@ Figure~\ref{fig:run0Filtered}) are fairly small, even when alternation was
 involved, as can be seen in Figure~\ref{fig:alt:DLdist:distribution}. Of the
 53 alternations (ignoring those leading to a successful individual in 
 generation 20), 21 had DL-distances of 10 or less, 6 had DL-distances of just 1,
-and 5 had DL-distances of 0 (so the child was an exact copy of the parent).
+and 5 had DL-distances of 0 (the child was an exact copy of the parent).
 One might assume that this is partly due to the six 
 self-cross alternations, where the same individual served as both parents, 
 such as individual 16:106 having 15:801 as both of its parents.\footnote{Most of these self-crosses are likely a result of hyperselection events due to lexicase 
@@ -567,15 +567,15 @@ most of the important genetic material. There are, however, a few exceptions
 to this pattern. Perhaps the most extreme is in the creation of individual
 3:273 via alternation between 2:659 and 2:779. Individual 2:659 is not included
 in the genetic ancestry graph in Figure~\ref{fig:run0Filtered} because it didn't
-contribute any of the nine key instructions to 3:273, where 2:779 contributed
+contribute any of the nine key instructions to 3:273, whereas 2:779 contributed
 two such instructions. However the DL-distance between 3:273 and 2:779 was 457, 
 which was much greater than the distance to 2:659, which was only 50. So despite
 being much more similar to 2:659 and getting most of its genetic material from
 that parent, the material that ultimately contributed to the solution all came
 from the other parent (2:779).
 
-Not all alternation events in Figure~\ref{fig:run0Filtered} could be seen as
-effectively mutation events, however. The construction of 15:801, for example,
+Not all alternation events in Figure~\ref{fig:run0Filtered} could effectively be seen as
+mutation events, however. The construction of 15:801, for example,
 was in many ways what we imagine when we talk about
 crossover events, combining significant genetic material and significant functionality from two different parents. It was also a key point in the run,
 as 15:801 was the first individual to be correct on all of the ``printing''
@@ -591,7 +591,7 @@ observation is that 15:801 received most of its initial genetic material from
 almost entirely from 14:213's genome. Interestingly, the transition between 14:704 and 15:801 involved a simple but crucial change that fixed all the
 printing cases. 14:704 had an error of exactly 1 on all the printing cases
 due to an extra \texttt{print\_newline} (line 37 in Table~\ref{tab:15:801}).
-In the recombination this gene wasn't passed on to 15:801, which led to an
+In the recombination this gene wasn't passed on to 15:801, which led to a
 perfect score of 0 on all those test cases. The performance of 15:801 on
 the return test cases wasn't quite as strong as that of its other parent,
 14:213, but was generally better than 14:704's performance on those test cases. This led to 15:801 receiving a large number of selections (595) and being
