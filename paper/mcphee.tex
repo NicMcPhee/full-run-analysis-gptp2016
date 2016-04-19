@@ -57,7 +57,7 @@ mutation.
 
 In Section~\ref{sec:background} we review the key components of the system
 used to generate the run explored here (PushGP, Plush genomes, and the Replace Space With Newline test problem). We then describe and present both the full
-and filtered ancestry graphs in Section~\ref{sec:ancestryGraphs}, before
+and genetic ancestry graphs in Section~\ref{sec:ancestryGraphs}, before
 tracing the evolutionary history of all the key instructions in 
 Section~\ref{sec:howDidWeGetThere}. Our discussion in 
 Section~\ref{sec:discussion} builds on the details of these traces and
@@ -265,9 +265,7 @@ exec_swap 0 integer_empty 0 ...
 The Damerau-Levenshtein distance provides a succinct way to see when an individual has received a
 large amount of genetic material from its parents. It also allows us to easily identify alternation
 events that have mutation like behavior with small changes to genome.
-
-
-\todo{Replace the filtering stuff with a description of how Figure~\ref{fig:run0Filtered} was generated.} 
+ 
 
 \subsection{The (successful) end}
 \label{sec:successfulEnd}
@@ -635,9 +633,15 @@ though 15:801 did not perform as well as 14:213 on these cases.
 \section{Conclusions and future work}
 \label{sec:conclusions}
 
-We did it! Yay! Oh, and it was useful and matters in some way.
+\begin{itemize}
+	\item The usefulness of the graphs
+	\item 15:801 is interesting
+	\item Tracing lineage of the instructions provides insight into how both alternation and mutation play a role
+	\item We need to automate all the crud that was slogged through
+	\item Removal of crud in programs is also important and should be looked at more
+	\item Label instructions in future runs to be able to track their exact parents
+\end{itemize}
 
-Too much of this was done by hand, and we really need to automate more of it.
 
 \begin{acknowledgement}
 	Emma Sax, Laverne Schrock, and Leonid Scott helped 
