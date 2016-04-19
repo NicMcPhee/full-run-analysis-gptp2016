@@ -146,10 +146,12 @@ Graphviz \texttt{dot} graphing toolset.\footnote{\url{http://www.graphviz.org/}}
 \section{Ancestry graphs}
 \label{sec:ancestryGraphs}
 
-
-
 The foundation of the run we analyzed has 1,000 individuals per a generation. This particular run
-ended after only 20 generations.
+ended after only 20 generations. In this section we describe two techniques for extracting and 
+visualizing aspects of the run. The first being the ancestry tree of individuals who found a solution 
+(e.g., parents, grandparents, etc.). The other is the genetic ancestry tree of individuals who found 
+a solution. This differs from the ancestry tree since the genetic ancestry tree only includes 
+individuals that contributed genetic information to finding the solution.
 
 \subsection{Full ancestry graph}
 
@@ -473,15 +475,12 @@ problem, it did have three ``return'' test cases with error 1. These three test 
 These errors were fairly easy to rectify, however, as evidenced by the 
 fact that 12 of 19:554's 747 offspring (or 1.6\%) were indeed successful.
 Two of these successful children (20:435 and 20:548) were the result of 
-mutating a \emph{single} instruction. \todo{Nic is this what this should be saying? -MC} The mutation that led to 20:435 
+mutating a \emph{single} instruction. The mutation that led to 20:435 
 caused the instruction \texttt{string\_butlast} to not operate. \texttt{string\_butlast} was incorrectly removing the one and only character
 from the input string. So the mutation of the instruction led to a perfect solution.
 
 \section{Discussion}
 \label{sec:discussion}
-
-\todo{Wrap up with some kind of ``big picture'' that does things like catalogs the
-\emph{kinds} of operations, their frequency, etc.}
 
 The trace in Section~\ref{sec:howDidWeGetThere} provides a sense of where all
 the key instructions came from, and indicates several of the key moments in the
@@ -508,7 +507,7 @@ under-represented in the ancestry graphs.,
 
 \begin{table}[t]
 	\begin{tabular}{lrrr}
-		\textbf{Genetic operator} & \textbf{Entire run} & \; \textbf{Full ancestry graph} & \; \textbf{Filtered ancestry graph} \\ 
+		\textbf{Genetic operator} & \textbf{Entire run} & \; \textbf{Full ancestry graph} & \; \textbf{Genetic ancestry graph} \\ 
 		\hline
 		Alternation + uniform mutation & 9,985 (50\%) & 186 (49\%) & 39 (54\%) \\ 
 		Alternation & 4,001 (20\%) & 67 (18\%) & 17 (24\%) \\ 
