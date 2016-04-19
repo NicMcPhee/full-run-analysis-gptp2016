@@ -15,7 +15,14 @@
 
 \maketitle
 
-\abstract{We analyze the key events in a GP run!}
+\abstract{
+In genetic programming runs there is frequently a great deal of data to work with.
+This data is often put aside in favor of solely looking at the produced result.
+In this research, the goal was to examine a genetic programming run and trace 
+back from the solution to determine how it was derived. 
+To visualize genetic programming runs in a more organized fashion, the ancestry tree is extracted from the 
+solution(s) to their relatives in the initial random population. For an even closer look, the solution is analyzed for instructions and a genetic ancestry tree is made of those who have contributed genetic information (or instructions) to the solution. In this trace of genetic information we were able to identify trends at important moments and other interesting aspects.
+}
 
 \begin{keywords}
 	genetic programming, PushGP, ancestry graph, lineage, inheritance
@@ -28,8 +35,6 @@
 \\
 \section{Introduction}
 \label{sec:introduction}
-
-\todo{Scrape some citations from the VizGEC 2016 paper.}
 
 Previous work~\citep{McPhee:2015:GPTP, donatuccianalysis, Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015, kuber2014ancestral} has
 illustrated the value of ancestry graphs as a means of analyzing the dynamics
@@ -116,7 +121,13 @@ original program \citep{Spector:2014:GECCOcomp}.
 
 Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
 
-\todo{Say that we're using Titan and Graphviz for all this.}
+%This is copied from VizGEC paper
+We use the Titan graph database\footnote{\url{http://
+thinkaurelius.github.io/titan/}} along with the Gremlin shell and the Tinkerpop query 
+tools\footnote{\url{https://tinkerpop.apache.org/}} to store the parent-child 
+relationships from genetic programming runs, and to extract the ancestry trees of 
+specified individuals. We then visualize these subgraphs using the Graphviz \texttt{dot} 
+graph layout tool.\footnote{\url{http://www.graphviz.org/}}
 
 %\subsection{THIS COPIED FROM TOM'S THESIS}
 
