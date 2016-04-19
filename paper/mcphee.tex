@@ -652,19 +652,56 @@ a parent of just over half the population (501 individuals).
 \section{Conclusions and future work}
 \label{sec:conclusions}
 
-Here we have traced through the genetic ancestry of a short genetic programming run. We have created
-ancestry and genetic ancestry tree graphs which we used to visually analyze runs. The resulting graphs
-show the progression of a run and highlight important moments. These moments included individuals such as 3:122 and 15:801 who were interesting in how they altered the state of play. By tracing through the genetic ancestry tree we were able to learn more about how both alternation and mutation played a role in finding a solution.
+Here we have traced through the genetic ancestry of a short, successful genetic programming run. While the run was short, it used an ``industrial strength''
+PushGP system\footnote{\url{https://github.com/lspector/Clojush}} on a
+non-trivial problem that required the manipulation of strings in multiple
+ways, and a combination of both printing and returning results. We used graph
+database tools to create
+ancestry and genetic ancestry graphs, which we were then able to use to 
+visualize and analyze this run. The resulting graphs
+show the progression of the run and highlight important moments such as key
+recombination events, gene deletions and duplications, and the introduction
+of key instructions via mutation. By tracing through the genetic ancestry tree we were able to learn more about how both alternation and mutation played a role in finding a solution.
 
-The next step in this research of tracing runs is automating the process of comparing individuals, especially their genomes. With a 20 generation run, there was a manageable amount of information to process by hand. However, with a run that may go for 100 generations or more, the comparisons would quickly get out of hand and become very time consuming. Another aspect we plan to modify is the tracking of instructions. As said previously, the instructions of the solution were traced by hand. If we were to assign IDs to instructions we would be able to trace their ancestry throughout the generations much more easily.
+While we were able to do this for a small run, currently too much of the
+process is manual for this to scale to larger runs or multiple sets of runs.
+A key next step in further automating this kind of analysis is automating the 
+process of comparing individuals, especially at the genome level. Tracing
+each key instruction back through the ancestry graph can be complicated, in
+part because there are often many different instances of the instruction being traced; individual 19:554, for example, had four instances of 
+\texttt{\textbackslash space}, but only three of those were present in its
+simplified program, and only two went on to be part of the simplified
+successful program in 20:435. In this case we were able to deal with these
+problems by using contextual clues such as order in the genome and surrounding
+instructions, not unlike how biologists track gene sequences in organisms.
+To make this process more automatic, however, we'll need to save additional
+information with the individual genes that allows us to know exactly where they 
+came from.
+
+It would also be valuable to improve our ability to understand and compare
+program behaviors. While we can easily compare genomes and error vectors,
+and reasonably compare program \emph{texts}, comparing program \emph{behaviors}
+is much less straightforward. While the simplified program for individual
+20:435 is quite short and understandable, the unsimplified program contains
+195 instructions, which include a number of complex looping constructs. These
+are obviously not necessary for the semantics of the program, but they are
+present in the code that is being tested, and the genes that create those
+instructions are part of the genome that is being manipulated and inherited.
+And while those instructions might be removable from 20:435 at the end 
+of the run, it's likely that many of those instructions played some
+meaningful role in an ancestor that contributed to that ancestor's selection.
+
+Lastly, and more simply, the prevalence of numerous alternation events in the 
+gene ancestry graph that turned out to be just gene deletions or duplications 
+suggests that it might be valuable to include deletion and replication 
+mutations as stand-alone operators, instead of requiring that such events
+occur via lucky alternations.
+
 % Not quite sure if want to say this since we've said the genetic ancestry tree was developed in this reseach.
 %Removal of crud in programs is also important and should be looked at more
 
 
-The prevalence of alternation events in the gene ancestry graph that were in 
-fact just gene deletions or duplications suggests that it might
-be valuable to include deletion and replication mutations as stand-alone
-operators, instead of requiring that happen via lucky alternations.
+
 
 \begin{acknowledgement}
 	Emma Sax, Laverne Schrock, and Leonid Scott helped 
