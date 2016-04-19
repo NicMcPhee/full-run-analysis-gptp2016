@@ -121,10 +121,8 @@ original program \citep{Spector:2014:GECCOcomp}.
 
 Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
 
-For organizing our data we placed our data into a Titan graph database\footnote{\url{http://
-		thinkaurelius.github.io/titan/}}. To retrieve our data and perform
-queries we used the Gremlin shell along with Apache Tinkerpop\footnote{\url{https://tinkerpop.apache.org/}}. This allows for a large scaling system where
-we can store information about nodes (individuals) as well as information in edges, such as parent child relationships. With access to all of the data in such an organized fashion we can pull subgraphs from the
+For organizing our data we used the Titan graph database\footnote{\url{http://thinkaurelius.github.io/titan/}}. To retrieve our data and perform queries we used the Gremlin shell along with Apache Tinkerpop\footnote{\url{https://tinkerpop.apache.org/}}. This allows for a large scaling system where
+we can store information about nodes (individuals) and edges (relations), such as parent child relationships. With access to all of the data in an organized fashion we can pull subgraphs or ancestry trees of individuals that found a solution from the
 database and create visualizations like the ones in this paper. For these visualizations we used the
 Graphviz \texttt{dot} graphing toolset.\footnote{\url{http://www.graphviz.org/}}
 
