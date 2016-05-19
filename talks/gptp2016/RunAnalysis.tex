@@ -18,7 +18,7 @@
 
 % The text in square brackets is the short version of your title and will be used in the
 % header/footer depending on your theme.
-\title[Graph database analysis of GP dynamics]{Silico-paleontology with graph databases}
+\title{A detailed analysis of a PushGP run}
 %{Using Graph Databases to Explore Genetic Programming Run Dynamics}
 
 % Sub-titles are optional - uncomment and edit the next line if you want one.
@@ -26,7 +26,7 @@
 
 % The text in square brackets is the short version of your name(s) and will be used in the
 % header/footer depending on your theme.
-\author[McPhee \& Donatucci]{Nic McPhee \& David Donatucci (w/ Thomas Helmuth)}
+\author[Nic McPhee]{Nic McPhee (w/ Finzel, Casale, Helmuth, \& Spector)}
 
 % The text in square brackets is the short version of your institution and will be used in the
 % header/footer depending on your theme.
@@ -38,8 +38,8 @@
 }
 
 % The text in square brackets is the short version of the date if you need that.
-\date[May 2015, GPTP, Ann Arbor MI] % (optional)
-{May 2015 \\ Genetic Programming Theory and Practice \\ University of Michigan \\ Ann Arbor, MI}
+\date[May 2016, GPTP, Ann Arbor MI] % (optional)
+{May 2016 \\ Genetic Programming Theory and Practice \\ University of Michigan \\ Ann Arbor, MI}
 
 % Delete this, if you do not want the table of contents to pop up at
 % the beginning of each subsection:
@@ -74,7 +74,7 @@
 	\item Genetic programming clearly \emph{works}.
 	\item But we rarely know \emph{why} or \emph{how}.
 	\item Databases allow examination of the internal interactions of a run.
-	\item Graph databases better suited for this than relational databases.
+	\item Graph databases allow us to collect and analyze lineages.
 	\item Silico-paleontology can help us understand and improve our tools.
   \end{itemize}
 
@@ -92,92 +92,146 @@
 \subsection{We throw so much away}
 
 \begin{frame}{We keep/see/share so little}
-	
-	\begin{columns}
-		\begin{column}{0.6 \linewidth}
 			EC research has the potential to generate \emph{huge} amounts of data.
 			\linespace
 			What do we normally do with that data?
 			\linespace
-			We normally throw it away -- \& paleontologists weep!
+			We typically throw it away -- \& paleontologists weep!
 			\linespace
-			%\includegraphics[width = 0.8 \linewidth]{Figures/FossilsMedium.jpg} \\
-			\tiny{\url{https://www.flickr.com/photos/blmoregon/14566767645/}}
-		\end{column}
-		\begin{column}{0.4 \linewidth}
-			%\includegraphics[height= 0.7 \textheight]{Figures/Abandoned_books.jpg} \\
-			\tiny{\url{https://www.flickr.com/photos/nicmcphee/1323950471}}
-		\end{column}
-	\end{columns}
+			\centering
+			\includegraphics[width = 0.6 \linewidth]{../../figures/Harvest.jpg} \\
+			\tiny{\url{https://www.flickr.com/photos/thibaud_saintin/12533059215/}}
+			% \textbf{Get bulldozer on dump photo}
 \end{frame}
 
-\subsection{Summary results are highly lossy}
+\subsection{Let's go hunting for beetles!}
 
-\begin{frame}{Oooh -- a table of results!}
+\begin{frame}{Let's trade the forest for the trees}
+	We typically share summary results (tables, graphs) that represent a 30,000 foot view of (part of) the forest.
+	\linespace
+	We'll instead focus on a single tree, in places peeling back the bark and poking at the beetles we find underneath.
+	\linespace
+	\linespace
+	This is not a ``one or the other'' question. There is important value in understanding
+	the behavior of large-scale ecosystems, as well as understanding the details of
+	organisms in those ecosystems.
+\end{frame}
 
-\begin{columns}
-	\begin{column}{0.4 \linewidth}
-		\centering
-\begin{tabular}{lrrr}
-	& \multicolumn{3}{c}{Treatment} \\ \cline{2-4}
-	\textbf{Problem} & \textbf{L} & \textbf{T} & \textbf{I} \\
-	\hline
-	RSWN & 55 & 13 & 17 \\
-	SYL & 22 & 1 & 2 \\
-	SLB & 75 & 19 & 10 \\
-	NTZ & 57 & 15 & 7
-\end{tabular}
-\end{column}
+\section{Tools, problem, and setup}
 
-\begin{column}{0.55 \linewidth}
+\begin{frame}{PushGP/Clojush}
+	\begin{itemize}
+		\item PushGP: Stack-based GP system; multiple types; successful in a variety of domains
+		\item Plush genomes: More in Lee's talk; linear representation that maps to structured Push programs.
+		\item Operators: Alternation (form of n-point crossover with shifts), ``point'' mutation, and \emph{close} mutation
+		\item Lexicase selection: Avoid aggregation; shuffle test cases afresh for each selection and select lexicographically using that ordering
+		\item Population size = 1,000
+	\end{itemize}
+	The example here uses PushGP, etc., but could be applied to most any evolutionary system.
+\end{frame}
+
+\begin{frame}{Replace-space-with-newline problem}
+	Replace-space-with-newline is from software synthesis benchmark suite that was central to Tom Helmuth's dissertation last year.
+	\begin{itemize}
+		\item Two related goals. Given an input string:
+		\begin{itemize}
+			\item \emph{Print} the string with all the spaces replaced by newlines.
+			\item \emph{Return} (on the \texttt{integer} stack) the number of \emph{non-space} characters in the input string.
+		\end{itemize}
+		\item Error vector with 200 values, one for each type of error across 100 test cases
+	\end{itemize}
+	
+	This problem has a roughly 50\% success rate with described setup.
+	\linespace
+	We'll focus on a run that succeeded quickly (30 generations)
+\end{frame}
+
+\begin{frame}{DB \& visualization tools}
+	Graph database tools:
+	\begin{itemize}
+		\item Titan graph database (an Apache project)
+		\item Tinkerpop graph query language
+		\item Gremlin shell
+	\end{itemize}
+	\linespace
+	Graph visualizations created with Graphviz.
+\end{frame}
+
+\section{Visualizing ancestries}
+
+\subsection{Full ancestry graphs}
+
+\begin{frame}{Full ancestry of ``winners''}
+	\centering
+	\includegraphics[width=\linewidth]{../../figures/run0_GPTP_2_font_40}
+\end{frame}
+
+\begin{frame}{Full ancestry of ``winners'' (sized and colored)}
+		\begin{overprint}
+		\onslide<1-3> 			\centering
+		\includegraphics[width=0.7\linewidth]{../../figures/run0_RBM_color_full_30000}
+		\onslide<4> 			\centering
+		\includegraphics[width=0.9\linewidth]{../../figures/run0_colored_detail}
+		\end{overprint}
 	\begin{overprint}
 		\onslide<1>
-		These show successes on 4 problems for 3 different treatments
-		\linespace
-		L seems to be winning
-
+		Width of boxes is proportional to number of selections
 		\onslide<2>
-		But \emph{why?!?!?}		
-		\linespace
-		What's actually \emph{happening} in all those matings and crossovers and mutations that makes the difference?
+		Heights are proportional to number of children \emph{in this graph}
+		\onslide<3>
+		Colors are a compression of the \emph{error vectors} (200 errors to RGB colors)
+		\onslide<4>
+		Edges encode genetic ops and level of genetic contribution of parents
 	\end{overprint}
-\end{column}
-\end{columns}
 \end{frame}
 
-\subsection{Plots are better (but can still obscure details)}
+\subsection{Filtering ancestries}
 
-\begin{frame}{Let's draw pretty pictures}
-	
+\begin{frame}{Why we want to filter ancestries}
+	\begin{center}
+	\includegraphics[width=\linewidth]{../../figures/run0_GPTP_2_font_40}
+	\end{center}
+	\linespace
+	Busy and dense, even for a very short run like this
+\end{frame}
+
+\begin{frame}{Why we want to filter ancestries}
 	\begin{columns}
-		\begin{column}{0.55 \linewidth}
-			\centering
-			%\includegraphics[width = \linewidth]{Figures/rswn_diversity.pdf}
-		\end{column}
-		
 		\begin{column}{0.4 \linewidth}
-			\begin{overprint}
-				\onslide<1>
-				So much more data!
-				\linespace
-				Diversity over time across all the runs.
-				\linespace
-				L's diversity (top) is consistently higher than T (bottom).
-				\linespace
-				That might be important (and supports some hypotheses).
-				
-				\onslide<2>
-				Still, this mushes all the runs together.
-				\linespace
-				And that likely obscures interesting things.
-			\end{overprint}
+			Vastly worse for longer runs like this! (129 generations)
+			\linespace
+			And we have much bigger data sets than this, with thousands of generations
+			\linespace
+			So let's try to filter the ancestries to focus on the individuals ``that matter''.
 		\end{column}
+		\begin{column}{0.6 \linewidth}
+\begin{center}
+	\includegraphics[height=0.8\textheight]{../../figures/run1_RBM_color_filtered_and_full_60000.png}
+\end{center}
+\end{column}			
 	\end{columns}
 \end{frame}
 
-\subsection{Can we zoom in to individual runs?}
+\begin{frame}{A simplistic approach to filtering}
+	We want to focus on the individuals that contributed the most to their offspring.
+	\linespace
+	Compute the Damerau-Levenshtein distance between parent-child genomes and eliminate ``far'' parent if:
+	\begin{itemize}
+		\item The ``near'' parent is \emph{very} near (so it contributes all or almost all the genetic material)
+		\item The ``far'' parent is at least twice as far as the ``near'' parent
+	\end{itemize}
+	These are really a simplistic hack to let us quickly focus on what are \emph{likely} to be the most important parts of the graph, but they can oversimplify (as we'll see later).
+\end{frame}
 
-\begin{frame}{Zooming in}
+\begin{frame}{Filtered version of our target run}
+	\begin{center}
+		\includegraphics[width=\linewidth]{../../figures/run0_RBM_color_filtered_and_full_30000}
+	\end{center}
+\end{frame}
+
+\section{Exploring a run in detail}
+
+\begin{frame}{Exploring a run in detail}
 	
 	\begin{columns}
 		\begin{column}{0.55 \linewidth}
