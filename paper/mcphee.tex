@@ -15,6 +15,7 @@
 
 \maketitle
 
+\todo{weak abstract}
 \abstract{
 In evolutionary computation runs there is a great deal of data that could be
 saved and analyzed.
@@ -45,7 +46,7 @@ run.
 \section{Introduction}
 \label{sec:introduction}
 
-Previous work~\citep{McPhee:2015:GPTP, donatuccianalysis, Burlacu:2013:GECCOcomp:new, Burlacu:CIEES:2015, kuber2014ancestral} has
+Previous work~\citep{McPhee:2015:GPTP, donatuccianalysis, Burlacu:2013:GECCOcomp:new,burlacu2015effectiveness,Burlacu:CIEES:2015,burlacu2015building, kuber2014ancestral} has
 illustrated the value of ancestry graphs as a means of analyzing the dynamics
 of evolutionary computation runs. In~\cite{McPhee:2015:GPTP}, for example, we
 demonstrated the use of graph databases as a tool for collecting and analyzing
@@ -62,13 +63,13 @@ instructions back through the entire lineage, identifying where they were first
 introduced, and how they were transmitted through the genetic history. This
 reveals a number of interesting properties of this particular run including,
 for example, the fact that 4 of the 9 key instructions were introduced via 
-mutation.
+mutation and most crossover events led to changes that could have been brought about by mutation alone.
 
 In Section~\ref{sec:background} we review the key components of the system
 used to generate the run explored here (PushGP, Plush genomes, and the Replace Space With Newline test problem). We then describe and present both the full
 and genetic ancestry graphs in Section~\ref{sec:ancestryGraphs}, before
 tracing the evolutionary history of all the key instructions in 
-Section~\ref{sec:howDidWeGetThere}. Our discussion in 
+Section~\ref{sec:successfulEnd}. Our discussion in 
 Section~\ref{sec:discussion} builds on the details of these traces and
 catalogues the kinds of events we see in this run, describing a few in greater
 detail. We then wrap up with some conclusions and ideas for future work in
@@ -77,43 +78,42 @@ Section~\ref{sec:conclusions}.
 \section{Tools and setup}
 \label{sec:background}
 
-The run presented here uses the PushGP genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use multiple typed stacks to store and manipulate data. Instructions take their arguments from stacks of the appropriate types and leave their results on the appropriate stacks. Push provides support for iteration, recursion, conditional execution, and automatically-defined subroutines through runtime code manipulation, making it a Turing-complete language \citep{1068292}. PushGP implementations have been written in Clojure, C++, Java, JavaScript, Python, and others. Many of these are available from the Push project page.\footnote{\url{http://pushlanguage.org/}} The run presented here was conducted using the Clojure implementation of PushGP\footnote{Clojush: \url{https://github.com/lspector/Clojush}}.
+\todo{Weak section title}
 
-Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block acts as a single unit when code manipulating instructions act on them. For example, the \texttt{exec\_if} instruction deletes the second code block on the \texttt{exec} stack if the top item on the \texttt{boolean} stack is true, and deletes the first code block on the \texttt{exec} stack if it is false.
+\todo{Talk about lexicase!}
+
+The run presented here was generated using a Clojure implementation\footnote{Clojush: \url{https://github.com/lspector/Clojush}} of the PushGP\footnote{\url{http://pushlanguage.org/}} genetic programming system, which evolves programs in the Push programming language \citep{spector:2002:GPEM, 1068292}. Push programs use typed stacks to store and manipulate data, taking their arguments from stacks of the appropriate types and leave their results on the appropriate stacks.
+
+Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block is treated as a single unit when code manipulating instructions act on them.
 
 Unlike previous versions of PushGP, Clojush has recently been changed to not evolve 
-Push programs directly, but instead uses a new linear genome representation 
-\citep{Helmuth:2016:GPTP}. Each \textit{Plush genome}\footnote{\textbf{L}inear 
-	\textbf{Push}} consists of a linear sequence of instructions (including 
+Push programs directly, but to act instead on a new linear genome representation 
+\citep{Helmuth:2016:GPTP}. Each \textit{Plush (\textbf{L}inear 
+	\textbf{Push}) genome} consists of a linear sequence of instructions (including 
 literals), and is translated into a Push program prior to execution. Each 
 instruction may have one or more epigenetic markers attached that modify how 
-the genome is translated into a Push program.
+the genome is translated into a Push program. For more details on the Plush genome
+representation and operators, see~\cite{Helmuth:2016:GPTP}.
 %For example, the \textit{silent} marker is a boolean that tells whether a 
 %particular instruction will appear in the translated program. 
 
 Most relevant to this study is the \textit{close} epigenetic marker, which 
 affects the hierarchical composition of programs. Since many Push instructions 
-do not take arguments, as in code blocks, from the \textit{exec} stack, it 
+do not act on code blocks from the \textit{exec} stack, it 
 makes sense to limit the appearance of code blocks to follow only instructions 
-that make use of them. Each instruction that takes one or more argument from 
+that do make use of them. Each instruction that takes one or more argument from 
 the \textit{exec} stack automatically opens one or more code blocks. Then, the 
 integer close marker attached to each instruction tells how many opened code 
-blocks to close after the instruction. During translation from Plush genome to 
+blocks to close after that particular instruction. During translation from Plush genome to 
 Push program, an open parenthesis is placed after each instruction that 
 requires a code block, and a matching closing parenthesis is placed after a 
 later instruction with a non-zero close marker. These code blocks can create 
 hierarchically nested Push programs, allowing, for example, structures such as 
 nested looping and subroutines containing conditional code.
 
-The use of linear genomes allows PushGP to use simple uniform genetic 
-operators. The operators used in this study are inspired by the operator ULTRA. 
-ULTRA, designed for use on Push programs, requires programs to be translated 
-into a linear form and back \citep{Spector:2013:GPTP}, potentially requiring 
-repair of the program. Our main crossover operator, \textit{alternation}, 
-traverses two parents in parallel while copying instructions from one parent or 
-the other to the child.
-
-%While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some amount based on a random sample from a normal distribution with mean 0 and standard deviation set by the \textit{alignment deviation} parameter.
+Our main crossover operator, \textit{alternation}, similar to $N$-point crossover in genetic algorithms.
+Alternation traverses two parents in parallel while copying instructions from one parent or 
+the other to the child. While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some small random amount.
 
 We also use a \textit{uniform mutation} operator that traverses a parent, 
 replacing each instruction with some small probability. Similarly, a 
@@ -126,9 +126,9 @@ Push also implements a method of automatic simplification, which takes a program
 converts it into a smaller, semantically equivalent program. This process uses 
 hill-climbing to remove instructions and code blocks from the program, checking 
 at each step that the resulting program produces the same error vector as the 
-original program \citep{Spector:2014:GECCOcomp}.
+original program \citep{Spector:2014:GECCOcomp}. This can dramatically simplify programs, reducing, for example, one program from 194 instructions down to 9 instructions.
 
-Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input. Push functionally returns values by taking them from the top of relevant stacks. For example, each program evolved in this run returns the top integer on the integer stack as its output, unless the stack is empty. We include instructions that allow programs to print literals to standard output.
+Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \citep{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input by leaving that value on top of the \emph{integer} stack. 
 
 To store and process our ancestry data we used the Titan graph 
 database\footnote{\url{http://thinkaurelius.github.io/titan/}} along with the 
@@ -136,10 +136,9 @@ Gremlin shell and the Apache Tinkerpop\footnote{\url{https://tinkerpop.apache.or
 allowed us to store information about nodes (individuals), such as genomes
 and error vectors, and edges (relations) such as parent-child relationships,
 along with information such as measures of the differences between parent
-and child genomes. The graph database tools then make it easy to trace lineages and extract the subgraphs visualized in the next section. With access to all of the data in an organized fashion we 
-can pull subgraphs or ancestry trees of individuals that found a solution from 
-the database and create visualizations like the ones in this paper. For these visualizations we used the
-Graphviz \texttt{dot} graphing toolset.\footnote{\url{http://www.graphviz.org/}}
+and child genomes. The graph database tools then make it easy to trace lineages and extract the subgraphs visualized in the next section. For these visualizations we used the
+Graphviz \texttt{dot} graph layout tool
+.\footnote{\url{http://www.graphviz.org/}}
 
 %This is copied from VizGEC paper
 %We use the Titan graph database\footnote{\url{http://
@@ -376,7 +375,7 @@ the final of these key instructions being introduced, \texttt{\textbackslash spa
 This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
 instructions that are passed down through 15:801 and maintained all of the way down to the winners.
 
-This marks another interesting point about these instructions. Unlike in the return case instructions there is a clear path of lineage for these instructions. As they are introduced over time they 
+This marks another interesting point about these instructions. Unlike the return case instructions there is a clear path of lineage for these instructions. As they are introduced over time they 
 are never split apart into branches to be recombined later. Rather they were added via mutation and 
 then passed down together consistently from 0:288 down to the winners.
 
