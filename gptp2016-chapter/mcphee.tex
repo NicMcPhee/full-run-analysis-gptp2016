@@ -209,17 +209,25 @@ Graphviz \texttt{dot} graph layout tool
 \section{Ancestry graphs}
 \label{sec:ancestryGraphs}
 
-The foundation of the run we analyzed has 1,000 individuals per a generation. This particular run
-ended after only 20 generations. In this section we describe two techniques for extracting and 
-visualizing aspects of the run. The first being the ancestry tree of individuals who found a solution 
-(e.g., parents, grandparents, etc.). The other is the genetic ancestry tree of individuals who found 
-a solution. This differs from the ancestry tree since the genetic ancestry tree only includes 
-individuals that contributed genetic information to finding the solution.
+The run we analyze here used a population size of 1,000. 
+This particular run
+found a solution after 20 generations, so we stored a total of 21,000 
+individuals in the graph database for this run.\footnote{We applied these tools to much larger runs, storing and analyzing relationships among millions of individuals. The level of analysis described here, however, will require considerably more automation before it can be applied to such large runs.} There were thirteen different
+``winning'' individuals in that final generation, each of which had zero
+error on all of the 200 training cases.
+
+In this section we describe two techniques for extracting and 
+visualizing aspects of the run. The first is the ancestry tree, which 
+contains of every ancestor (e.g., parents, grandparents, etc.) of any
+individual who found a solution. The second is the genetic ancestry 
+tree, which is the subset of the ancestry tree limited to just those 
+individuals that contributed at least one instruction to a particular
+successful individual.
 
 \subsection{Full ancestry graph}
 
 Figure~\ref{fig:run0Labelled} shows the full ancestry tree of the 13 successful 
-individuals in this run. Each individual in the run is represented with a
+individuals in this run. Each individual is represented with a
 rectangle containing an identifier of the form \texttt{X:Y}, where \texttt{X}
 is the generation number, and \texttt{Y} is an arbitrary individual number
 within that generation. Each generation is a row, with the initial random
@@ -234,17 +242,20 @@ individuals being at the top and the 13 successful individuals at the bottom.
 		\vspace{0.6\columnwidth}
 		\includegraphics[width=\columnwidth]{../figures/run0_GPTP_2_font_30}
 	\end{center}
-	\caption{The labelled run.}
+	\caption{The full ancestry graph containing all the ancestors of the 13
+		successful individuals. Individuals are represented with boxes, with the each generation being a row; the top row in the initial random
+		population, and the bottom contains the 13 successful inidividuals.
+		Edges represent parent-child relationships; see the text for 
+		descriptions of the meaning of the particular edge decorations.}
 	\label{fig:run0Labelled}       % Give a unique label
 \end{sidewaysfigure}
 
-The edges indicate the particular genetic operator used to construct a child
-as follows:
+The edges indicate the particular genetic operator (see Section~\ref{sec:background}) used to construct a child:
 \begin{itemize}
 	\item Dashed: alternation
 	\item Dotted: uniform mutation
 	\item Thin black lines: uniform close mutation
-	\item Thick black lines: alternation and uniform mutation
+	\item Thick black lines: alternation followed by uniform mutation
 \end{itemize}
 
 This graph includes \emph{every} individual in this run that was an 
@@ -258,7 +269,7 @@ removed or replaced in subsequent mutations or recombinations.
 
 Conversely, while the individuals not represented in this graph are
 guaranteed to have not contributed to the genetics of the successful
-individual, they might have still had some substantial impact on the
+individuals, they might have still had some substantial impact on the
 run's overall dynamics. The presence of those individuals and their
 error vectors could certainly affect lexicase selection's choice of parents,
 for example, which could substantially impact the dynamics.
