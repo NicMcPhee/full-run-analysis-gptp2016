@@ -288,7 +288,8 @@ programs. To further simplify the graph and the analysis, we picked\footnote{Thi
 	been the same in most cases even if we'd worked back from a different 
 	successful individual.} 
 one of the
-successful individuals, namely 20:435, which was constructed via three instruction mutations from individual 19:554.
+successful individuals, namely 20:435, which was constructed via a single
+instruction mutation from individual 19:554.
 Individual 20:435's genome contained 194 genes, and its program had zero error on both
 the training and testing cases.
 The simplified program for 20:435 (which also passes all the tests)
@@ -390,60 +391,43 @@ large amount of genetic material from its parents. It also allows us to easily i
 events that have mutation-like behavior, where there is only a small difference 
 between to genome of one of the parents and the child.
 
-\section{The (successful) end and how we get there}
+\section{The (successful) end and how we got there}
 \label{sec:successfulEnd}
 
-There are 13 successful individuals
-in this run, most of which have identical simplified
-programs. In the interest of space we're going to focus on one of those, 
-individual 20:435, which was constructed via three instruction mutations
-from individual 19:554.
-Individual 20:435's genome contains 194 genes and has zero error on both
-the training and testing cases.
-The simplified program for 20:435 (which also passes all the tests)
-contains only 9 instructions:
+As discussed earlier, individual 20:435's program simplfies down to just
+nine instructions:
 \begin{verbatim}
 (\space \newline in1 string_replacechar print_string
 in1 \space string_removechar string_length)
 \end{verbatim}
-This simplified program is actually quite readable, and has a similar
-structure to what me might expect from a human solution.
-The first five 
-instructions (together on the first line) replace all the spaces in the input string 
-with newlines (using the \texttt{string\_replacechar} instruction) and print the 
-resulting string, thereby solving half the problem. 
-The next four instructions (on the second line) remove all the spaces from
-a fresh copy of the input string, compute the length and leave that on the
-\texttt{:integer} stack as the ``returned'' result.
+where the first five instructions (the first line) handle the printing part
+of the Replace Space With Newline problems, and the next four instructions
+(the second line) handle the the requirement that the program returns the
+number of non-space characters.
 
-\subsection{How did we get there?}
-\label{sec:howDidWeGetThere}
-
-In this section we will trace the origin of each of the nine instructions
-in the simplified program for individual 20:435,
+In this section we trace the origin of each of these nine instructions,
 going back to their introduction either via a mutation or as an element 
-of one of the initial, random programs in the initial generation. It's clear
+of one of the initial, random programs in the first generation. It's clear
 that each of these was ``necessary'' for the construction of this particular
 solution, so knowing where they all came from and how they came together
 should give us a valuable sense of the dynamics of this run. 
-
 It's important to realize, however, that this will
 never be the whole story. Push instructions and values can play an 
 important role in subtle ways, e.g., as spacers on stacks that when
 ``counting'' is implemented with a stack depth command. Removal of
 instructions can also be important. One key step in this run, for example, 
-is the removal of an extraneous \texttt{print\_newline}; the presence of this
+is the removal in the construction of 15:801 of an extraneous \texttt{print\_newline} present in 14:704; the presence of this
 instruction caused the printed output to always have an error of one,
-and its removal led to 100 errors changing
+and its removal changed all of the 100 ``printing'' errors
 from 1 to 0. All that said, however, we need some way to limit the number
 of individuals and events to analyze, so here will focus on the how those
 nine instructions trace through the ancestry.
 
 It's also important to note that we didn't actually collect enough information
-to \emph{always} say for certain where an instruction came from in a 
+to always say for \emph{certain} where an instruction came from in a 
 recombination event. There are numerous copies of instructions like
 \texttt{in1} in most of the genomes, for example, and in principle any of them
-in a parent could be the source of an \texttt{in1} in the child. In practice,
+in a parent could be the source of an \texttt{in1} in a child. In practice,
 however, there are constrains of location and order that typically allowed
 us to identify a single, unique source. There were a few places, however, where
 judgement calls were made. In future work we're going to explore attaching
@@ -452,58 +436,69 @@ also source-destination relationships among genes, as this will give us
 certainty about the sources of genes, and allow us to automate more of the
 analysis, all at the expense of larger databases.
 
-Returning to the specific program from Section~\ref{sec:successfulEnd},
+Returning to the specific program,
 it turns
 out that the evolution of the first five instructions, those handling the
 printing part of Replace Space With Newline, is largely independent of
 the evolution of the last four instructions, which handle the return part
 of the problem. The first five instructions, for example, all appear early 
-in the genome for 20:435, from gene 9 to gene 24, while the last four 
-all appear much later in the genome, from gene 107 to gene 175. As a consequence
-we'll trace these two groups one at a time.
+in the genome for 20:435, between gene 9 and gene 24, while the last four 
+all appear much later in the genome, between gene 107 and 175. As a consequence
+we'll trace these two groups one at a time, then discuss the ``end game'' after
+those two groups of instructions are brought together in individual 19:554.
 
 \subsection{Printing: The first five instructions}
 \label{sec:Printing}
 
-What is witnessed in the ancestry of the 5 instructions key to solving the printing test
-cases (even cases) is fairly interesting and straightforward. Starting at the top with individual 0:288 only
-one of the key instructions, \texttt{in1}, is present. The rest of the 5 are introduced over time purely
-through uniform mutations. The next of the key instructions to appear is introduced in individual 1:590 via a point
+The ancestry of the 5 instructions that solve the printing test
+cases is fairly straightforward, and involves far more mutation than we
+expected. Unlike the return case instructions described below 
+(Section~\ref{sec:Returning}), here there is a clear linear path for these 
+instructions. They are introduced over time, and they 
+are never split apart into branches to be recombined later.
+
+Starting at the top-right of Figure~\ref{fig:run0Filtered} with individual 0:288, only
+one of the key instructions, \texttt{in1}, was present in that individual from 
+the initial randomly generated population. The other 4 of the 5 key printing 
+instructions were introduced over time
+through a series of uniform mutations. The second of these 5 key instructions was introduced in individual 1:590 via a point
 mutation converting a piece of 0:288's genome into a \texttt{print\_string} instruction. These two
 instructions are passed along this branch until they are joined by the next important instruction,
-\texttt{\textbackslash newline}. This instruction is introduced in 7:788 via uniform mutation
-of 6:881.
-
+\texttt{\textbackslash newline}, introduced in 7:788 again via uniform
+mutation.
 After descending another 2 generations these three instructions were joined by \texttt{string\_replacechar}
-in 9:896 via yet another uniform mutation. At this point it's interesting to note that these instructions are
-all introduced fairly evenly over the course of these generations. Even as the run gets closer to the generation
-20 winners these individuals obtained key instructions through random uniform mutations. Which lead to
-the final of these key instructions being introduced, \texttt{\textbackslash space}.
-This instruction is added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
-instructions that are passed down through 15:801 and maintained all of the way down to the winners.
+in 9:896 via yet another uniform mutation. 
+The final of these 5 key instructions, \texttt{\textbackslash space} was
+added in generation 14 via a uniform mutation of 13:580 into 14:704, thus completing the five key printing
+instructions. These five instructions were then passed down as a group through 15:801 to the winners.
 
-This marks another interesting point about these instructions. Unlike the return case instructions there is a clear path of lineage for these instructions. As they are introduced over time they 
-are never split apart into branches to be recombined later. Rather they were added via mutation and 
-then passed down together consistently from 0:288 down to the winners.
-
-These instruction additions can also be seen affecting the error vectors in their individuals. Each instruction that is addition
-is accompanied by a shift in the even test cases. Sometimes effect is minimal with both positive and negative changes
-in the test cases. Other times the change is larger and causes dramatic improvement. An example of a small change is when
-\texttt{print\_string} was mutated into 1:590. This mutation causes 83 of the 100 even test cases to generally improve except for a few individuals that worsen.
-Meanwhile in the mutation of 13:580  in the creation of 14:704 we saw all of the even test scores become 1. This is in general a very
-big improvement, but worsened a few tests that had passed with no error in 13:580. These examples help to highlight
-and support the value of these instructions as each step we saw a change, often for the better. This is not to
-say that steps where these instructions are not added haven't had changes in their error vectors, but shines light
-on how it is necessary to both find the right instructions as well as remove instructions that hinder the solution.
+The impact of these instruction additions can be seen in the individuals'
+error vectors, as each addition
+was accompanied by a shift in the printing test cases. Sometimes the effect was 
+minimal, with both small positive and small negative changes
+in the errors for different test cases, while other times the change led to 
+dramatic improvements. As an example of a dramatic improvement, when
+\texttt{print\_string} was introduced into 1:590, for example, the error on 
+nearly all of the 100 printing test improved, with only a few showing an 
+increased error; the total error for 1:590 across all 200 test cases was 
+492, where it's parents (0:41\footnote{Individual 0:41 isn't shown in 
+	Figure~\ref{fig:run0Filtered} since it didn't contribute any of the 9 key 
+	instructions to 1:590 or, ultimately, 20:435.} and 0:288) has total errors 
+of 1,594 and 1,154 respectively.
+Later, in the creation of 14:704 via mutation from 13:580 all of the 
+printing test scores became 1. This was in general an \emph{vital} step, 
+but did lead to an increased error on a few tests that had passed with no 
+error in 13:580; the total error of 14:704 was 922, where the 
+total error of 13:580 was a slightly worse 1,125.
 
 \subsection{Returning: The last four instructions}
 \label{sec:Returning}
 
-These last four instructions were present in the right order and in at least
+The last four ``returning'' instructions were present in the right order and in 
 rough proximity in the very first generation, in individual 0:126. The first of these instructions (\texttt{in1}) was on gene 75 of the genome, the next two
 (\texttt{\textbackslash space} and \texttt{string\_removechar}) were on 
 genes 89 and 94, and then the final instruction (\texttt{string\_length}) 
-was on line 141 (out of a total of 161 genes in the genome).
+was on line 141 (out of a total of 161 genes in that initial genome).
 
 Despite the fact that this individual had ``all the right stuff'', it's error
 vector had very few zeros, i.e., it was rarely correct, highlighting
@@ -525,14 +520,14 @@ and had 100 children, several of which went on to carry one or more of
 these four instructions forward to individual 19:554 when they were finally
 reunited in the positions that would ultimately lead to success. In particular
 there were three distinct branches coming from 3:122, each of which will
-be discussed in this subsection.
+be discussed below.
 
 \subsubsection{Branch 4:772 and the carriers of \texttt{in1}}
 \label{sec:4:772}
 
 Individual 4:772 inherited the copy of the first instruction,
 \texttt{in1}, that would ultimately form part of the solution. This was
-transmitted down to 9:109 without the other 8 out of 9  ``final'' instructions. Individual 9:109, however, recombined with 
+transmitted down to 9:109 where it was recombined with 
 9:896 which, as mentioned above in Section~\ref{sec:Printing}, carried
 all but one of the first five ``printing'' instructions. 
 
@@ -551,25 +546,25 @@ discussion of the next branch.
 3:122 contained a block of 25 genes % genes 77 to 101
 that contain the two middle instructions in the ``returning''
 code, \texttt{\textbackslash space} and \texttt{string\_removechar}.
-This block is replicated in both 4:425 and 4:107, and then passed,
-respectively, to 5:303 and 5:910. 5:303 and 5:910 then recombine
-to create 6:293, which ends up having two complete copies of this
+This block was replicated in both 4:425 and 4:107, and then passed,
+respectively, to 5:303 and 5:910. 5:303 and 5:910 then recombined
+to create 6:293, which ended up having two complete copies of this
 block of genes. % genes 67 to 91 and 100 to 124.
 
-These two blocks are then replicated from 7:291 down through 10:41,
+These two copies of this block were then copied from 7:291 down through 10:41,
 to both 13:136 and 13:575. When these recombined to form 14:213
 we ended up with \emph{three} near copies of the block. These blocks
-are no longer identical due to small changes caused by the
-genetic operators, but each block still contained over 20 genes,
+were no longer identical due to small changes caused by earlier
+genetic operations, but each block still contained over 20 genes shared,
 including the two key instructions,
 \texttt{\textbackslash space} and \texttt{string\_removechar},
-four instructions apart.
+still four instructions apart.
 
 All three of these blocks (and their three copies of these two ``final''
-instructions) are passed on to 15:801 in the recombination of 14:213 and
+instructions) were passed on to 15:801 in the recombination of 14:213 and
 14:704. 14:704 also bequeathed to 15:801 all of its six ``final'' 
-instructions, meaning that 15:801 has all but the last of the 9 ``final''
-instructions (\texttt{string\_length}).
+instructions, meaning that 15:801 had all but one of those 9
+instructions, missing only the final \texttt{string\_length}.
 
 \subsubsection{Branch 4:897 and the carriers of \texttt{string\_length}}
 \label{sec:4:897}
@@ -581,29 +576,36 @@ This was transmitted all the way down to
 as is reflected in the almost entirely linear ancestry from 4:897 to 18:641 
 in Figure~\ref{fig:run0Filtered}.
 
-There is one potentially interesting interaction with the other branches, 
-when 15:543 combined with 15:801 to create 16:964. It turned out
-that 15:801 did not contribute genetic information that led to the solution found. 15:543 held the crucial missing \texttt{string\_length} gene that had been passed down since our starting random generation. Essentially, 16:964 was made through alternation and uniform mutation so 15:543 combined with 15:801. The only substantial gene that 16:964 contributed to the solution was \texttt{string\_length} from 15:543.
+There was one potentially interesting interaction with the other branches, 
+when 15:543 combined with 15:801 to create 16:964. In this recombination event,
+however, 15:801 did not contribute any of the 9 key instructions to 16:964. 
+15:543, on the other hand, transmitted the crucial missing 
+\texttt{string\_length} gene that had been passed down since our starting 
+random generation, and which went on to be part of the solution in 20:435.
 
-\subsection{From 19:554 to the end and the final adjustments}
+\subsection{From 19:554 to the end, and the final adjustments}
 
 19:554 was the result of a recombination of 18:641 and 18:937, which finally
 brought together all nine of the ``final'' instructions. 18:937 contributed
 the first 8 instructions, and 18:641 contributed the final 
 \texttt{string\_length} instruction. Individual 19:554 didn't \emph{quite} solve the
-problem, it did have three ``return'' test cases with error 1. These three test cases turned out to be the only cases with an input of a single character.
+problem, however, it did have three ``return'' test cases with error 1. These three test cases turned out to be the only cases with an input of a single character.
 
 These errors were fairly easy to rectify, however, as evidenced by the 
 fact that 12 of 19:554's 747 offspring (or 1.6\%) were indeed successful.
 Two of these successful children (20:435 and 20:548) were the result of 
-mutating a \emph{single} instruction. The mutation that led to 20:435 
-caused the instruction \texttt{string\_butlast} to not operate. \texttt{string\_butlast} was incorrectly removing the one and only character
-from the input string. So the mutation of the instruction led to a perfect solution.
+mutating a \emph{single} instruction. The key change brought about by the 
+mutation that led to 20:435 
+caused an instance of the instruction \texttt{string\_butlast} to not operate. 
+In 19:554 this \texttt{string\_butlast} was incorrectly removing the one and 
+only character
+from the input string when the input consisted of a single character string, so 
+the suppression of that instruction led to a perfect solution.
 
 \section{Discussion}
 \label{sec:discussion}
 
-The trace in Section~\ref{sec:howDidWeGetThere} provides a sense of where all
+The trace in Section~\ref{sec:successfulEnd} provides a sense of where all
 the key instructions came from, and indicates several of the key moments in the
 evolutionary process. In this section we'll provide some summary information
 as well as highlighting both some general patterns and a few important events.
@@ -622,7 +624,7 @@ followed by uniform mutation 50\% of the time, alternation alone 20\% of the
 time, uniform mutation 20\% of the time, and uniform close mutation the 
 remaining 10\% of the time. 
 The other two columns have similar percentages,
-suggesting that there wasn't a large skew away from those parameter values
+suggesting that there wasn't a large skew away from those parameter values,
 and that none of the genetic operators were particularly over- or 
 under-represented in the ancestry graphs.
 
@@ -644,12 +646,13 @@ While there are numerous alternations in the genetic ancestry graph, it's worth
 noting that many of the DL-distances (the edge labels in 
 Figure~\ref{fig:run0Filtered}) are fairly small, even when alternation was
 involved, as can be seen in Figure~\ref{fig:alt:DLdist:distribution}. Of the
-53 alternations (ignoring those leading to a successful individual in 
+53 alternations in the genetic ancestry graph
+(ignoring those leading to a successful individual in 
 generation 20), 21 had DL-distances of 10 or less, 6 had DL-distances of just 1,
-and 5 had DL-distances of 0 (the child was an exact copy of the parent).
+and 5 had DL-distances of 0 (the child was an exact copy of a parent).
 One might assume that this is partly due to the six 
 self-cross alternations, where the same individual served as both parents, 
-such as individual 16:106 having 15:801 as both of its parents.\footnote{Most of these self-crosses are likely a result of hyperselection events due to lexicase 
+such as individual 16:106 having 15:801 as both of its parents.\footnote{These self-crosses are likely a result of hyperselection events due to lexicase 
 	selection~\cite{Helmuth:2016:GECCO}.} In fact, however, most of the 
 self-crosses in the genetic ancestry graph had higher than median DL-distances.
 
@@ -658,19 +661,17 @@ self-crosses in the genetic ancestry graph had higher than median DL-distances.
 		\includegraphics[width=0.9\textwidth]{../figures/Alternation_dl_distance_distribution}
 	\end{center}
 	\vspace{-0.5 cm}
-	\caption{The distribution of DL-distances for all the alternation events, 
+	\caption{The distribution of DL-distances for all the alternation events 
 		in the genetic ancestry graph (Figure~\ref{fig:run0Filtered}) whether 
 		or not they were followed by uniform mutation. This does not include
 		the alternations leading to successful individuals in the final \
-		generation since those were mostly self-crosses, which skew towards 
+		generation since those were almost all self-crosses, which skew towards 
 		smaller DL-distances.}
 	\label{fig:alt:DLdist:distribution}
 \end{figure}
 
 These very small DL-distances mean that many of the alternations were 
-effectively acting as mutation events, either through a small number of
-mutations following an alternation that didn't change the parent, or 
-through small deletions or replications of code. The steps from individual
+effectively acting as mutation-like events. The steps from individual
 15:801 to 18:937, for example, are all alternations (possibly followed
 by mutations), but in fact almost every change in that sequence was due to
 gene deletions or duplications in those alternation events. There were 3
@@ -697,7 +698,7 @@ from the other parent (2:779).
 
 Not all alternation events in Figure~\ref{fig:run0Filtered} could effectively be seen as
 mutation events, however. The construction of 15:801, for example,
-was in many ways what we imagine when we talk about
+was in many ways what we imagine when we think about
 crossover events, combining significant genetic material and significant functionality from two different parents. It was also a key point in the run,
 as 15:801 was the first individual to be correct on all of the ``printing''
 test cases, and it was also correct on 26 of the 100 ``returning'' test cases.
@@ -715,8 +716,8 @@ due to an extra \texttt{print\_newline} (line 37 in Table~\ref{tab:15:801}).
 In the recombination this gene wasn't passed on to 15:801, which led to a
 perfect score of 0 on all those test cases. The performance of 15:801 on
 the return test cases wasn't quite as strong as that of its other parent,
-14:213, but was generally better than 14:704's performance on those test cases. This led to 15:801 receiving a large number of selections (595) and being
-a parent of just over half the population (501 individuals).
+14:213, but was generally better than 14:704's performance on those test cases. 15:801 went on to receive a large number of selections (595) and being
+a parent of just over half the next generation (501 individuals).
 
 \begin{table}
 	\begin{tabular}{l|rl|l}
@@ -766,16 +767,16 @@ a parent of just over half the population (501 individuals).
 		15:801 (center) from parents 14:704 (left) and 14:213 (right) showing
 		the \emph{simplified} programs for those individuals (see
 		Section~\ref{sec:background}). This shows that individual 15:801 was
-		essentially constructed from a prefix of 14:704 and a suffix of 14:213.}
+		essentially constructed from a short prefix of 14:704 and a longer suffix of 14:213.}
 	\label{tab:15:801}
 \end{table}
 
 \section{Conclusions and future work}
 \label{sec:conclusions}
 
-Here we have traced through the genetic ancestry of a short, successful genetic programming run. While the run was short, it used an ``industrial strength''
-PushGP system\footnote{\url{https://github.com/lspector/Clojush}} on a
-non-trivial problem that required the manipulation of strings in multiple
+Here we traced through the genetic ancestry of a short, successful genetic programming run. While the run was short, it used an ``industrial strength''
+PushGP system on a
+non-trivial problem that required the manipulation of strings and integers in multiple
 ways, and a combination of both printing and returning results. We used graph
 database tools to create
 ancestry and genetic ancestry graphs, which we were then able to use to 
@@ -795,12 +796,12 @@ simplified program, and only two went on to be part of the simplified
 successful program in 20:435. In this case we were able to deal with these
 problems by using contextual clues such as order in the genome and surrounding
 instructions, not unlike how biologists track gene sequences in organisms.
-To make this process more automatic, however, we'll need to save additional
+To make this process more automatic and exact, however, we'll need to save additional
 information with the individual genes that allows us to know exactly where they 
 came from.
 
 It would also be valuable to improve our ability to understand and compare
-program behaviors. While we can easily compare genomes and error vectors,
+program behaviors. We can easily compare genomes and error vectors,
 and reasonably compare program \emph{texts}, comparing program \emph{behaviors}
 is much less straightforward. While the simplified program for individual
 20:435 is quite short and understandable, the unsimplified program contains
@@ -812,7 +813,7 @@ And while those instructions might be removable from 20:435 at the end
 of the run, it's likely that many of those instructions played some
 meaningful role in an ancestor that contributed to that ancestor's selection.
 
-Lastly, and more simply, the prevalence of numerous alternation events in the 
+Lastly the prevalence of numerous alternation events in the 
 gene ancestry graph that turned out to be just gene deletions or duplications 
 suggests that it might be valuable to include deletion and replication 
 mutations as stand-alone operators, instead of requiring that such events
@@ -824,6 +825,10 @@ occur via lucky alternations.
 	parents and children discussed here. William Tozier provided a host of 
 	ideas and feedback all through the process, as did numerous members
 	of the Hampshire College Computational Intelligence lab.
+	
+	We are very grateful to all the participants in the 2016 Genetic Programming Theory and Practice (GPTP) workshop for their enthusiasm, ideas, and support. In particular we'd like to thank William Tozier,
+	Stephan Winkler, and Wolfgang Banzhaf for their feedback on an earlier
+	draft. Finally, thanks to the GPTP organizers; without their hard work none of those other valuable conversations would have occurred.
 	
 	This material is based upon work supported by the National Science Foundation under Grants No. 1129139 and 1331283. Any opinions, findings, and conclusions or recommendations expressed in this publication are those of the authors and do not necessarily reflect the views of the National Science Foundation.
 \end{acknowledgement}
