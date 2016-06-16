@@ -184,31 +184,12 @@ original program \cite{Spector:2014:GECCOcomp}. This can dramatically simplify p
 Our goal here is to give a deep analysis of a single run of PushGP, exploring and analyzing many of the programs, selections, and variations that make up this run. We chose to analyze a run on the Replace Space With Newline (RSWN) problem, taken from a recent general program synthesis benchmark suite \cite{Helmuth:2015:GECCO}. In this problem, a program is given a string as input and should perform two tasks: first, it must print the result of replacing each space in the input with a newline character, and second, it must functionally return the number of non-whitespace characters in the input by leaving that value on top of the \emph{integer} stack. 
 
 To store and process our ancestry data we used the Titan graph 
-database\footnote{\url{http://thinkaurelius.github.io/titan/}} along with the 
-Gremlin shell and the Apache Tinkerpop\footnote{\url{https://tinkerpop.apache.org/}} query language. This 
+database along with the 
+Gremlin shell and the Apache Tinkerpop query language.\footnote{\url{http://thinkaurelius.github.io/titan/} and \url{https://tinkerpop.apache.org/}} This 
 allowed us to store information about nodes (individuals), such as genomes
-and error vectors, and edges (relations) such as parent-child relationships,
-along with information such as measures of the differences between parent
-and child genomes. The graph database tools then make it easy to trace lineages and extract the subgraphs visualized in the next section. For these visualizations we used the
+and error vectors, and edges (relations) such as parent-child relationships. The graph database tools then make it easy to trace lineages and extract the subgraphs visualized in the next section. For these visualizations we used the
 Graphviz \texttt{dot} graph layout tool
 .\footnote{\url{http://www.graphviz.org/}}
-
-%This is copied from VizGEC paper
-%We use the Titan graph database\footnote{\url{http://
-%thinkaurelius.github.io/titan/}} along with the Gremlin shell and the Tinkerpop query 
-%tools\footnote{\url{https://tinkerpop.apache.org/}} to store the parent-child 
-%relationships from genetic programming runs, and to extract the ancestry trees of 
-%specified individuals. We then visualize these subgraphs using the Graphviz \texttt{dot} 
-%graph layout tool.\footnote{\url{http://www.graphviz.org/}}
-%\footnote{\url{http://www.graphviz.org/}}
-%\subsection{THIS COPIED FROM TOM'S THESIS}
-
-%% I (Tom) left the following in the tex in case we need more info later; most of it isn't represented above. If we use it, it shouldn't be copied directly as to not plagiarize Tom's thesis.
-
-% Push dedicates a separate stack for each data type. Instructions take their arguments from stacks of the appropriate types and they leave their results on stacks of the appropriate types. This allows instructions and literals to be freely intermixed regardless of type while still ensuring execution safety. The convention in Push regarding instructions that are executed in contexts that provide insufficient arguments on the relevant stacks is that these instructions act as ``no-ops''; that is, they do nothing.
-
-%Push traditionally takes results from the top items on stacks after executing a program. For example, a program that returns an integer will take the top value on the integer stack as its output. This convention means that some evolved programs might not return a value of the correct type, if the relevant stack is empty following execution; in this scenario, we penalize the program for failing to return a result. Push also has the ability to print literals to standard output; in our implementation this simply concatenates printed material to a string of whatever has been printed so far, but this could easily be changed to print to standard output.
-
 
 \section{Ancestry graphs}
 \label{sec:ancestryGraphs}
@@ -216,7 +197,7 @@ Graphviz \texttt{dot} graph layout tool
 The run we analyze here used a population size of 1,000. 
 This particular run
 found a solution after 20 generations, so we stored a total of 21,000 
-individuals in the graph database for this run.\footnote{We applied these tools to much larger runs, storing and analyzing relationships among millions of individuals. The level of analysis described here, however, will require considerably more automation before it can be applied to such large runs.} There were thirteen different
+individuals in the graph database for this run. There were thirteen different
 ``winning'' individuals in that final generation, each of which had zero
 error on all of the 200 training cases.
 
@@ -254,7 +235,7 @@ individuals being at the top and the 13 successful individuals at the bottom.
 	\label{fig:run0Labelled}       % Give a unique label
 \end{sidewaysfigure}
 
-The edges indicate the particular genetic operator (see Section~\ref{sec:background}) used to construct a child:
+The edges indicate the particular genetic operator used to construct a child:
 \begin{itemize}
 	\item Dashed: alternation
 	\item Dotted: uniform mutation
@@ -262,10 +243,10 @@ The edges indicate the particular genetic operator (see Section~\ref{sec:backgro
 	\item Thick black lines: alternation followed by uniform mutation
 \end{itemize}
 
-This graph includes \emph{every} individual in this run that was an 
+The graph in Figure~\ref{fig:run0Labelled} includes \emph{every} individual in this run that was an 
 ancestor of one of the winners, i.e., every individual that could possibly have 
 contributed genetic material to one of the winners. Note, however, that not
-all these individuals actually contributed any genetic material to those
+all these individuals actually contributed to those
 solutions. There are, for example, cases where one of the parents actually
 contributed no material in a recombination (alternation) event, and cases where
 a parent did contribute some genetic material, but that material was later
@@ -339,19 +320,19 @@ ancestry information.
 
 The genetic ancestry graph in Figure~\ref{fig:run0Filtered} uses the same basic display of node and edge information
 as the full ancestry graph.
-However there are several additions that indicate how the 9 key instructions
+Tthere are, however, several additions that indicate how the 9 key instructions
 flowed through the ancestry. 
-First, we decorated nodes with boxes showing which of the 9 key instructions that were present in that individual. In most cases undecorated nodes
+First, we decorated nodes with boxes showing which of the 9 key instructions  were present in that individual. In most cases undecorated nodes
 contain the same instructions as the most recent labeled ancestor; the
 exceptions to this are individuals 16:964, 17:909, and 18:641, each of which 
 contribute just the \texttt{string\_length} instruction inherited from 15:543. 
 Next we added a thicker border to 
-certain nodes, to indicate the introduction or combination of a key 
+certain nodes, to indicate the introduction or combination of key 
 instructions via either mutation or crossover. Individual 1:590 is highlighted,
 for example, because the key \texttt{print\_string} instruction was introduced 
 their via uniform mutation, and individual 10:473 is highlighted because the
 alternation of 9:109 and 9:896 brought together an \texttt{in1} instruction
-from 9:109 (inherited from 0:126 via 4:772) with the four printing instructions 
+from 9:109 with the four printing instructions 
 from 9:896. Lastly
 we used a grayscale color gradient to indicate which and how many of the 
 instructions were present in an individual. The earlier of the 9 key 
@@ -362,15 +343,15 @@ instruction from near the middle of the program, where 19:554 has a strong
 gradiant because it contributed all 9 of the instructions.
 
 The other important extension to the graph in Figure~\ref{fig:run0Filtered} 
-is that we decorated each edge with the Damerau-Levenshtein distance (DL-distance)
+is that we labeled each edge with the Damerau-Levenshtein distance (DL-distance)
 between the genome vectors for each parent-child pair. The genome
-vectors were generated by extracting the \texttt{:instruction}
+vectors were generated by concatenating the \texttt{:instruction}
 \footnote{Instructions were treated as atomic symbols when computing the
 	Damerau-Levenshtein distances; swapping a \texttt{exec\_if} with a \texttt{print\_string} would only add a
 	distance of 1.}
 and 
-\texttt{:close} fields from each gene, and concatenating those into a
-single sequence. So, for example, the genome of successful individual
+\texttt{:close} fields from each gene into a
+single sequence. As an example, the genome of successful individual
 20:435 starts
 
 %\todo{Should this prefix of the genome be in a figure so it doesn't get broken up by things like page breaks?}
@@ -498,12 +479,10 @@ total error of 13:580 was a slightly worse 1,125.
 \subsection{Returning: The last four instructions}
 \label{sec:Returning}
 
-The last four ``returning'' instructions were present in the right order and in 
-rough proximity in the very first generation, in individual 0:126. The first of these instructions (\texttt{in1}) was on gene 75 of the genome, the next two
+The last four ``returning'' instructions were present in the right order in the very first generation, in individual 0:126. The first of these instructions (\texttt{in1}) was on gene 75 of the genome, the next two
 (\texttt{\textbackslash space} and \texttt{string\_removechar}) were on 
 genes 89 and 94, and then the final instruction (\texttt{string\_length}) 
 was on line 141 (out of a total of 161 genes in that initial genome).
-
 Despite the fact that this individual had ``all the right stuff'', it's error
 vector had very few zeros, i.e., it was rarely correct, highlighting
 the fact that the presence or absence of other instructions can profoundly
