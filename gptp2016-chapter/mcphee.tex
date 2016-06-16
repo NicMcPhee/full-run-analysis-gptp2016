@@ -171,7 +171,7 @@ attached to an instruction by incrementing or decrementing it. Finally, we
 often apply an alternation operator followed by a uniform mutation of the 
 result, inspired by the ULTRA operator \cite{Spector:2013:GPTP}.
 
-Push also implements a method of automatic simplification, which takes a program and 
+Clojush also implements a method of automatic simplification, which takes a program and 
 converts it into a smaller, semantically equivalent program. This process uses 
 hill-climbing to remove instructions and code blocks from the program, checking 
 at each step that the resulting program produces the same error vector as the 
@@ -279,10 +279,33 @@ for example, which could substantially impact the dynamics.
 Despite the short length of this run, and the restriction to just displaying
 ancestors of successful individuals, Figure~\ref{fig:run0Labelled} still
 contains 394 nodes and 629 edges, making it difficult to analyze in full.
-Figure~\ref{fig:run0Filtered} is a version of the same graph that further
-cuts down on the full ancestry tree by including only individuals who were
-involved with the lineage of the key instructions in the simplified programs of the
-winners.
+
+There were 13 successful individuals
+in this run, most of which had identical simplified
+programs. To further simplify the graph and the analysis, we picked\footnote{This choice 
+	was somewhat arbitrary, but most of the 13 successful programs 
+	simplify down to the same 9 instruction program, so the analysis would have 
+	been the same in most cases even if we'd worked back from a different 
+	successful individual.} 
+one of the
+successful individuals, namely 20:435, which was constructed via three instruction mutations from individual 19:554.
+Individual 20:435's genome contained 194 genes, and its program had zero error on both
+the training and testing cases.
+The simplified program for 20:435 (which also passes all the tests)
+contains only 9 instructions:
+\begin{verbatim}
+(\space \newline in1 string_replacechar print_string
+in1 \space string_removechar string_length)
+\end{verbatim}
+This simplified program is actually quite readable, and has a similar
+structure to what me might expect from a human solution.
+The first five 
+instructions (together on the first line) replace all the spaces in the input string 
+with newlines (using the \texttt{string\_replacechar} instruction) and print the 
+resulting string, thereby solving half the problem. 
+The next four instructions (on the second line) remove all the spaces from
+a fresh copy of the input string, compute the length and leave that on the
+\texttt{:integer} stack as the ``returned'' result.
 
 \begin{figure}[tb!p] %[b] sets the image at the bottom of the page; t = top, b = bottom, h = here%
 	% \sidecaption
@@ -296,28 +319,51 @@ winners.
 	\label{fig:run0Filtered}       % Give a unique label
 \end{figure}
 
-To create the genetic ancestry graph we traced the lineage of the instructions in the winners
-simplified program. Starting from the winner we traced backwards through it's ancestors tracking where
-the instructions came from (further explored in section 4). In doing so we found all of the members
-in the full ancestry graph that contributed these important instructions and then created this genetic
-ancestry graph containing only these individuals. By cutting down on the number of individuals displayed
-we have a much more readable and focused visualization of some important data.
+To simplify the graph in Figure~\ref{fig:run0Labelled}, we extracted the
+subgraph containing only those individuals that contributed at least one
+of these nine \emph{key instructions} to individual 20:435; see
+Figure~\ref{fig:run0Filtered}.
+Starting from 20:435 we traced backwards through it's 
+ancestors, tracking where
+the 9 key instructions came from. In doing so we found all of the members
+in the full ancestry graph that contributed these important instructions. and then extracted the genetic
+ancestry subgraph containing only these individuals. By cutting down on the 
+number of individuals displayed
+we have a much more readable and focused visualization of this important 
+ancestry information.
 
-Looking at Figure~\ref{fig:run0Filtered}, it uses the same basic structure of node and edge information
+The genetic ancestry graph in Figure~\ref{fig:run0Filtered} uses the same basic display of node and edge information
 as the full ancestry graph.
-However there are a few key additions in how we wanted to display the additional information involving
-the instructions. First off we labeled the nodes with which instructions are present, unlabeled nodes
-have the same instructions as the nearest labeled ancestor. Next we added a dark border to 
-nodes, to further indicate the addition of a key instruction via either mutation or crossover. Lastly
-we used a grayscale color gradient to help track the instructions. An example of this coloration can be seen
-in 3:122 and its children. 3:122 has a gradient of three shades of gray that represent its three instructions.
-Its children are given a shade of gray based on which of those instructions they received. As the grays
-are added into individuals with more and more instructions the grays are blended.
+However there are several additions that indicate how the 9 key instructions
+flowed through the ancestry. 
+First, we decorated nodes with boxes showing which of the 9 key instructions that were present in that individual. In most cases undecorated nodes
+contain the same instructions as the most recent labeled ancestor; the
+exceptions to this are individuals 16:964, 17:909, and 18:641, each of which 
+contribute just the \texttt{string\_length} instruction inherited from 15:543. 
+Next we added a thicker border to 
+certain nodes, to indicate the introduction or combination of a key 
+instructions via either mutation or crossover. Individual 1:590 is highlighted,
+for example, because the key \texttt{print\_string} instruction was introduced 
+their via uniform mutation, and individual 10:473 is highlighted because the
+alternation of 9:109 and 9:896 brought together an \texttt{in1} instruction
+from 9:109 (inherited from 0:126 via 4:772) with the four printing instructions 
+from 9:896. Lastly
+we used a grayscale color gradient to indicate which and how many of the 
+instructions were present in an individual. The earlier of the 9 key 
+instructions are assigned lighter colors in the gradient, and the later 
+instructions are assigned darker gradient colors. So individuals like 7:338 
+have a fairly ``flat'' gray because they contributed just a single
+instruction from near the middle of the program, where 19:554 has a strong
+gradiant because it contributed all 9 of the instructions.
 
-For the edges we added the Damerau-Levenshtein distance (DL-distance)
-between genome vectors for each parent-child pair; these distances
-are indicated as edge labels in Figure~\ref{fig:run0Filtered}. The genome
-vectors were generated by extracting the \texttt{:instruction} and 
+The other important extension to the graph in Figure~\ref{fig:run0Filtered} 
+is that we decorated each edge with the Damerau-Levenshtein distance (DL-distance)
+between the genome vectors for each parent-child pair. The genome
+vectors were generated by extracting the \texttt{:instruction}
+\footnote{Instructions were treated as atomic symbols when computing the
+	Damerau-Levenshtein distances; swapping a \texttt{exec\_if} with a \texttt{print\_string} would only add a
+	distance of 1.}
+and 
 \texttt{:close} fields from each gene, and concatenating those into a
 single sequence. So, for example, the genome of successful individual
 20:435 starts
@@ -341,7 +387,8 @@ exec_swap 0 integer_empty 0 ...
 
 The Damerau-Levenshtein distance provides a succinct way to see when an individual has received a
 large amount of genetic material from its parents. It also allows us to easily identify alternation
-events that have mutation like behavior with small changes to genome.
+events that have mutation-like behavior, where there is only a small difference 
+between to genome of one of the parents and the child.
 
 \section{The (successful) end and how we get there}
 \label{sec:successfulEnd}
