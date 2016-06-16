@@ -67,22 +67,20 @@
 \maketitle
 
 % 10-15 lines is Springer's target
-\todo{weak abstract}
-\abstract{
-	In evolutionary computation runs there is a great deal of data that could be
-	saved and analyzed.
-	This data is often put aside, however, in favor of focusing on the final
+\abstract{	
+	In evolutionary computation we potentially have the ability to save and analyze every detail in an run.
+	This data is often thrown away, however, in favor of focusing on the final
 	outcomes, typically captured and presented in the form of summary statistics
 	and performance plots.
-	Here we examine a genetic programming run in detail and trace 
-	back from the solution to determine how it was derived. 
+	Here we use graph database tools to store every parent-child relationship in a single genetic programming run, and examine the key ancestries in detail, tracing 
+	back from an solution to see how it was evolved over the course of 20 generations. 
 	To visualize this genetic programming run, the ancestry graph is extracted, running from the 
 	solution(s) in the final generation up to their ancestors in the initial random 
 	population. The key instructions in the solution are also identified, and 
 	a genetic ancestry graph is constructed, a subgraph of the ancestry graph
-	containing only those individuals contributed genetic 
-	information (or instructions) to the solution. This visualization and our
-	ability to trace these key instructions throughout the run allowed us to identify general inheritance patterns and key evolutionary moments in this
+	containing only those individuals that contributed genetic 
+	information (or instructions) to the solution. These visualizations and our
+	ability to trace these key instructions throughout the run allow us to identify general inheritance patterns and key evolutionary moments in this
 	run.
 }
 
