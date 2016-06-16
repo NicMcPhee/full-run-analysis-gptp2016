@@ -127,25 +127,25 @@ Section~\ref{sec:conclusions}.
 
 The run presented here was generated using a Clojure implementation\footnote{Clojush: \url{https://github.com/lspector/Clojush}} of the PushGP\footnote{\url{http://pushlanguage.org/}} genetic programming system, which evolves programs in the Push programming language \cite{spector:2002:GPEM, 1068292}. Push programs use typed stacks to store and manipulate data, taking their arguments from stacks of the appropriate types and leave their results on the appropriate stacks.
 
-Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \textit{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block is treated as a single unit when code manipulating instructions act on them.
+Push gains much of its power as an evolutionary language from its ability to manipulate code, including the currently executing code, as a program runs. The running program is stored on the \emph{exec} stack, allowing instructions to change code before it runs. Push programs are hierarchically structured into code blocks delimited by parentheses. Each code block is treated as a single unit when code manipulating instructions act on them.
 
 Unlike previous versions of PushGP, Clojush has recently been changed to not evolve 
 Push programs directly, but to act instead on a new linear genome representation 
-\cite{Helmuth:2016:GPTP}. Each \textit{Plush (\textbf{L}inear 
+\cite{Helmuth:2016:GPTP}. Each \emph{Plush (\textbf{L}inear 
 	\textbf{Push}) genome} consists of a linear sequence of instructions (including 
 literals), and is translated into a Push program prior to execution. Each 
 instruction may have one or more epigenetic markers attached that modify how 
 the genome is translated into a Push program. For more details on the Plush genome
 representation and operators, see~\cite{Helmuth:2016:GPTP}.
-%For example, the \textit{silent} marker is a boolean that tells whether a 
+%For example, the \emph{silent} marker is a boolean that tells whether a 
 %particular instruction will appear in the translated program. 
 
-Most relevant to this study is the \textit{close} epigenetic marker, which 
+Most relevant to this study is the \emph{close} epigenetic marker, which 
 affects the hierarchical composition of programs. Since many Push instructions 
-do not act on code blocks from the \textit{exec} stack, it 
+do not act on code blocks from the \emph{exec} stack, it 
 makes sense to limit the appearance of code blocks to follow only instructions 
 that do make use of them. Each instruction that takes one or more argument from 
-the \textit{exec} stack automatically opens one or more code blocks. Then, the 
+the \emph{exec} stack automatically opens one or more code blocks. Then, the 
 integer close marker attached to each instruction tells how many opened code 
 blocks to close after that particular instruction. During translation from Plush genome to 
 Push program, an open parenthesis is placed after each instruction that 
@@ -166,11 +166,11 @@ test cases.
 
 Our main crossover operator, \emph{alternation}, similar to $N$-point crossover in genetic algorithms.
 Alternation traverses two parents in parallel while copying instructions from one parent or 
-the other to the child. While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some small random amount.
+the other to the child. While traversing the parents, copying can jump from one parent to the other with probability specified by the \emph{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some small random amount.
 
-We also use a \textit{uniform mutation} operator that traverses a parent, 
+We also use a \emph{uniform mutation} operator that traverses a parent, 
 replacing each instruction with some small probability. Similarly, a 
-\textit{uniform close mutation} operator can change the close epigenetic marker 
+\emph{uniform close mutation} operator can change the close epigenetic marker 
 attached to an instruction by incrementing or decrementing it. Finally, we 
 often apply an alternation operator followed by a uniform mutation of the 
 result, inspired by the ULTRA operator \cite{Spector:2013:GPTP}.
