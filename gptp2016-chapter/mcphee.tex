@@ -160,7 +160,17 @@ later instruction with a non-zero close marker. These code blocks can create
 hierarchically nested Push programs, allowing, for example, structures such as 
 nested looping and subroutines containing conditional code.
 
-Our main crossover operator, \textit{alternation}, similar to $N$-point crossover in genetic algorithms.
+This run used \emph{lexicase 
+	selection}~\cite{Spector:2012:GECCOcompA,Helmuth:2015:GECCO,Helmuth:2016:GECCO}. The details of lexicase selection
+aren't crucial here, but it is important to know that lexicase selection
+avoids aggregating test case performance (by, for example, computing a single
+total error as is common when using tournament selection), and instead maintains
+a vector of distinct errors for each test case. This allows an individual that 
+performs well on a few test cases that the population is generally poor at to 
+be selected, often multiple times, even if it performs very poorly on other 
+test cases.
+
+Our main crossover operator, \emph{alternation}, similar to $N$-point crossover in genetic algorithms.
 Alternation traverses two parents in parallel while copying instructions from one parent or 
 the other to the child. While traversing the parents, copying can jump from one parent to the other with probability specified by the \textit{alternation rate} parameter. When alternating between parents, the index at which to continue copying may be offset backward or forward some small random amount.
 
